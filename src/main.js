@@ -1,0 +1,60 @@
+import { createApp } from 'vue';
+import { router } from './router';
+import App from "./App.vue";
+import store from './store'
+import Header from '@/views/layouts/header'
+import Footer from '@/views/layouts/footer'
+import Toaster from '@meforma/vue-toaster'
+const app = createApp(App)
+
+
+
+/* Header Compontents */
+
+app.component('layout-header',Header)
+app.component('layout-footer',Footer)
+
+/* Header Compontents */
+
+/* Stylesheet */
+import '@/assets/css/style.css'
+import '@/assets/css/vendor/ecicons.min.css'
+import '@/assets/css/plugins/animate.css'
+import '@/assets/css/plugins/swiper-bundle.min.css'
+import '@/assets/css/plugins/countdownTimer.css'
+import '@/assets/css/plugins/slick.min.css'
+import '@/assets/css/plugins/bootstrap.css'
+import '@/assets/css/demo1.css'
+import '@/assets/css/responsive.css'
+import '@/assets/css/backgrounds/bg-4.css'
+
+
+/* Stylesheet */
+
+/* Javascript */
+import jQuery from 'jquery';
+
+// import '@/assets/js/vendor/jquery-3.5.1.min.js'
+import '@/assets/js/vendor/popper.min.js'
+import '@/assets/js/vendor/bootstrap.min.js'
+import '@/assets/js/plugins/swiper-bundle.min.js'
+import '@/assets/js/plugins/countdownTimer.min.js'
+import '@/assets/js/plugins/scrollup.js'
+import '@/assets/js/plugins/jquery.zoom.min.js'
+import '@/assets/js/plugins/infiniteslidev2.js'
+import '@/assets/js/vendor/jquery.magnific-popup.min.js'
+import '@/assets/js/plugins/jquery.sticky-sidebar.js'
+import '@/assets/js/plugins/slick.min.js'
+import '@/assets/js/vendor/index.js'
+import '@/assets/js/main.js'
+
+/* Javascript */
+
+app.use(router)
+app.use(store)
+app.use(Toaster, {
+    position: "top-right",
+});
+// app.use(jQuery)
+app.use(router).mount('#app');
+
