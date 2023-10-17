@@ -4,8 +4,8 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="section-title">
-                        <h2 class="ec-bg-title">Log In</h2>
-                        <h2 class="ec-title">Log In</h2>
+                        <h2 class="ec-bg-title">Reset Password</h2>
+                        <h2 class="ec-title">Reset Password</h2>
                         <p class="sub-title mb-3">Best place to buy and sell digital products</p>
                     </div>
                 </div>
@@ -29,28 +29,11 @@
                                     />
                                     <div class="invalid-feedback text-danger mb-2">{{ errors.email }}</div>
                                 </span>
-                                <span class="ec-login-wrap mt-3">
-                                    <label>Password*</label>
-                                    <Field
-                                        name="password"
-                                        type="password"
-                                        class="form-control mt-2 mb-0"
-                                        placeholder="Enter your password"
-                                        :class="{ 'is-invalid': errors.password }"
-                                    />
-                                    <div class="invalid-feedback text-danger mb-2">{{ errors.password }}</div>
-                                </span>
-                                <span class="ec-login-wrap ec-login-fp mt-3">
-                                    <label><router-link to="/forget_password">Forgot Password?</router-link></label>
-                                </span>
                                 <span class="ec-login-wrap ec-login-btn">
-                                    <button class="btn btn-primary w-100" :disabled="isLoading('UserLogin')" type="submit">
-                                        Login
-                                        <img src="@/assets/images/common/loader-2.gif" width="20" v-if="isLoading('UserLogin')" class="ms-3">
+                                    <button class="btn btn-primary w-100" :disabled="isLoading('ForgetPassword')" type="submit">
+                                        Reset Password
+                                        <img src="@/assets/images/common/loader-2.gif" width="20" v-if="isLoading('ForgetPassword')" class="ms-3">
                                     </button>
-                                    <span class="ec-register-wrap ec-register-fp mt-3">
-                                        <label>Don't have any account yet?  <router-link to="/register">Register Now!</router-link></label>
-                                    </span>
                                 </span>
                             </Form>
                         </div>
@@ -64,12 +47,21 @@
 import { Form, Field } from "vee-validate";
 import * as Yup from "yup";
 import { mapActions, mapState } from "vuex";
-import VueCookies from 'vue-cookies'
 import { router } from "@/router";
+import VueCookies from 'vue-cookies'
 export default {
     components: {
         Form,
         Field,
+    },
+    methods:{
+        onSubmit(User){
+            console.log(this.$toast)
+            this.$store.dispatch("ForgetPassword", { User: User, toast: this.$toast })
+        },
+        isLoading(actionName) {
+            return this.$store.state.Loading[actionName] || false;
+        },
     },
     data(){
         return{
@@ -77,25 +69,13 @@ export default {
         }
     },
     created(){
-        if(this.UserIDToken !== null){
+        if(this.otpEmail !== null){
            router.push("/");
         }
-    },
-    methods:{
-        onSubmit(User){
-            console.log(this.$toast)
-            this.$store.dispatch("UserLogin", { User: User, toast: this.$toast })
-        },
-        isLoading(actionName) {
-            return this.$store.state.Loading[actionName] || false;
-        },
     },
     setup(){
         const schema = Yup.object().shape({
             email: Yup.string().required("Email is required").email("Email is invalid"),
-            password: Yup.string()
-                .min(8, "Password must be at least 8 characters")
-                .required("Password is required"),
         });
         return {
             schema,

@@ -11,9 +11,20 @@ const mutations = {
     RESEND_OTP(state, otp){
       state.ResendOTP = otp
     },
+    SET_AUTHENTICATED(state, isAuthenticated) {
+      state.isAuthenticated = isAuthenticated;
+    },
+    FORGET_PASSWORD(state, password){
+      state.ForgetPassword = password
+    },
+    RESET_PASSWORD(state, password){
+      state.ResetPassword = password
+    },
+    LOGOUT(state, token){
+      state.Logout = token
+    },
     LOADING_API(state, {name, status}){
-      state.Loading = {name, status}
-      console.log(state.Loading)
+      state.Loading[name] = status;
     },
 }
 

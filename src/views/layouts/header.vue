@@ -63,6 +63,7 @@
                                     <li><a class="dropdown-item" href="register.html">Register</a></li>
                                     <li><a class="dropdown-item" href="checkout.html">Checkout</a></li>
                                     <li><a class="dropdown-item" href="login.html">Login</a></li>
+                                    <li><a class="dropdown-item" href="login.html">Login</a></li>
                                 </ul>
                             </div>
                             <!-- Header User End -->
@@ -134,6 +135,12 @@
                                         <li><a class="dropdown-item" href="register.html">Register</a></li>
                                         <li><a class="dropdown-item" href="checkout.html">Checkout</a></li>
                                         <li><a class="dropdown-item" href="login.html">Login</a></li>
+                                        <li v-if="UserIDToken">
+                                            <button class="dropdown-item" @click="Logout" :disabled="isLoading('Logout')">
+                                                Logout
+                                                <img src="@/assets/images/common/loader-2.gif" width="20" v-if="isLoading('Logout')" class="ms-3">
+                                            </button>
+                                        </li>
                                     </ul>
                                 </div>
                                 <!-- Header User End -->
@@ -690,13 +697,33 @@
                 </div>
             </div>
         </div>
+        {{UserIDToken}}
         <!-- ekka mobile Menu End -->
     </header>
     <!-- Header End  -->
 </template>
 <script>
+import VueCookies from 'vue-cookies'
+
 export default {
-    
+    data(){
+        return{
+            UserIDToken: VueCookies.get("UserToken")
+        }
+    },
+    methods:{
+        Logout(){
+            this.$store.dispatch("Logout", { token: this.UserIDToken, toast: this.$toast })
+        },
+        isLoading(actionName) {
+            return this.$store.state.Loading[actionName] || false;
+        },
+        computed: {
+        isAuthenticated() {
+        return this.$store.state.isAuthenticated;
+        },
+    },
+    },
 }
 </script>
 <style lang="">

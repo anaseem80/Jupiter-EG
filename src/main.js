@@ -5,6 +5,8 @@ import store from './store'
 import Header from '@/views/layouts/header'
 import Footer from '@/views/layouts/footer'
 import Toaster from '@meforma/vue-toaster'
+import SettingsBar from '@/components/settingsBar'
+import VueCountdown from '@chenfengyuan/vue-countdown';
 const app = createApp(App)
 
 
@@ -13,6 +15,12 @@ const app = createApp(App)
 
 app.component('layout-header',Header)
 app.component('layout-footer',Footer)
+
+/* Header Compontents */
+
+/* Settings Compontents */
+
+app.component('settings-bar',SettingsBar)
 
 /* Header Compontents */
 
@@ -55,6 +63,7 @@ app.use(store)
 app.use(Toaster, {
     position: "top-right",
 });
+app.component(VueCountdown.name, VueCountdown);
 // app.use(jQuery)
 app.use(router).mount('#app');
 

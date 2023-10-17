@@ -4,8 +4,8 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="section-title">
-                        <h2 class="ec-bg-title">Log In</h2>
-                        <h2 class="ec-title">Log In</h2>
+                        <h2 class="ec-bg-title">Reset Password</h2>
+                        <h2 class="ec-title">Reset Password</h2>
                         <p class="sub-title mb-3">Best place to buy and sell digital products</p>
                     </div>
                 </div>
@@ -19,38 +19,32 @@
                                     v-slot="{ errors }"
                                 >
                                 <span class="ec-login-wrap">
-                                    <label>Email Address*</label>
+                                    <label>New Password</label>
                                     <Field
-                                        name="email"
+                                        name="new_password"
                                         type="text"
                                         class="form-control mt-2 mb-0"
                                         placeholder="Enter your email add..."
-                                        :class="{ 'is-invalid': errors.email }"
+                                        :class="{ 'is-invalid': errors.new_password }"
                                     />
-                                    <div class="invalid-feedback text-danger mb-2">{{ errors.email }}</div>
+                                    <div class="invalid-feedback text-danger mb-2">{{ errors.new_password }}</div>
                                 </span>
                                 <span class="ec-login-wrap mt-3">
-                                    <label>Password*</label>
+                                    <label>Password Confirmation</label>
                                     <Field
-                                        name="password"
-                                        type="password"
+                                        name="new_password_confirmation"
+                                        type="text"
                                         class="form-control mt-2 mb-0"
-                                        placeholder="Enter your password"
-                                        :class="{ 'is-invalid': errors.password }"
+                                        placeholder="Enter your email add..."
+                                        :class="{ 'is-invalid': errors.new_password_confirmation }"
                                     />
-                                    <div class="invalid-feedback text-danger mb-2">{{ errors.password }}</div>
-                                </span>
-                                <span class="ec-login-wrap ec-login-fp mt-3">
-                                    <label><router-link to="/forget_password">Forgot Password?</router-link></label>
+                                    <div class="invalid-feedback text-danger mb-2">{{ errors.new_password_confirmation }}</div>
                                 </span>
                                 <span class="ec-login-wrap ec-login-btn">
-                                    <button class="btn btn-primary w-100" :disabled="isLoading('UserLogin')" type="submit">
-                                        Login
-                                        <img src="@/assets/images/common/loader-2.gif" width="20" v-if="isLoading('UserLogin')" class="ms-3">
+                                    <button class="btn btn-primary w-100" :disabled="isLoading('ResetPassword')" type="submit">
+                                        Reset Password
+                                        <img src="@/assets/images/common/loader-2.gif" width="20" v-if="isLoading('ResetPassword')" class="ms-3">
                                     </button>
-                                    <span class="ec-register-wrap ec-register-fp mt-3">
-                                        <label>Don't have any account yet?  <router-link to="/register">Register Now!</router-link></label>
-                                    </span>
                                 </span>
                             </Form>
                         </div>
@@ -73,18 +67,22 @@ export default {
     },
     data(){
         return{
+            token:VueCookies.get("tokenOTP"),
             UserIDToken: VueCookies.get("UserIDToken")
         }
     },
     created(){
-        if(this.UserIDToken !== null){
+        if(this.token === null){
+           router.push("/");
+        }
+        if(this.otpEmail !== null){
            router.push("/");
         }
     },
     methods:{
         onSubmit(User){
             console.log(this.$toast)
-            this.$store.dispatch("UserLogin", { User: User, toast: this.$toast })
+            this.$store.dispatch("ResetPassword", { User: User,token: this.token, toast: this.$toast })
         },
         isLoading(actionName) {
             return this.$store.state.Loading[actionName] || false;
@@ -92,10 +90,11 @@ export default {
     },
     setup(){
         const schema = Yup.object().shape({
-            email: Yup.string().required("Email is required").email("Email is invalid"),
-            password: Yup.string()
+            new_password: Yup.string()
                 .min(8, "Password must be at least 8 characters")
                 .required("Password is required"),
+            new_password_confirmation: Yup.string()
+            .oneOf([Yup.ref('new_password'), null], 'Passwords must match')
         });
         return {
             schema,

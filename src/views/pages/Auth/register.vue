@@ -9,7 +9,7 @@
                         <p class="sub-title mb-3">Best place to buy and sell digital products</p>
                     </div>
                 </div>
-                <div class="ec-register-wrapper">
+                <div class="ec-register-wrapper col-lg-6">
                     <div class="ec-register-container">
                         <div class="ec-register-form">
                                 <Form
@@ -52,9 +52,9 @@
                                     <div class="invalid-feedback text-danger mb-2">{{ errors.password }}</div>
                                 </span>
                                 <span class="ec-register-wrap ec-register-btn">
-                                    <button class="btn btn-primary w-100" :disabled="$store.state.Loading.status" type="submit">
+                                    <button class="btn btn-primary w-100" :disabled="isLoading('UserRegister')" type="submit">
                                         Register
-                                        <img src="@/assets/images/common/loader-2.gif" width="20" v-if="$store.state.Loading.status" class="ms-3">
+                                        <img src="@/assets/images/common/loader-2.gif" width="20" v-if="isLoading('UserRegister')" class="ms-3">
                                     </button>
                                 </span>
                                 <span class="ec-register-wrap ec-register-fp mt-3">
@@ -72,15 +72,30 @@
 import { Form, Field } from "vee-validate";
 import * as Yup from "yup";
 import { mapActions, mapState } from "vuex";
+import { router } from "@/router";
+import VueCookies from 'vue-cookies'
 export default {
     components: {
         Form,
         Field,
     },
+    data(){
+        return{
+            UserIDToken: VueCookies.get("UserIDToken")
+        }
+    },
+    created(){
+        if(this.otpEmail !== null){
+           router.push("/");
+        }
+    },
     methods:{
         onSubmit(User){
             console.log(this.$toast)
             this.$store.dispatch("UserRegister", { User: User, toast: this.$toast })
+        },
+        isLoading(actionName) {
+            return this.$store.state.Loading[actionName] || false;
         },
     },
     setup(){

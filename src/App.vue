@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import VueCookies from 'vue-cookies'
 export default {
   name: 'App',
 }

@@ -13,9 +13,10 @@
                     <div class="ec-register-container">
                         <div class="ec-register-form">
                             <div class="text-center">
+                                <p class="text-dark">We have sent the OTP to <span class="fw-bold">{{ otpEmail }}</span> please check your DM.</p>
                                 <img src="@/assets/images/common/otp.gif" class="rounded-circle" width="350" alt="">
                             </div>
-                            <Form
+                                <Form
                                     class="register"
                                     @submit="SubmitOTP"
                                     :validation-schema="schema"
@@ -41,12 +42,19 @@
                                         class="form-control mt-2 mb-0"
                                         v-model="otpDigits[index]"
                                     />
-                                    <p class="my-3 text-center">Didn't recieve the OTP? <span class="text-primary cursor-pointer" @click="ResendOTP">Resend</span></p>
+                                    <p class="my-3 text-center">Didn't recieve the OTP? 
+                                        <button @click="ResendOTP" type="button" :disabled="isLoading('RESEND_OTP')">
+                                            Resend 
+                                        </button>
+                                        <vue-countdown class="d-block" v-if="isLoading('RESEND_OTP')" :time="60000" v-slot="{ minutes, seconds }">
+                                        You Can send again in {{ minutes }} minutes, {{ seconds }} seconds.
+                                        </vue-countdown>
+                                    </p>
                                 </span>
                                 <span class="ec-register-wrap ec-register-btn">
-                                    <button class="btn btn-primary w-100 mt-0" :disabled="$store.state.Loading.status" type="submit">
+                                    <button class="btn btn-primary w-100 mt-0" :disabled="isLoading('SubmitOTP')" type="submit">
                                         Verfiy email
-                                        <img src="@/assets/images/common/loader-2.gif" width="20" v-if="$store.state.Loading.status" class="ms-3">
+                                        <img src="@/assets/images/common/loader-2.gif" width="20" v-if="isLoading('SubmitOTP')" class="ms-3">
                                     </button>
                                 </span>
                             </Form>
@@ -61,15 +69,25 @@
 import { Form, Field } from "vee-validate";
 import * as Yup from "yup";
 import { mapActions, mapState } from "vuex";
+import { router } from "@/router";
+import VueCookies from 'vue-cookies'
+import VueCountdown from '@chenfengyuan/vue-countdown';
 export default {
     data(){
         return {
             otpDigits: new Array(6).fill(''),
+            otpEmail: VueCookies.get("emailOTP"),
         };
     },
     components: {
         Form,
         Field,
+    },
+    created(){
+        if(this.otpEmail === null){
+            console.log("asd")
+           router.push("/");
+        }
     },
     methods:{
         SubmitOTP(){
@@ -83,6 +101,9 @@ export default {
             this.$store.dispatch("ResendOTP", { email: 'anaseemamin@gmail.com' , toast: this.$toast })
         },
         OTP() {},
+        isLoading(actionName) {
+            return this.$store.state.Loading[actionName] || false;
+        },
     },
     setup(){
         const schema = Yup.object().shape({
