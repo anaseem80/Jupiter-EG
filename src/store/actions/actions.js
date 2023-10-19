@@ -5,19 +5,20 @@ import VueRouter from "vue-router";
 import VueCookies from 'vue-cookies'
 const actions = {
 
-    UserLogin({commit}, {User , toast}){
+    UserLogin({commit, state}, {User , toast}){
         commit("LOADING_API",{name: 'UserLogin', status: true})
-        axios.post(api + "login?lang=en", User)
+        axios.post(state.api_route + "login?lang=en", User)
         .then((response) => {
         commit("USER_LOGIN",User)
         if(response.data.token){
             toast.success("تم التسجيل بنجاح")
             commit("LOADING_API",{name: 'UserLogin', status: true})
-            commit("SET_AUTHENTICATED", true);
+            commit("SET_AUTHENTICATED", {bool: true, token: response.data.token});
+            VueCookies.set('UserIDToken', response.data.user.id, '1d');
+            VueCookies.set('UserToken', response.data.token, '1d');
+            VueCookies.set('UserRouteRV', 'register', '1d');
             setTimeout(() => {
                 commit("LOADING_API",{name: 'UserLogin', status: false})
-                VueCookies.set('UserIDToken', response.data.user.id, '1d');
-                VueCookies.set('UserToken', response.data.token, '1d');
                 router.push("/");
             }, 1000);
         }
@@ -37,11 +38,11 @@ const actions = {
         })
     },
 
-    UserRegister({commit}, {User , toast}){
+    UserRegister({commit, state}, {User , toast}){
         commit("LOADING_API",{name: 'UserRegister', status: true})
-        axios.post(api + "register?lang=en", User)
+        axios.post(state.api_route + "register?lang=en", User)
         .then((response) => {
-        commit("USER_LOGIN",User)
+        commit("SUBMIT_OTP",User)
         if(response.data.status_code == 200){
             toast.success("تم التسجيل بنجاح")
             VueCookies.set('emailOTP', User.email, '1d');
@@ -58,26 +59,29 @@ const actions = {
         })
     },
 
-    SubmitOTP({commit}, {OTP, toast}){
+    SubmitOTP({commit, state}, {OTP, toast}){
         commit("LOADING_API",{name: 'SubmitOTP', status: true})
         console.log(OTP)
-        axios.post(api + "verify-email?lang=en", {
+        axios.post(state.api_route + "verify-email?lang=en", {
             otp:OTP,
-            email:VueCookies.get("emailOTP")
+            email:VueCookies.get("emailOTP"),
+            route: VueCookies.get("UserRouteRV")
         })
         .then((response) => {
         commit("USER_LOGIN",OTP)
         if(response.data.status_code == 200){
-            toast.success("تم التفعيل بنحاح")
             commit("LOADING_API",{name: 'SubmitOTP', status: true})
-            VueCookies.remove("emailOTP")
             setTimeout(() => {
                 commit("LOADING_API",{name: 'SubmitOTP', status: false})
+                console.log(response.data)
                 if(response.data.token){
+                    VueCookies.remove("emailOTP")
+                    toast.success("الكود صحيح سيتم توجهيك لصفحة تغير كلمة المرور")
                     VueCookies.set('tokenOTP', response.data.token, '1d');
-                    router.push("reset_password");
+                    router.push("/reset_password");
                 }else{
-                    router.push("/");
+                    toast.success("تم التفعيل بنحاح")
+                    router.push("/login");
                 }
             }, 1000);
         }
@@ -88,10 +92,10 @@ const actions = {
         })
     },
 
-    ResendOTP({commit}, {email, toast}){
+    ResendOTP({commit, state}, {email, toast}){
         commit("LOADING_API",{name: 'RESEND_OTP', status: true})
-        axios.post(api + "verification-notification?lang=en", {
-            email:VueCookies.get("emailOTP")
+        axios.post(state.api_route + "verification-notification?lang=en", {
+            email:VueCookies.get("emailOTP"),
         })
         .then((response) => {
         commit("USER_LOGIN",email)
@@ -109,16 +113,17 @@ const actions = {
         })
     },
 
-    ForgetPassword({commit}, {User, toast}){
+    ForgetPassword({commit, state}, {User, toast}){
         console.log(User)
         commit("LOADING_API",{name: 'ForgetPassword', status: true})
-        axios.post(api + "forgot-password?lang=en", User)
+        axios.post(state.api_route + "forgot-password?lang=en", User)
         .then((response) => {
         commit("USER_LOGIN",User)
         if(response.data.status_code == 200){
             toast.success("تم إرسال الرمز بنجاح")
             commit("LOADING_API",{name: 'ForgetPassword', status: true})
             VueCookies.set('emailOTP', User.email, '1d');
+            VueCookies.set('UserRouteRV', 'reset_password', '1d');
             setTimeout(() => {
                 router.push("/verification");
                 commit("LOADING_API",{name: 'ForgetPassword', status: false})
@@ -131,10 +136,10 @@ const actions = {
         })
     },
 
-    ResetPassword({commit}, {User, token, toast}){
+    ResetPassword({commit, state}, {User, token, toast}){
         console.log(token)
         commit("LOADING_API",{name: 'ResetPassword', status: true})
-        axios.post(api + "reset-password?lang=en", User, {
+        axios.post(state.api_route + "reset-password?lang=en", User, {
             headers:{
                 Authorization: 'Bearer ' + token 
             }
@@ -146,7 +151,7 @@ const actions = {
             commit("LOADING_API",{name: 'ResetPassword', status: true})
             VueCookies.remove('tokenOTP')
             setTimeout(() => {
-                console.log("asd")
+                router.push("/")
                 commit("LOADING_API",{name: 'ResetPassword', status: false})
             }, 1000);
         }
@@ -157,23 +162,27 @@ const actions = {
         })
     },
 
-    Logout({commit}, {token, toast}){
-        console.log(token)
+    Logout({commit, state}, {token, toast}){
+        var actualToken;
+        if(state.isAuthenticated.token != null){
+            actualToken = state.isAuthenticated.token
+        }else{
+            actualToken = token
+        }
         commit("LOADING_API",{name: 'Logout', status: true})
-        axios.post(api + "logout?lang=en", null,{
+        axios.post(state.api_route + "logout?lang=en", null,{
             headers:{
-                Authorization: 'Bearer ' + token 
+                Authorization: 'Bearer ' + actualToken
             }
         })
         .then((response) => {
         commit("LOGOUT",token)
-        console.log(response)
         if(response.data.status_code == 200){
             toast.success(response.data.message)
             commit("LOADING_API",{name: 'Logout', status: true})
             VueCookies.remove('UserIDToken')
             VueCookies.remove('UserToken')
-            commit("SET_AUTHENTICATED", false);
+            commit("SET_AUTHENTICATED", {bool: false, token: null});
             setTimeout(() => {
                 commit("LOADING_API",{name: 'Logout', status: false})
                 router.push("/login");
@@ -186,6 +195,30 @@ const actions = {
             commit("LOADING_API",{name: 'Logout', status: false})
         })
     },
+
+    GetBanners({commit, state}){
+        axios.get(state.api_route + "banners?lang=en")
+        .then(response=>{
+            if(response.data.status_code == 200){
+                commit("GET_BANNERS",response.data.banners)
+            }
+        })
+        .catch(error=>{
+          console.log(error)
+        })
+      },
+      
+    GetHomeProducts({commit, state}){
+        axios.get(state.api_route + "products?lang=en")
+        .then(response=>{
+            if(response.data.status_code == 200){
+                commit("GET_HOME_PRODUCTS",response.data.HomeData)
+            }
+        })
+        .catch(error=>{
+          console.log(error)
+        })
+      },
 }
 
 export default actions

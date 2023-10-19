@@ -85,7 +85,7 @@ export default {
         }
     },
     created(){
-        if(this.otpEmail !== null){
+        if(this.UserIDToken !== null){
            router.push("/");
         }
     },

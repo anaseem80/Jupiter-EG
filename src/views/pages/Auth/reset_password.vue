@@ -22,9 +22,9 @@
                                     <label>New Password</label>
                                     <Field
                                         name="new_password"
-                                        type="text"
+                                        type="password"
                                         class="form-control mt-2 mb-0"
-                                        placeholder="Enter your email add..."
+                                        placeholder="***********"
                                         :class="{ 'is-invalid': errors.new_password }"
                                     />
                                     <div class="invalid-feedback text-danger mb-2">{{ errors.new_password }}</div>
@@ -33,9 +33,9 @@
                                     <label>Password Confirmation</label>
                                     <Field
                                         name="new_password_confirmation"
-                                        type="text"
+                                        type="password"
                                         class="form-control mt-2 mb-0"
-                                        placeholder="Enter your email add..."
+                                        placeholder="***********"
                                         :class="{ 'is-invalid': errors.new_password_confirmation }"
                                     />
                                     <div class="invalid-feedback text-danger mb-2">{{ errors.new_password_confirmation }}</div>
@@ -73,9 +73,6 @@ export default {
     },
     created(){
         if(this.token === null){
-           router.push("/");
-        }
-        if(this.otpEmail !== null){
            router.push("/");
         }
     },

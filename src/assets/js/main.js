@@ -852,45 +852,6 @@
 //     });
 
 //     /*----------------------------- Color Hover To Image Change -------------------------------- */ 
-//     var $ecproduct = $('.ec-pro-color, .ec-product-tab, .shop-pro-inner, .ec-new-product, .ec-releted-product, .ec-checkout-pro').find('.ec-opt-swatch');
-
-//     function initChangeImg($opt) {
-//         $opt.each(function() {
-//             var $this = $(this),
-//             ecChangeImg = $this.hasClass('ec-change-img');           
-
-//             $this.on('mouseenter', 'li', function() {
-//                 changeProductImg($(this));
-//             });
-            
-//             $this.on('click', 'li', function() {
-//                 changeProductImg($(this));
-//             });
-
-//             function changeProductImg(thisObj){
-//                 var $this = thisObj;
-//                 var $load = $this.find('a');
-
-//                 var $proimg = $this.closest('.ec-product-inner').find('.ec-pro-image');
-
-//                 if (!$load.hasClass('loaded')) {
-//                     $proimg.addClass('pro-loading');
-//                 }
-
-//                 var $loaded = $this.find('a').addClass('loaded');
-
-//                 $this.addClass('active').siblings().removeClass('active');
-//                 if (ecChangeImg) {
-//                     hoverAddImg($this);
-//                 }
-//                 setTimeout(function() {
-//                    $proimg.removeClass("pro-loading");
-//                }, 1000);
-//                 return false;    
-//             }
-
-//         });
-//     }
 
 //     function hoverAddImg($this) {
 //         var $optData = $this.find('.ec-opt-clr-img'),
@@ -924,31 +885,6 @@
 //     });
 
 //     /*----------------------------- Size Hover To Active -------------------------------- */
-//     $('.ec-opt-size').each(function() {
-//         $(this).on('mouseenter', 'li', function() {
-//             // alert("1");
-//             onSizeChange($(this));
-//         });
-
-//         $(this).on('click', 'li', function() {
-//             // alert("2");
-//             onSizeChange($(this));
-//         });        
-
-//        function onSizeChange(thisObj){
-//             // alert("3");
-//             var $this = thisObj;
-//             var $old_data = $this.find('a').attr('data-old');
-//             var $new_data = $this.find('a').attr('data-new');
-//             var $old_price = $this.closest('.ec-pro-content').find('.old-price');
-//             var $new_price = $this.closest('.ec-pro-content').find('.new-price');
-
-//             $old_price.text($old_data); 
-//             $new_price.text($new_data); 
-
-//             $this.addClass('active').siblings().removeClass('active');
-//         }
-//     });
 
 //     /*----------------------------- Replace all SVG images with inline SVG -------------------------------- */    
 //     $(document).ready(function() {

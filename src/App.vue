@@ -1,5 +1,6 @@
 <template>
   <layout-header></layout-header>
+  <category-bar></category-bar>
   <router-view />
   <Toasts/>
   <layout-footer></layout-footer>

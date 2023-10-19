@@ -5,7 +5,10 @@ import store from './store'
 import Header from '@/views/layouts/header'
 import Footer from '@/views/layouts/footer'
 import Toaster from '@meforma/vue-toaster'
-import SettingsBar from '@/components/settingsBar'
+import SettingsBar from '@/components/Home/settingsBar'
+import Banner from '@/components/Home/banner'
+import ProductsHome from '@/components/Home/products'
+import LeftcategoryBar from '@/components/Main/LeftcategoryBar'
 import VueCountdown from '@chenfengyuan/vue-countdown';
 const app = createApp(App)
 
@@ -18,17 +21,20 @@ app.component('layout-footer',Footer)
 
 /* Header Compontents */
 
-/* Settings Compontents */
+/* Main Compontents */
 
 app.component('settings-bar',SettingsBar)
+app.component('home-products',ProductsHome)
+app.component('category-bar',LeftcategoryBar)
+app.component('banner',Banner)
 
 /* Header Compontents */
 
 /* Stylesheet */
+import '@/assets/css/plugins/swiper-bundle.min.css'
 import '@/assets/css/style.css'
 import '@/assets/css/vendor/ecicons.min.css'
 import '@/assets/css/plugins/animate.css'
-import '@/assets/css/plugins/swiper-bundle.min.css'
 import '@/assets/css/plugins/countdownTimer.css'
 import '@/assets/css/plugins/slick.min.css'
 import '@/assets/css/plugins/bootstrap.css'

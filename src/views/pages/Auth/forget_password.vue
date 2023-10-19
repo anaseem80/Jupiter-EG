@@ -56,7 +56,7 @@ export default {
     },
     methods:{
         onSubmit(User){
-            console.log(this.$toast)
+            console.log(User)
             this.$store.dispatch("ForgetPassword", { User: User, toast: this.$toast })
         },
         isLoading(actionName) {
@@ -69,7 +69,7 @@ export default {
         }
     },
     created(){
-        if(this.otpEmail !== null){
+        if(this.UserIDToken !== null){
            router.push("/");
         }
     },

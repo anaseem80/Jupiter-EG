@@ -1,4 +1,5 @@
 const mutations = {
+    // Auth Start
     USER_LOGIN(state, User){
       state.LoginData = User
     },
@@ -25,6 +26,13 @@ const mutations = {
     },
     LOADING_API(state, {name, status}){
       state.Loading[name] = status;
+    },
+    // Auth end
+    GET_BANNERS(state, banners){
+      state.banners = banners;
+    },
+    GET_HOME_PRODUCTS(state, home_products){
+      state.home_products = home_products;
     },
 }
 

@@ -81,7 +81,7 @@
                                 <span class="ec-header-count cart-count-lable">3</span>
                             </a>
                             <!-- Header Cart End -->
-                            <a href="javascript:void(0)" class="ec-header-btn ec-sidebar-toggle">
+                            <a href="javascript:void(0)" class="ec-header-btn ec-sidebar-toggle" @click="CategoryMenuOpen()">
                                 <img src="@/assets/images/icons/category-icon.svg" class="svg_img header_svg" alt="icon" />
                             </a>
                             <!-- Header menu Start -->
@@ -134,8 +134,8 @@
                                     <ul class="dropdown-menu dropdown-menu-right">
                                         <li><a class="dropdown-item" href="register.html">Register</a></li>
                                         <li><a class="dropdown-item" href="checkout.html">Checkout</a></li>
-                                        <li><a class="dropdown-item" href="login.html">Login</a></li>
-                                        <li v-if="UserIDToken">
+                                        <li v-if="isAuthenticated.token != null ? !isAuthenticated.token : !UserIDToken"><router-link class="dropdown-item" to="/login">Login</router-link></li>
+                                        <li v-if="isAuthenticated.token != null ? isAuthenticated.token : UserIDToken">
                                             <button class="dropdown-item" @click="Logout" :disabled="isLoading('Logout')">
                                                 Logout
                                                 <img src="@/assets/images/common/loader-2.gif" width="20" v-if="isLoading('Logout')" class="ms-3">
@@ -200,7 +200,7 @@
                 <div class="row">
                     <div class="col-md-12 align-self-center">
                         <div class="ec-main-menu">
-                            <a href="javascript:void(0)" class="ec-header-btn ec-sidebar-toggle">
+                            <a href="javascript:void(0)" class="ec-header-btn ec-sidebar-toggle" @click="CategoryMenuOpen()">
                                 <img src="@/assets/images/icons/category-icon.svg" class="svg_img header_svg" alt="icon" />
                             </a>
                             <ul>
@@ -474,53 +474,21 @@
                         <li><a href="index.html">Home</a></li>
                         <li><a href="javascript:void(0)">Categories</a>
                             <ul class="sub-menu">
-                                <li>
-                                    <a href="javascript:void(0)">Classic Variation</a>
-                                    <ul class="sub-menu">
-                                        <li><a href="shop-left-sidebar-col-3.html">Left sidebar 3 column</a></li>
-                                        <li><a href="shop-left-sidebar-col-4.html">Left sidebar 4 column</a></li>
-                                        <li><a href="shop-right-sidebar-col-3.html">Right sidebar 3 column</a></li>
-                                        <li><a href="shop-right-sidebar-col-4.html">Right sidebar 4 column</a></li>
-                                        <li><a href="shop-full-width.html">Full width 4 column</a></li>
+                                <li
+                                    v-for="(category, index) in home_products.categoriesWithSubcategorie"
+                                >
+                                    <a href="javascript:void(0)">{{category.name}}</a>
+                                    <ul 
+                                        class="sub-menu"
+                                    >
+                                        <li
+                                            v-for="subCategory in category.SubCategory"
+                                        >
+                                            <a href="shop-left-sidebar-col-3.html">{{subCategory.name}}</a>
+                                        </li>
                                     </ul>
                                 </li>
-                                <li>
-                                    <a href="javascript:void(0)">Classic Variation</a>
-                                    <ul class="sub-menu">
-                                        <li><a href="shop-banner-left-sidebar-col-3.html">Banner left sidebar 3
-                                                column</a></li>
-                                        <li><a href="shop-banner-left-sidebar-col-4.html">Banner left sidebar 4
-                                                column</a></li>
-                                        <li><a href="shop-banner-right-sidebar-col-3.html">Banner right sidebar 3
-                                                column</a></li>
-                                        <li><a href="shop-banner-right-sidebar-col-4.html">Banner right sidebar 4
-                                                column</a></li>
-                                        <li><a href="shop-banner-full-width.html">Banner Full width 4 column</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)">Columns Variation</a>
-                                    <ul class="sub-menu">
-                                        <li><a href="shop-full-width-col-3.html">3 Columns full width</a></li>
-                                        <li><a href="shop-full-width-col-4.html">4 Columns full width</a></li>
-                                        <li><a href="shop-full-width-col-5.html">5 Columns full width</a></li>
-                                        <li><a href="shop-full-width-col-6.html">6 Columns full width</a></li>
-                                        <li><a href="shop-banner-full-width-col-3.html">Banner 3 Columns</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)">List Variation</a>
-                                    <ul class="sub-menu">
-                                        <li><a href="shop-list-left-sidebar.html">Shop left sidebar</a></li>
-                                        <li><a href="shop-list-right-sidebar.html">Shop right sidebar</a></li>
-                                        <li><a href="shop-list-banner-left-sidebar.html">Banner left sidebar</a></li>
-                                        <li><a href="shop-list-banner-right-sidebar.html">Banner right sidebar</a></li>
-                                        <li><a href="shop-list-full-col-2.html">Full width 2 columns</a></li>
-                                    </ul>
-                                </li>
-                                <li><a class="p-0" href="shop-left-sidebar-col-3.html"><img class="img-responsive"
-                                            src="@/assets/images/menu-banner/1.jpg" alt=""></a>
-                                </li>
+                                
                             </ul>
                         </li>
                         <li><a href="javascript:void(0)">Products</a>
@@ -697,13 +665,13 @@
                 </div>
             </div>
         </div>
-        {{UserIDToken}}
         <!-- ekka mobile Menu End -->
     </header>
     <!-- Header End  -->
 </template>
 <script>
 import VueCookies from 'vue-cookies'
+import { mapActions, mapState } from "vuex";
 
 export default {
     data(){
@@ -712,17 +680,43 @@ export default {
         }
     },
     methods:{
+        ...mapActions(['GetHomeProducts']),
+        async fetchHomeProducts() {
+            await this.GetHomeProducts();
+        },
         Logout(){
             this.$store.dispatch("Logout", { token: this.UserIDToken, toast: this.$toast })
         },
         isLoading(actionName) {
             return this.$store.state.Loading[actionName] || false;
         },
-        computed: {
+        CategoryMenuOpen(){
+            console.log("asd")
+            $(".ec-sidebar-toggle").on("click", function () {
+                console.log("clicked")
+                $(".ec-side-cat-overlay").fadeIn();
+                $(".category-sidebar").addClass("ec-open");
+            });
+
+            $(".ec-close").on("click", function () {
+                $(".category-sidebar").removeClass("ec-open");
+                $(".ec-side-cat-overlay").fadeOut();
+            });
+
+            $(".ec-side-cat-overlay").on("click", function () {
+                $(".category-sidebar").removeClass("ec-open");
+                $(".ec-side-cat-overlay").fadeOut();
+            });
+        }
+    },
+    computed: {
+        ...mapState([`home_products`,'route']),
         isAuthenticated() {
-        return this.$store.state.isAuthenticated;
+            return this.$store.state.isAuthenticated;
         },
     },
+    mounted() {
+        this.fetchHomeProducts();
     },
 }
 </script>
