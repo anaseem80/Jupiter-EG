@@ -163,12 +163,7 @@ const actions = {
     },
 
     Logout({commit, state}, {token, toast}){
-        var actualToken;
-        if(state.isAuthenticated.token != null){
-            actualToken = state.isAuthenticated.token
-        }else{
-            actualToken = token
-        }
+        var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
         commit("LOADING_API",{name: 'Logout', status: true})
         axios.post(state.api_route + "logout?lang=en", null,{
             headers:{
@@ -196,6 +191,92 @@ const actions = {
         })
     },
 
+
+    Add_Product_To_Cart({commit, state}, {product, quantity, attributeId, token, toast}){
+        var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
+        commit("LOADING_API",{name: 'Add_Product_To_Cart'+product.id, status: true})
+        axios.post(state.api_route + `cart/add?lang=en&quantity=${quantity}&product_id=${product.id}${attributeId != null ? `&attribute_id=${attributeId}` : ''}`, null,{
+            headers:{
+                Authorization: 'Bearer ' + actualToken
+            }
+        })
+        .then((response) => {
+        commit("ADDED_PRODUCT_CART",{product:product,quantity: quantity})
+        if(response.data.status_code == 200){
+            toast.success(response.data.message)
+            $(".ec-side-toggle")[2].click()
+            commit("LOADING_API",{name: 'Add_Product_To_Cart'+product.id, status: false})
+        }
+        })
+        .catch((error) => {
+            toast.error(error.response.data.message)
+            commit("LOADING_API",{name: 'Add_Product_To_Cart'+product.id, status: false})
+        })
+    },
+
+
+    Remove_Product_From_Cart({commit, state}, {product, toast}){
+        var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
+        commit("LOADING_API",{name: 'Remove_Product_From_Cart'+product.id, status: true})
+        axios.delete(state.api_route + `cart/remove?lang=en&cart_id=${product.id}`,{
+            headers:{
+                Authorization: 'Bearer ' + actualToken
+            }
+        })
+        .then((response) => {
+        commit("REMOVED_PRODUCT_CART",{product:product})
+        if(response.data.status_code == 200){
+            toast.success(response.data.message)
+            commit("LOADING_API",{name: 'Remove_Product_From_Cart'+product.id, status: false})
+        }
+        })
+        .catch((error) => {
+            toast.error(error.response.data.message)
+            commit("LOADING_API",{name: 'Remove_Product_From_Cart'+product.id, status: false})
+        })
+    },
+
+    Clear_Cart({commit, state}, {toast}){
+        var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
+        commit("LOADING_API",{name: 'Clear_Cart', status: true})
+        axios.delete(state.api_route + `cart/clear?lang=en`,{
+            headers:{
+                Authorization: 'Bearer ' + actualToken
+            }
+        })
+        .then((response) => {
+            if(response.status == 200){
+                toast.success(response.data.message)
+                commit("LOADING_API",{name: 'Clear_Cart', status: false})
+            }
+        })
+        .catch((error) => {
+            toast.error(error.response.data.message)
+            commit("LOADING_API",{name: 'Clear_Cart', status: false})
+        })
+    },
+    
+    Product_Increase_Decrease_From_Cart({commit, state}, {id, toast, type}){
+        var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
+        var sign = type == '+' ? 'increase' : 'reduce'
+        commit("LOADING_API",{name: 'Product_Increase_Decrease_From_Cart'+id, status: true})
+        axios.post(state.api_route + `cart/${sign}?lang=en&cart_id=${id}`,null,{
+            headers:{
+                Authorization: 'Bearer ' + actualToken
+            }
+        })
+        .then((response) => {
+        if(response.data.status_code == 200){
+            toast.success(response.data.message)
+            commit("LOADING_API",{name: 'Product_Increase_Decrease_From_Cart'+id, status: false})
+        }
+        })
+        .catch((error) => {
+            toast.error(error.response.data.message)
+            commit("LOADING_API",{name: 'Product_Increase_Decrease_From_Cart'+id, status: false})
+        })
+    },
+
     GetBanners({commit, state}){
         axios.get(state.api_route + "banners?lang=en")
         .then(response=>{
@@ -206,8 +287,46 @@ const actions = {
         .catch(error=>{
           console.log(error)
         })
-      },
+    },
       
+    GetCartData({commit, state}){
+        var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
+        axios.get(state.api_route + "cart/items?lang=en", {
+            headers:{
+                Authorization: 'Bearer ' + actualToken
+            }
+        })
+        .then(response=>{
+            if(response.data.status_code == 200){
+                commit("CART_DATA",response.data)
+            }
+        })
+        .catch(error=>{
+          console.log(error)
+        })
+    },
+
+    GetProductData({commit, state}, {id}){
+        console.log(id)
+        var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
+        commit("LOADING_API",{name: 'GetProductData'+id, status: true})
+        axios.get(state.api_route + `product/${id}?lang=en`, {
+            headers:{
+                Authorization: 'Bearer ' + actualToken
+            }
+        })
+        .then(response=>{
+            if(response.data.status_code == 200){
+                commit("PRODUCT_DATA",response.data)
+                commit("LOADING_API",{name: 'GetProductData'+id, status: false})
+            }
+        })
+        .catch(error=>{
+          console.log(error)
+          commit("LOADING_API",{name: 'GetProductData'+id, status: false})
+        })
+    },
+
     GetHomeProducts({commit, state}){
         axios.get(state.api_route + "products?lang=en")
         .then(response=>{

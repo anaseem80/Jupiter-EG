@@ -9,6 +9,7 @@ import SettingsBar from '@/components/Home/settingsBar'
 import Banner from '@/components/Home/banner'
 import ProductsHome from '@/components/Home/products'
 import LeftcategoryBar from '@/components/Main/LeftcategoryBar'
+import Cart from '@/components/Main/cart'
 import VueCountdown from '@chenfengyuan/vue-countdown';
 const app = createApp(App)
 
@@ -24,6 +25,7 @@ app.component('layout-footer',Footer)
 /* Main Compontents */
 
 app.component('settings-bar',SettingsBar)
+app.component('cart',Cart)
 app.component('home-products',ProductsHome)
 app.component('category-bar',LeftcategoryBar)
 app.component('banner',Banner)

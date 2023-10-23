@@ -5,7 +5,10 @@
                 <div class="ec-pro-image">
                     <a href="product-left-sidebar.html" class="image">
                         <img class="main-image"
-                            :src="route + productsSortedAdmin['image']" alt="Product" />
+                            :src="route + productsSortedAdmin['image']" alt="Product" 
+                            :id="'img-'+title+productsSortedAdmin.id"
+                            
+                            />
                         <img v-if="productsSortedAdmin['hover_image'] !== null" class="hover-image"
                             :src="route + productsSortedAdmin['hover_image']" alt="Product" />
                     </a>
@@ -16,56 +19,59 @@
                             src="@/assets/images/icons/quickview.svg" class="svg_img pro_svg"
                             alt="" /></a>
                     <div class="ec-pro-actions">
-                        <button title="Add To Cart" class="add-to-cart"><img
-                                src="@/assets/images/icons/cart.svg" class="svg_img pro_svg"
-                                alt="" /> Add To Cart</button>
+                        <button 
+                            title="Add To Cart" 
+                            class="add-to-cart" 
+                            :disable="isLoading('Add_Product_To_Cart'+productsSortedAdmin.id)" 
+                            @click="onAddProduct(productsSortedAdmin)"
+                            :class="{
+                                'low-fade': isLoading('Add_Product_To_Cart'+productsSortedAdmin.id)
+                            }"
+                            >
+                        >
+                        <img
+                            src="@/assets/images/icons/cart.svg" class="svg_img pro_svg"
+                            alt="" /> 
+                        <img src="@/assets/images/common/loader-2.gif" width="20" class="ms-3 loader-small-button" v-if="isLoading('Add_Product_To_Cart'+productsSortedAdmin.id)"></button>
                         <a class="ec-btn-group wishlist" title="Wishlist"><img
                                 src="@/assets/images/icons/wishlist.svg"
                                 class="svg_img pro_svg" alt="" /></a>
                     </div>
                 </div>
             </div>
+            <!-- this.$route.params.id -->
             <div class="ec-pro-content">
-                <h5 class="ec-pro-title"><a href="product-left-sidebar.html">{{productsSortedAdmin['name']}}</a></h5>
+                <h5 class="ec-pro-title"><router-link :to="'/product/'+productsSortedAdmin['id']">{{productsSortedAdmin['name']}}</router-link></h5>
                 <span class="ec-price">
-                    <span class="old-price">$27.00</span>
                     <span class="new-price">{{productsSortedAdmin['final_price']}}</span>
                 </span>
-                <div class="ec-pro-option" v-if="productsSortedAdmin.attribute_for.length > 0">
+                <div class="ec-pro-option" v-if="productsSortedAdmin.type_attribute == 'both'">
                     <div>
                       <div
                         class="ec-pro-color"
                         v-for="(colorAttr,index) in productsSortedAdmin.attribute_for"
-                        :class="{ 'd-none': index !== 0 }"
+                        :class="{
+                            'd-none': index !== 0,
+                            [title + productsSortedAdmin.id]: true
+                        }"
                         :id="title+colorAttr.size_name_en+productsSortedAdmin.id"
                         >
                         <span class="ec-pro-opt-label">Color</span>
-                        <ul class="ec-opt-swatch ec-change-img" v-if="colorAttr.color">
+                        <ul class="ec-opt-swatch ec-change-img">
                             <li 
-                              class="active"
+                                class="active"
+                                @click="onColorChange($event.target,color,productsSortedAdmin.id,title)"
+                                :data-src="color.image"
+                                :data-src-hover="color.image"
+                                :data-old="productsSortedAdmin.price"
+                                :data-new="color.price"
+                                :data-tooltip="color.colorName"
+                                v-for="color in colorAttr.colors"
                             >
                                 <a 
-                                    href="#" 
+                                    href="javascript:void(0)" 
                                     class="ec-opt-clr-img"
-                                    data-src="@/assets/images/product-image/6_1.jpg"
-                                    data-src-hover="@/assets/images/product-image/6_1.jpg"
-                                    data-tooltip="Gray"><span
-                                    :style="{ backgroundColor: colorAttr.color.color_code, }">
-                                  </span>
-                                </a>
-                              </li>
-                        </ul>
-                        <ul class="ec-opt-swatch ec-change-img" v-if="colorAttr.size_name_en">
-                            <li 
-                              class="active"
-                              v-for="color in colorAttr.colors"
-                            >
-                                <a 
-                                    href="#" 
-                                    class="ec-opt-clr-img"
-                                    data-src="@/assets/images/product-image/6_1.jpg"
-                                    data-src-hover="@/assets/images/product-image/6_1.jpg"
-                                    data-tooltip="Gray"><span
+                                    ><span
                                     :style="{ backgroundColor: color.color_code, }">
                                   </span>
                                 </a>
@@ -78,12 +84,33 @@
                         <ul class="ec-opt-size">
                             <li 
                             v-for="(size,index) in productsSortedAdmin.attribute_for"
-                            :data-color="title+ size.size_name_en == null ? size.size.name_en : size.size_name_en+productsSortedAdmin.id"
+                            @click="sizeColorChange($event.target)"
+                            :data-color="title+ size.size_name_en == null ? size.size.name_en : size.size_name_en +productsSortedAdmin.id"
                             :data-div="title"
+                            :data-id="productsSortedAdmin.id"
                             :class="{ 'active': index === 0 }"
                             >
                             <a 
-                              v-if="size.size"
+                              :href="'#tab-color-'+size.size_name_en+productsSortedAdmin.id"
+                              data-bs-toggle="tab"
+                              class="ec-opt-sz"
+                              data-tooltip="Small"
+                              >
+                              {{size.size_name_en}}
+                            </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="ec-pro-option justify-content-end" v-if="productsSortedAdmin.type_attribute == 'sizes'">
+                    <div class="ec-pro-size">
+                        <span class="ec-pro-opt-label">Size</span>
+                        <ul class="ec-opt-size">
+                            <li 
+                            v-for="(size,index) in productsSortedAdmin.attribute_for"
+                            >
+                            <a 
                               :href="'#tab-color-'+size.size.name_en+productsSortedAdmin.id"
                               data-bs-toggle="tab"
                               class="ec-opt-sz"
@@ -93,19 +120,40 @@
                               >
                               {{size.size.name_en}}
                             </a>
-                            <a 
-                              v-if="size.size_name_en"
-                              :href="'#tab-color-'+size.size_name_en+productsSortedAdmin.id"
-                              data-bs-toggle="tab"
-                              class="ec-opt-sz"
-                              data-old="$25.00"
-                              data-new="$20.00"
-                              data-tooltip="Small"
-                              >
-                              {{size.size_name_en}}
-                            </a>
                             </li>
                         </ul>
+                    </div>
+                </div>
+
+                <div class="ec-pro-option justify-content-start" v-if="productsSortedAdmin.type_attribute == 'colors'">
+                    <div>
+                      <div
+                        class="ec-pro-color"
+                            v-for="(colorAttr,index) in productsSortedAdmin.attribute_for"
+                        >
+                        <span class="ec-pro-opt-label">Color</span>
+                        <ul class="ec-opt-swatch ec-change-img">
+                            <li 
+                              class="active"
+                                @click="onColorChange($event.target,colorAttr,productsSortedAdmin.id,title)"
+                                :data-src="colorAttr.image"
+                                :data-src-hover="colorAttr.image"
+                                :data-old="productsSortedAdmin.price"
+                                :data-new="colorAttr.price"
+                                :data-tooltip="colorAttr.color.name_en"
+                            >
+                                <a 
+                                    href="#" 
+                                    class="ec-opt-clr-img"
+                                    data-src="@/assets/images/product-image/6_1.jpg"
+                                    data-src-hover="@/assets/images/product-image/6_1.jpg"
+                                    data-tooltip="Gray"><span
+                                    :style="{ backgroundColor: colorAttr.color.color_code, }">
+                                  </span>
+                                </a>
+                              </li>
+                        </ul>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -114,82 +162,49 @@
 </template>
 <script>
 import { mapActions, mapState } from "vuex";
+import VueCookies from 'vue-cookies'
 
 export default {
     props:['productObject','title'],
     computed: {
         ...mapState(['route']),
     },
-    mounted(){
-      $('.ec-opt-size').each(function() {
-        $(this).on('mouseenter', 'li', function() {
-            // alert("1");
-            $('.'+$(this).data('div')+' .ec-pro-color').addClass("d-none")
-            $('#'+$(this).data('color')).addClass('d-block').removeClass('d-none')
-            onSizeChange($(this));
-        });
-
-        $(this).on('click', 'li', function() {
-            // alert("2");
-            onSizeChange($(this));
-        });        
-
-       function onSizeChange(thisObj){
-            // alert("3");
-            var $this = thisObj;
-            var $old_data = $this.find('a').attr('data-old');
-            var $new_data = $this.find('a').attr('data-new');
-            var $old_price = $this.closest('.ec-pro-content').find('.old-price');
+    data(){
+        return{
+            UserIDToken: VueCookies.get("UserToken"),
+            selectedAttributeId: {},
+        }
+    },
+    methods:{
+        sizeColorChange(e){
+            $(e).addClass("active").siblings().removeClass("active")
+            $('.'+$(e).data('div')+$(e).data('id')).addClass("d-none")
+            $('#'+$(e).data('div')+$(e).data('color')).addClass('d-block').removeClass('d-none')
+        },
+        onAddProduct(product){
+            let attributeId = this.selectedAttributeId[this.title + product.id];
+            if(attributeId === undefined){
+                attributeId = null
+            }
+            this.$store.dispatch("Add_Product_To_Cart", { attributeId: attributeId, product: product, quantity: 1, toast: this.$toast,token: this.UserIDToken })
+            this.$store.dispatch("GetCartData")
+        },
+        isLoading(actionName) {
+            return this.$store.state.Loading[actionName] || false;
+        },
+        onColorChange(thisObj,color,id,title){
+            this.selectedAttributeId[title + id] = color.attribute_id;
+            $('#img-'+title+id).attr('src',this.route+'imagesfp/product/'+color.image)
+            var $this = $(thisObj);
             var $new_price = $this.closest('.ec-pro-content').find('.new-price');
 
-            $old_price.text($old_data); 
-            $new_price.text($new_data); 
+            console.log($this.closest('.ec-pro-image'))
+            $new_price.text(color.price); 
 
             $this.addClass('active').siblings().removeClass('active');
         }
-    });
-
-
-    var $ecproduct = $('.ec-pro-color, .ec-product-tab, .shop-pro-inner, .ec-new-product, .ec-releted-product, .ec-checkout-pro').find('.ec-opt-swatch');
-
-function initChangeImg($opt) {
-    $opt.each(function() {
-        var $this = $(this),
-        ecChangeImg = $this.hasClass('ec-change-img');           
-
-        $this.on('mouseenter', 'li', function() {
-            changeProductImg($(this));
-        });
-        
-        $this.on('click', 'li', function() {
-            changeProductImg($(this));
-        });
-
-        function changeProductImg(thisObj){
-            var $this = thisObj;
-            var $load = $this.find('a');
-
-            var $proimg = $this.closest('.ec-product-inner').find('.ec-pro-image');
-
-            if (!$load.hasClass('loaded')) {
-                $proimg.addClass('pro-loading');
-            }
-
-            var $loaded = $this.find('a').addClass('loaded');
-
-            $this.addClass('active').siblings().removeClass('active');
-            if (ecChangeImg) {
-                hoverAddImg($this);
-            }
-            setTimeout(function() {
-               $proimg.removeClass("pro-loading");
-           }, 1000);
-            return false;    
-        }
-
-    });
-}
-
+    },
+    mounted(){
     }
 }
 </script>

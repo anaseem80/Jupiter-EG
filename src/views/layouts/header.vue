@@ -75,17 +75,17 @@
                             </a>
                             <!-- Header Cart End -->
                             <!-- Header Cart Start -->
-                            <a href="#ec-side-cart" class="ec-header-btn ec-side-toggle">
+                            <a href="#ec-side-cart" class="ec-header-btn ec-side-toggle" @click="CartMenuOpen($event.target)">
                                 <div class="header-icon"><img src="@/assets/images/icons/cart.svg"
                                         class="svg_img header_svg" alt="" /></div>
-                                <span class="ec-header-count cart-count-lable">3</span>
+                                <span class="ec-header-count cart-count-lable" v-if="cart">{{cart.cart_items.length}}</span>
                             </a>
                             <!-- Header Cart End -->
                             <a href="javascript:void(0)" class="ec-header-btn ec-sidebar-toggle" @click="CategoryMenuOpen()">
                                 <img src="@/assets/images/icons/category-icon.svg" class="svg_img header_svg" alt="icon" />
                             </a>
                             <!-- Header menu Start -->
-                            <a href="#ec-mobile-menu" class="ec-header-btn ec-side-toggle d-lg-none">
+                            <a href="#ec-mobile-menu" class="ec-header-btn ec-side-toggle d-lg-none" @click="CartMenuOpen($event.target)">
                                 <img src="@/assets/images/icons/menu.svg" class="svg_img header_svg" alt="icon" />
                             </a>
                             <!-- Header menu End -->
@@ -152,10 +152,10 @@
                                 </a>
                                 <!-- Header wishlist End -->
                                 <!-- Header Cart Start -->
-                                <a href="#ec-side-cart" class="ec-header-btn ec-side-toggle">
+                                <a href="#ec-side-cart" class="ec-header-btn ec-side-toggle" @click="CartMenuOpen($event.target)">
                                     <div class="header-icon"><img src="@/assets/images/icons/cart.svg"
                                             class="svg_img header_svg" alt="" /></div>
-                                    <span class="ec-header-count cart-count-lable">3</span>
+                                    <span class="ec-header-count cart-count-lable" v-if="cart">{{cart.cart_items.length}}</span>
                                 </a>
                                 <!-- Header Cart End -->
                             </div>
@@ -691,7 +691,6 @@ export default {
             return this.$store.state.Loading[actionName] || false;
         },
         CategoryMenuOpen(){
-            console.log("asd")
             $(".ec-sidebar-toggle").on("click", function () {
                 console.log("clicked")
                 $(".ec-side-cat-overlay").fadeIn();
@@ -707,15 +706,86 @@ export default {
                 $(".category-sidebar").removeClass("ec-open");
                 $(".ec-side-cat-overlay").fadeOut();
             });
+        },
+        CartMenuOpen($ekkaToggle){
+
+            $(".ec-side-cart-overlay").fadeIn();
+            $("#ec-side-cart").addClass("ec-open");
+            if ($('.ec-side-toggle').parent().hasClass("mobile-menu-toggle")) {
+                $('.ec-side-toggle').addClass("close");
+                $(".ec-side-cart-overlay").fadeOut();
+            }
+
+            $(".ec-side-cart-overlay").on("click", function(e) {
+            $(".ec-side-cart-overlay").fadeOut();
+            $("#ec-side-cart").removeClass("ec-open");
+            $(".mobile-menu-toggle").find("a").removeClass("close");
+        });
+
+            $(".ec-close").on("click", function(e) {
+                e.preventDefault();
+                $(".ec-side-cart-overlay").fadeOut();
+                $("#ec-side-cart").removeClass("ec-open");
+                $(".mobile-menu-toggle").find("a").removeClass("close");
+            });   
         }
+        
     },
     computed: {
-        ...mapState([`home_products`,'route']),
+        ...mapState([`home_products`,'route','cart']),
         isAuthenticated() {
             return this.$store.state.isAuthenticated;
         },
     },
     mounted() {
+    var doc = document.documentElement;
+    var w = window;
+
+    var ecprevScroll = w.scrollY || doc.scrollTop;
+    var eccurScroll;
+    var ecdirection = 0;
+    var ecprevDirection = 0;
+    var ecscroll_top = $(window).scrollTop() + 1;
+    var echeader = document.getElementById('ec-main-menu-desk');
+
+    var checkScroll = function() {
+
+        eccurScroll = w.scrollY || doc.scrollTop;
+        if (eccurScroll > ecprevScroll) { 
+            //scrolled up
+            ecdirection = 2;
+        }
+        else if (eccurScroll < ecprevScroll) { 
+            //scrolled down
+            ecdirection = 1;
+        }
+
+        if (ecdirection !== ecprevDirection) {
+            toggleHeader(ecdirection, eccurScroll);
+        }
+
+        ecprevScroll = eccurScroll;
+    };
+
+    var toggleHeader = function(ecdirection, eccurScroll) {                   
+
+        if (ecdirection === 2 && eccurScroll > 52) { 
+            // echeader.classList.add('hide');
+            ecprevDirection = ecdirection;
+            $("#ec-main-menu-desk").addClass("menu_fixed_up");
+            // $("#ec-main-menu-desk").removeClass("menu_fixed");
+        }
+        else if (ecdirection === 1) 
+        {
+            // echeader.classList.remove('hide');
+            ecprevDirection = ecdirection;              
+            $("#ec-main-menu-desk").addClass("menu_fixed");  
+            $("#ec-main-menu-desk").removeClass("menu_fixed_up");            
+        }
+    };
+
+
+
         this.fetchHomeProducts();
     },
 }

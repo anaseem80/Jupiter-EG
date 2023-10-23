@@ -18,6 +18,18 @@ const mutations = {
     FORGET_PASSWORD(state, password){
       state.ForgetPassword = password
     },
+    ADDED_PRODUCT_CART(state, product){
+      state.product = product
+    },
+    REMOVED_PRODUCT_CART(state, RemovedProduct){
+      state.RemovedProduct = RemovedProduct
+    },
+    CART_DATA(state, cart){
+      state.cart = cart
+    },
+    PRODUCT_DATA(state, product){
+      state.product = product
+    },
     RESET_PASSWORD(state, password){
       state.ResetPassword = password
     },

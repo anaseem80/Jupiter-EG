@@ -3,8 +3,28 @@
     <banner></banner>
     <!--Banner-->
 
+    <section class="section ec-new-product section-space-p" id="arrivals">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <div class="section-title">
+                        <h2 class="ec-bg-title">New Arrivals</h2>
+                        <h2 class="ec-title">New Arrivals</h2>
+                        <p class="sub-title">Browse The Collection of Top Products</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!-- New Product Content -->
+                <home-products 
+                :productObject="home_products.productsNewArrival" :title="'new-arrivals'">
+                </home-products>
+            </div>
+        </div>
+    </section>
+
     <!-- Product tab Area Start -->
-    <section class="section ec-product-tab section-space-p" id="collection">
+    <!-- <section class="section ec-product-tab section-space-p" id="collection">
         <div class="container">
             <div class="row">
                 <div class="col-md-12 text-center">
@@ -15,7 +35,6 @@
                     </div>
                 </div>
 
-                <!-- Tab Start -->
                 <div class="col-md-12 text-center">
                     <ul class="ec-pro-tab-nav nav justify-content-center">
                         <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tab-pro-for-you">For
@@ -27,15 +46,12 @@
                         <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-pro-for-hot-items">Hot items</a></li>
                     </ul>
                 </div>
-                <!-- Tab End -->
             </div>
             <div class="row">
                 <div class="col">
                     <div class="tab-content">
-                        <!-- 1st Product tab start -->
                         <div class="tab-pane fade for-you show active" id="tab-pro-for-you">
                             <div class="row">
-                                <!-- Product Content -->
                                 <home-products 
                                 :productObject="home_products.productsSortedAdmin" :title="'for-you'">
                                 </home-products>
@@ -44,7 +60,6 @@
                         </div>
                         <div class="tab-pane fade for-men" id="tab-pro-for-men">
                             <div class="row">
-                                <!-- Product Content -->
                                 <home-products 
                                 :productObject="home_products.producsForMan" :title="'for-men'">
                                 </home-products>
@@ -53,7 +68,6 @@
                         </div>
                         <div class="tab-pane fade for-women" id="tab-pro-for-women">
                             <div class="row">
-                                <!-- Product Content -->
                                 <home-products 
                                 :productObject="home_products.producsForWomen" :title="'for-women'">
                                 </home-products>
@@ -62,7 +76,6 @@
                         </div>
                         <div class="tab-pane fade hot-items" id="tab-pro-for-hot-items">
                             <div class="row">
-                                <!-- Product Content -->
                                 <home-products 
                                 :productObject="home_products.productsHotItem" :title="'hot-items'">
                                 </home-products>
@@ -73,7 +86,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
     <!-- ec Product tab Area End -->
 
     <!--  Category Section Start -->
@@ -83,7 +96,7 @@
                 <div class="col-md-12 text-center">
                     <div class="section-title">
                         <h2 class="ec-bg-title">Our Top Collection</h2>
-                        <h2 class="ec-title">Top Categories</h2>
+                        <h2 class="ec-title">Top Sales</h2>
                         <p class="sub-title">Browse The Collection of Top Categories</p>
                     </div>
                 </div>
@@ -137,10 +150,10 @@
     <!-- Category Section End -->
 
     <!--  Feature & Special Section Start -->
-    <section class="section ec-fre-spe-section section-space-p" id="offers">
+    <!-- <section class="section ec-fre-spe-section section-space-p" id="offers">
         <div class="container">
             <div class="row">
-                <!--  Feature Section Start -->
+                 Feature Section Start
                 <div class="ec-fre-section margin-b-30">
                     <div class="col-md-12 text-left">
                         <div class="section-title">
@@ -220,10 +233,10 @@
                         </swiper-slide>
                     </swiper>
                 </div>
-                <!--  Feature Section End -->
+                 Feature Section End
             </div>
         </div>
-    </section>
+    </section> -->
     <!-- Feature & Special Section End -->
 
     <section class="section ec-services-section section-space-p" id="services">
@@ -237,7 +250,7 @@
                         </div>
                         <div class="ec-service-desc">
                             <h2>Free Shipping</h2>
-                            <p>Free shipping on all US order or order above $200</p>
+                            <p>Free shipping inside Egypt or order above $200</p>
                         </div>
                     </div>
                 </div>
@@ -247,7 +260,7 @@
                             <img src="@/assets/images/icons/service_2.svg" class="svg_img" alt="">
                         </div>
                         <div class="ec-service-desc">
-                            <h2>24X7 Support</h2>
+                            <h2>Best prices</h2>
                             <p>Contact us 24 hours a day, 7 days a week</p>
                         </div>
                     </div>
@@ -258,7 +271,7 @@
                             <img src="@/assets/images/icons/service_3.svg" class="svg_img" alt="">
                         </div>
                         <div class="ec-service-desc">
-                            <h2>30 Days Return</h2>
+                            <h2>Cash back</h2>
                             <p>Simply return it within 30 days for an exchange</p>
                         </div>
                     </div>
@@ -277,12 +290,10 @@
             </div>
         </div>
     </section>
-    <section class="ec-banner section section-space-p">
+    <!-- <section class="ec-banner section section-space-p">
         <h2 class="d-none">Banner</h2>
         <div class="container">
-            <!-- ec Banners Start -->
             <div class="ec-banner-inner">
-                <!--ec Banner Start -->
                 <div class="ec-banner-block ec-banner-block-2">
                     <div class="row">
                         <div 
@@ -304,12 +315,10 @@
                             </div>
                         </div>
                     </div>
-                    <!-- ec Banner End -->
                 </div>
-                <!-- ec Banners End -->
             </div>
         </div>
-    </section>
+    </section> -->
     <section class="section ec-offer-section section-space-p section-space-m">
         <h2 class="d-none">Offer</h2>
         <div class="container">
@@ -320,31 +329,14 @@
                     <span class="ec-offer-img zoomIn" data-animation="zoomIn" data-animated="true"><img src="@/assets/images/offer-image/1.png" alt="offer image"></span>
                     <span class="ec-offer-desc">Acetate Frame Sunglasses</span>
                     <span class="ec-offer-price">$40.00 Only</span>
+                    <!-- إعلان -->
                     <a class="btn btn-primary zoomIn" href="shop-left-sidebar-col-3.html" data-animation="zoomIn" data-animated="true">Shop Now</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="section ec-new-product section-space-p" id="arrivals">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <div class="section-title">
-                        <h2 class="ec-bg-title">New Arrivals</h2>
-                        <h2 class="ec-title">New Arrivals</h2>
-                        <p class="sub-title">Browse The Collection of Top Products</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <!-- New Product Content -->
-                <home-products 
-                :productObject="home_products.productsNewArrival">
-                </home-products>
-            </div>
-        </div>
-    </section>
+
 
     
 </template>

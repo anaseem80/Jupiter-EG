@@ -20447,6 +20447,17 @@ i.ecicon.eci-star.fill {
     border-radius: 0 0 10px 10px;
   }
 }
+.loader-small-button{
+  position: absolute;
+  left: -8px;
+}
+.loader{
+  background: #ffffffa8;
+  z-index: 1;
+}
+.low-fade{
+  background-color: #d2d2d2 !important;
+}
 @media only screen and (max-width: 767px) {
   .ec-product-tab .tab-pane > .row {
     -webkit-box-pack: center;

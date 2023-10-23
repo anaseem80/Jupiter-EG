@@ -1,6 +1,8 @@
 import {createRouter, createWebHistory} from 'vue-router';
 import Login from '@/views/pages/Auth/login'
 import Home from '@/views/pages/Home/index'
+import Cart from '@/views/pages/Cart/cart'
+import Product from '@/views/pages/Product/product'
 import Register from '@/views/pages/Auth/register'
 import Verification from '@/views/pages/Auth/verification'
 import ForgetPassword from '@/views/pages/Auth/forget_password'
@@ -35,6 +37,16 @@ const routes = [
     path: '/reset_password',
     name: 'ResetPassword',
     component: ResetPassword
+  },
+  {
+    path: '/cart',
+    name: 'Cart',
+    component: Cart
+  },
+  {
+    path: "/product/:id",
+    name: "product",
+    component: Product,
   },
 ];
 export const router = createRouter({

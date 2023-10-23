@@ -16405,8 +16405,8 @@ h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   padding: 0;
   z-index: 1;
 }
-.slick-arrow:before {
-  content: "";
+.swiper-button-next:after {
+  content: "\f105";
   color: #777777;
   position: relative;
   font-size: 30px;
@@ -22426,6 +22426,16 @@ div#ec_news_signup {
 }
 .category-sidebar .cat-sidebar .slick-arrow:before {
   font-size: 22px;
+}
+.swiper-button-prev:after{
+  content: "\f104";
+  color: #777777;
+  position: relative;
+  font-size: 30px;
+  font-family: "EcIcons";
+  width: 100%;
+  line-height: 30px;
+  height: 30px;
 }
 .category-sidebar .cat-sidebar .ec-sb-pro-sl .ec-sb-pro-sl-item {
   border: none;
