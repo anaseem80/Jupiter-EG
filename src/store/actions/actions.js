@@ -215,6 +215,27 @@ const actions = {
     },
 
 
+    AddReview({commit, state}, {data, toast}){
+        var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
+        commit("LOADING_API",{name: 'AddReview', status: true})
+        axios.post(state.api_route + `create-review?lang=en`, data,{
+            headers:{
+                Authorization: 'Bearer ' + actualToken
+            }
+        })
+        .then((response) => {
+        if(response.data.status_code == 200){
+            toast.success(response.data.message)
+            state.product.product.reviews.push(data)
+            commit("LOADING_API",{name: 'AddReview', status: false})
+        }
+        })
+        .catch((error) => {
+            toast.error(error.response.data.message)
+            commit("LOADING_API",{name: 'AddReview', status: false})
+        })
+    },
+
     Remove_Product_From_Cart({commit, state}, {product, toast}){
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
         commit("LOADING_API",{name: 'Remove_Product_From_Cart'+product.id, status: true})
@@ -307,17 +328,12 @@ const actions = {
     },
 
     GetProductData({commit, state}, {id}){
-        console.log(id)
-        var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
         commit("LOADING_API",{name: 'GetProductData'+id, status: true})
-        axios.get(state.api_route + `product/${id}?lang=en`, {
-            headers:{
-                Authorization: 'Bearer ' + actualToken
-            }
-        })
+        axios.get(state.api_route + `product/${id}?lang=en`)
         .then(response=>{
             if(response.data.status_code == 200){
                 commit("PRODUCT_DATA",response.data)
+                console.log(response.data)
                 commit("LOADING_API",{name: 'GetProductData'+id, status: false})
             }
         })
@@ -331,7 +347,7 @@ const actions = {
         axios.get(state.api_route + "products?lang=en")
         .then(response=>{
             if(response.data.status_code == 200){
-                commit("GET_HOME_PRODUCTS",response.data.HomeData)
+                commit("GET_HOME_PRODUCTS",response.data.data.HomeData)
             }
         })
         .catch(error=>{

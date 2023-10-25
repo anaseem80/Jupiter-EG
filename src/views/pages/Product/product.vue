@@ -1,11 +1,10 @@
 <template lang="">
     <!-- Sart Single product -->
+    <div id="ec-overlay" v-if="isLoading('GetProductData'+$route.params.id)"><span class="loader_img"></span></div>
     <section class="ec-page-content section-space-p" v-if="product">
         <div class="container">
             <div class="row">
-                <div class="ec-pro-rightside ec-common-rightside col-lg-12 col-md-12">
-                    {{$route.params.id}}
-                    
+                <div class="ec-pro-rightside ec-common-rightside col-lg-12 col-md-12">                    
                     <!-- Single product content Start -->
                     <div class="single-pro-block">
                         <div class="single-pro-inner">
@@ -18,9 +17,9 @@
                                             class="single-product-cover"
                                             :autoplay="true"
                                         >
-                                        <swiper-slide class="single-slide zoom-image-hover" @mouseenter="zoomImage()">
-                                                <img class="img-responsive" src="@/assets/images/product-360/1_1.jpg"
-                                                    alt="">
+                                        <swiper-slide class="single-slide zoom-image-hover">
+                                                <!-- <img class="img-responsive image-product" @mouseenter="zoomImage()" :src="route + product.product.images[0]['image']"
+                                                    alt=""> -->
                                         </swiper-slide>
                                         </swiper>
                                         <swiper
@@ -31,24 +30,18 @@
                                             :modules="modules"
                                             :autoplay="true"
                                         >
-                                        <swiper-slide class="single-slide p-0">
-                                                <img class="img-responsive" src="@/assets/images/product-360/1_1.jpg"
+                                        <swiper-slide 
+                                        class="single-slide p-0"
+                                        v-for="image in product.product.images"
+                                        >
+                                                <img class="img-responsive cursor-pointer" :src="route + image['image']" @click="changeImage(route + image['image'])"
                                                     alt="">
                                         </swiper-slide>
-                                        <swiper-slide class="single-slide p-0">
-                                                <img class="img-responsive" src="@/assets/images/product-360/1_1.jpg"
-                                                    alt="">
-                                        </swiper-slide>
-                                        <swiper-slide class="single-slide p-0">
-                                                <img class="img-responsive" src="@/assets/images/product-360/1_1.jpg"
-                                                    alt="">
-                                        </swiper-slide>
-                                        <swiper-slide class="single-slide p-0">
-                                                <img class="img-responsive" src="@/assets/images/product-360/1_1.jpg"
-                                                    alt="">
-                                        </swiper-slide>
-                                        <swiper-slide class="single-slide p-0">
-                                                <img class="img-responsive" src="@/assets/images/product-360/1_1.jpg"
+                                        <swiper-slide 
+                                        class="single-slide p-0"
+                                        v-for="image in product.product.images"
+                                        >
+                                                <img class="img-responsive cursor-pointer" :src="route + image['image']" @click="changeImage(route + image['image'])"
                                                     alt="">
                                         </swiper-slide>
                                         </swiper>
@@ -65,7 +58,7 @@
                                                 <i class="ecicon eci-star fill"></i>
                                                 <i class="ecicon eci-star-o"></i>
                                             </div>
-                                            <span class="ec-read-review"><a href="#ec-spt-nav-review">Be the first to
+                                            <span class="ec-read-review" v-if="product.product.reviews.length == 0"><a href="#ec-spt-nav-review">Be the first to
                                                     review this product</a></span>
                                         </div>
                                         <div class="ec-single-desc">{{product.product['description']}}</div>
@@ -92,7 +85,7 @@
                                             </div>
                                             <div class="ec-single-stoke">
                                                 <span class="ec-single-ps-title">IN STOCK</span>
-                                                <span class="ec-single-sku">SKU#: WH12</span>
+                                                <span class="ec-single-sku" v-if="product.product.type_attribute == 'both' || product.product.type_attribute == 'colors'">SKU#: <span class="sku"></span></span>
                                             </div>
                                         </div>
                                         <div class="ec-pro-variation" v-if="product.product.type_attribute == 'both'">
@@ -186,6 +179,7 @@
                                                         <li 
                                                             v-for="(size,index) in product.product.attribute_for"
                                                             class="size"
+                                                            @click="sizeColorChange($event.target)"
                                                             :data-color="size.size_name_en == null ? size.size.name_en : size.size_name_en +product.product.id"
                                                             :data-id="product.product.id"
                                                             :class="{ 'active': index === 0 }"
@@ -202,12 +196,15 @@
                                         </div>
                                         <div class="ec-single-qty">
                                             <div class="qty-plus-minus">
-                                                <div class="dec ec_qtybtn">-</div>
-                                                <input class="qty-input" type="text" name="ec_qtybtn" value="1" />
-                                                <div class="inc ec_qtybtn">+</div>
+                                                <div class="dec ec_qtybtn" @click="increaseDecreaseQuantity('-')">-</div>
+                                                <input class="qty-input" type="text" name="ec_qtybtn" v-model="quantity" />
+                                                <div class="inc ec_qtybtn" @click="increaseDecreaseQuantity('+')">+</div>
                                             </div>
                                             <div class="ec-single-cart ">
-                                                <button class="btn btn-primary">Add To Cart</button>
+                                                <button class="btn btn-primary" @click="onAddProduct(product.product)" :disabled="isLoading('Add_Product_To_Cart'+product.product.id)">
+                                                    Add To Cart
+                                                    <img src="@/assets/images/common/loader-2.gif" width="20" class="ms-3" v-if="isLoading('Add_Product_To_Cart'+product.product.id)">
+                                                </button>
                                             </div>
                                             <div class="ec-single-wishlist">
                                                 <a class="ec-btn-group wishlist" title="Wishlist"><img
@@ -268,18 +265,9 @@
                             <div class="tab-content  ec-single-pro-tab-content">
                                 <div id="ec-spt-nav-details" class="tab-pane fade show active">
                                     <div class="ec-single-pro-tab-desc">
-                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                            Lorem Ipsum has been the industry's standard dummy text ever since the
-                                            1500s, when an unknown printer took a galley of type and scrambled it to
-                                            make a type specimen book. It has survived not only five centuries, but also
-                                            the leap into electronic typesetting, remaining essentially unchanged.
+                                        <p class="mb-0">
+                                            {{product.product['description']}}
                                         </p>
-                                        <ul>
-                                            <li>Any Product types that You want - Simple, Configurable</li>
-                                            <li>Downloadable/Digital Products, Virtual Products</li>
-                                            <li>Inventory Management with Backordered items</li>
-                                            <li>Flatlock seams throughout.</li>
-                                        </ul>
                                     </div>
                                 </div>
                                 <div id="ec-spt-nav-info" class="tab-pane fade">
@@ -295,7 +283,8 @@
                                 <div id="ec-spt-nav-review" class="tab-pane fade">
                                     <div class="row">
                                         <div class="ec-t-review-wrapper">
-                                            <div class="ec-t-review-item">
+                                            <h6 class="mb-4" v-if="product.product.reviews.length == 0">No reviews yet, be the first one</h6>
+                                            <div class="ec-t-review-item" v-for="review in product.product.reviews">
                                                 <div class="ec-t-review-avtar">
                                                     <img src="@/assets/images/review-image/1.jpg" alt="" />
                                                 </div>
@@ -303,78 +292,26 @@
                                                     <div class="ec-t-review-top">
                                                         <div class="ec-t-review-name">Jeny Doe</div>
                                                         <div class="ec-t-review-rating">
-                                                            <i class="ecicon eci-star fill"></i>
-                                                            <i class="ecicon eci-star fill"></i>
-                                                            <i class="ecicon eci-star fill"></i>
-                                                            <i class="ecicon eci-star fill"></i>
-                                                            <i class="ecicon eci-star-o"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="ec-t-review-bottom">
-                                                        <p>Lorem Ipsum is simply dummy text of the printing and
-                                                            typesetting industry. Lorem Ipsum has been the industry's
-                                                            standard dummy text ever since the 1500s, when an unknown
-                                                            printer took a galley of type and scrambled it to make a
-                                                            type specimen.
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="ec-t-review-item">
-                                                <div class="ec-t-review-avtar">
-                                                    <img src="@/assets/images/review-image/2.jpg" alt="" />
-                                                </div>
-                                                <div class="ec-t-review-content">
-                                                    <div class="ec-t-review-top">
-                                                        <div class="ec-t-review-name">Linda Morgus</div>
-                                                        <div class="ec-t-review-rating">
-                                                            <i class="ecicon eci-star fill"></i>
-                                                            <i class="ecicon eci-star fill"></i>
-                                                            <i class="ecicon eci-star fill"></i>
-                                                            <i class="ecicon eci-star-o"></i>
-                                                            <i class="ecicon eci-star-o"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="ec-t-review-bottom">
-                                                        <p>Lorem Ipsum is simply dummy text of the printing and
-                                                            typesetting industry. Lorem Ipsum has been the industry's
-                                                            standard dummy text ever since the 1500s, when an unknown
-                                                            printer took a galley of type and scrambled it to make a
-                                                            type specimen.
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                            <i 
+                                                                class="ecicon eci-star fill"
+                                                                v-for="rate in review.rating"
+                                                            >
 
+                                                            </i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ec-t-review-bottom">
+                                                        <p>{{review['review']}}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="ec-ratting-content">
                                             <h3>Add a Review</h3>
                                             <div class="ec-ratting-form">
-                                                <form action="#">
-                                                    <div class="ec-ratting-star">
-                                                        <span>Your rating:</span>
-                                                        <div class="ec-t-review-rating">
-                                                            <i class="ecicon eci-star fill"></i>
-                                                            <i class="ecicon eci-star fill"></i>
-                                                            <i class="ecicon eci-star-o"></i>
-                                                            <i class="ecicon eci-star-o"></i>
-                                                            <i class="ecicon eci-star-o"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="ec-ratting-input">
-                                                        <input name="your-name" placeholder="Name" type="text" />
-                                                    </div>
-                                                    <div class="ec-ratting-input">
-                                                        <input name="your-email" placeholder="Email*" type="email"
-                                                            required />
-                                                    </div>
-                                                    <div class="ec-ratting-input form-submit">
-                                                        <textarea name="your-commemt"
-                                                            placeholder="Enter Your Comment"></textarea>
-                                                        <button class="btn btn-primary" type="submit"
-                                                            value="Submit">Submit</button>
-                                                    </div>
-                                                </form>
+                                                <add-review v-model="userRating" :max-stars="5" v-if="isAuthenticated.token != null ? isAuthenticated.token : UserIDToken"/>
+                                                <h6 v-if="isAuthenticated.token != null ? !isAuthenticated.token : !UserIDToken">You need to <router-link to="/login">Login</router-link> to can add reviews</h6>
                                             </div>
                                         </div>
                                     </div>
@@ -413,6 +350,7 @@
     <!-- Related Product end -->
 </template>
 <script>
+import VueCookies from 'vue-cookies'
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Navigation } from 'swiper/modules';
 import { mapActions, mapState } from "vuex";
@@ -423,10 +361,16 @@ export default {
     },
     computed: {
         ...mapState(['product','route']),
+        isAuthenticated() {
+            return this.$store.state.isAuthenticated;
+        },
     },
     data(){
         return{
             selectedAttributeId: {},
+            quantity: 1,
+            userRating: 1,
+            UserIDToken: VueCookies.get("UserToken")
         }
     },
     methods:{
@@ -437,8 +381,18 @@ export default {
         zoomImage(e){
             $('.zoom-image-hover').zoom();
         },
+        increaseDecreaseQuantity(sign){
+            if(sign=='-'){
+                if(this.quantity==1){
+                    this.quantity=1
+                }else{
+                    this.quantity--
+                }
+            }else{
+                this.quantity++
+            }
+        },
         sizeColorChange(e){
-            console.log($(e))
             $(e).addClass("active").siblings().removeClass("active")
             var $this = $(e);
             if($this.parent().hasClass('size')){
@@ -457,19 +411,24 @@ export default {
             if(attributeId === undefined){
                 attributeId = null
             }
-            this.$store.dispatch("Add_Product_To_Cart", { attributeId: attributeId, product: product, quantity: 1, toast: this.$toast,token: this.UserIDToken })
+            this.$store.dispatch("Add_Product_To_Cart", { attributeId: attributeId, product: product, quantity: this.quantity, toast: this.$toast,token: this.UserIDToken })
             this.$store.dispatch("GetCartData")
         },
         isLoading(actionName) {
             return this.$store.state.Loading[actionName] || false;
         },
+        changeImage(route) {
+            $('.image-product').attr('src',route)
+        },
         onColorChange(thisObj,color,id){
             this.selectedAttributeId['Product'+id] = color.attribute_id;
-            $('#img-'+id).attr('src',this.route+'imagesfp/product/'+color.image)
+            $('.image-product').attr('src',this.route+'imagesfp/product/'+color.image)
             var $this = $(thisObj);
-            var $new_price = $this.closest('.ec-pro-content').find('.new-price');
+            var $new_price = $('.new-price');
+            var $new_sku = $('.sku');
             console.log($this.closest('.ec-pro-image'))
             $new_price.text(color.price); 
+            $new_sku.text(color.sku); 
             if($this.parent().hasClass('color')){
                 $this.parent().addClass('active').siblings().removeClass('active');
             }else{
@@ -480,6 +439,7 @@ export default {
     },
     mounted() {
         this.fetchProduct();
+        console.log("sd")
     },
     setup() {
       return {

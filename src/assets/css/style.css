@@ -20433,6 +20433,7 @@ i.ecicon.eci-star.fill {
     right: 15px;
     bottom: 32px;
   }
+  
   .ec-product-inner .ec-pro-image .ec-pro-actions .compare {
     position: absolute;
     right: 15px;
@@ -23086,6 +23087,8 @@ h4.ec-faq-title::after, .ec-faq-title.h4::after {
 .single-nav-thumb .single-slide {
   padding: 11px 11px 0 11px;
   display: block !important;
+  height: 105px;
+  overflow: hidden;
 }
 .single-nav-thumb .slick-slide img {
   border: 1px solid transparent;

@@ -469,13 +469,13 @@
                 <button class="ec-close">×</button>
             </div>
             <div class="ec-menu-inner">
-                <div class="ec-menu-content">
+                <div class="ec-menu-content" v-if="home_products">
                     <ul>
                         <li><a href="index.html">Home</a></li>
                         <li><a href="javascript:void(0)">Categories</a>
                             <ul class="sub-menu">
                                 <li
-                                    v-for="(category, index) in home_products.categoriesWithSubcategorie"
+                                    v-for="(category, index) in home_products.categoriesWithSubcategories"
                                 >
                                     <a href="javascript:void(0)">{{category.name}}</a>
                                     <ul 
@@ -708,7 +708,6 @@ export default {
             });
         },
         CartMenuOpen($ekkaToggle){
-
             $(".ec-side-cart-overlay").fadeIn();
             $("#ec-side-cart").addClass("ec-open");
             if ($('.ec-side-toggle').parent().hasClass("mobile-menu-toggle")) {
@@ -729,7 +728,6 @@ export default {
                 $(".mobile-menu-toggle").find("a").removeClass("close");
             });   
         }
-        
     },
     computed: {
         ...mapState([`home_products`,'route','cart']),

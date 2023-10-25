@@ -18,8 +18,8 @@ const mutations = {
     FORGET_PASSWORD(state, password){
       state.ForgetPassword = password
     },
-    ADDED_PRODUCT_CART(state, product){
-      state.product = product
+    ADDED_PRODUCT_CART(state, AddedProductToCart){
+      state.AddedProductToCart = AddedProductToCart
     },
     REMOVED_PRODUCT_CART(state, RemovedProduct){
       state.RemovedProduct = RemovedProduct

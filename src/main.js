@@ -11,6 +11,8 @@ import ProductsHome from '@/components/Home/products'
 import LeftcategoryBar from '@/components/Main/LeftcategoryBar'
 import Cart from '@/components/Main/cart'
 import VueCountdown from '@chenfengyuan/vue-countdown';
+import AddReview from '@/components/Main/add-review.vue';
+
 const app = createApp(App)
 
 
@@ -29,6 +31,7 @@ app.component('cart',Cart)
 app.component('home-products',ProductsHome)
 app.component('category-bar',LeftcategoryBar)
 app.component('banner',Banner)
+app.component('add-review',AddReview)
 
 /* Header Compontents */
 

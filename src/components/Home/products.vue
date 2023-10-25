@@ -41,7 +41,7 @@
             </div>
             <!-- this.$route.params.id -->
             <div class="ec-pro-content">
-                <h5 class="ec-pro-title"><router-link :to="'/product/'+productsSortedAdmin['id']">{{productsSortedAdmin['name']}}</router-link></h5>
+                <h5 class="ec-pro-title" @click="fetchProductData(productsSortedAdmin.id)"><router-link :to="'/product/'+productsSortedAdmin['id']">{{productsSortedAdmin['name']}}</router-link></h5>
                 <span class="ec-price">
                     <span class="new-price">{{productsSortedAdmin['final_price']}}</span>
                 </span>
@@ -188,6 +188,10 @@ export default {
             }
             this.$store.dispatch("Add_Product_To_Cart", { attributeId: attributeId, product: product, quantity: 1, toast: this.$toast,token: this.UserIDToken })
             this.$store.dispatch("GetCartData")
+        },
+        fetchProductData(id){
+            $(window).scrollTop(0); 
+            this.$store.dispatch('GetProductData',{id: id})
         },
         isLoading(actionName) {
             return this.$store.state.Loading[actionName] || false;
