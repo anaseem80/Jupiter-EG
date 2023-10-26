@@ -18,6 +18,10 @@
                     class="ec-slide-item swiper-slide d-flex ec-slide-1"
                     :style="{ backgroundImage: 'url('+ 'http://127.0.0.1:8000/' + banner.image + ')' }"
                 >
+                <a 
+                :href="banner.banner_url"
+                class="w-100 h-100"
+                >
                     <div class="container align-self-center">
                         <div class="row">
                             <div class="col-xl-6 col-lg-7 col-md-7 col-sm-7 align-self-center">
@@ -25,6 +29,7 @@
                             </div>
                         </div>
                     </div>
+                </a>
                 </swiper-slide>
             </swiper>
         </div>

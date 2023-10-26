@@ -1,6 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router';
 import Login from '@/views/pages/Auth/login'
 import Home from '@/views/pages/Home/index'
+import SubCategoryProducts from '@/views/pages/SubCategoryProducts/SubCategoryProducts'
 import Cart from '@/views/pages/Cart/cart'
 import Product from '@/views/pages/Product/product'
 import Register from '@/views/pages/Auth/register'
@@ -48,9 +49,14 @@ const routes = [
     name: "product",
     component: Product,
   },
+  {
+    path: "/subCategory/:id",
+    name: "subCategory",
+    component: SubCategoryProducts,
+  },
 ];
 export const router = createRouter({
-    history: createWebHistory('/ecommerce'),
+    history: createWebHistory('/'),
     linkActiveClass: 'active',
     routes,
 });

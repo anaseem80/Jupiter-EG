@@ -1,5 +1,5 @@
 <template lang="">
-    <div v-for="productsSortedAdmin in productObject" v-key="productsSortedAdmin.key" class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6 ec-product-content">
+    <div v-for="productsSortedAdmin in productObject" v-key="productsSortedAdmin.key" :class="class">
         <div class="ec-product-inner">
             <div class="ec-pro-image-outer">
                 <div class="ec-pro-image">
@@ -165,7 +165,7 @@ import { mapActions, mapState } from "vuex";
 import VueCookies from 'vue-cookies'
 
 export default {
-    props:['productObject','title'],
+    props:['productObject','title','class'],
     computed: {
         ...mapState(['route']),
     },

@@ -21614,7 +21614,7 @@ select::-ms-expand {
 
 /*-----  List View Section  -----*/
 .list-view .ec-pro-content {
-  padding-left: 30px;
+  padding-left: 30px !important;
   padding-top: 0;
 }
 .list-view .ec-pro-content .ec-pro-size {
@@ -21725,7 +21725,7 @@ select::-ms-expand {
   float: left;
   margin-left: 1px;
 }
-.ec-pro-pagination a {
+.ec-pro-pagination a,.ec-pro-pagination p {
   font-weight: 300;
   color: #777;
   padding: 0;
@@ -21733,6 +21733,7 @@ select::-ms-expand {
   line-height: 32px;
   background: #ffffff;
   font-size: 14px;
+  transition: 0.3s;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -21747,7 +21748,7 @@ select::-ms-expand {
       -ms-flex-align: center;
           align-items: center;
 }
-.ec-pro-pagination a:hover {
+.ec-pro-pagination a:hover,.ec-pro-pagination p:hover {
   color: #ffffff;
   background-color: #3474d4;
 }
@@ -21761,7 +21762,8 @@ select::-ms-expand {
   padding-left: 7px;
   font-size: 22px;
 }
-.ec-pro-pagination a.active {
+.ec-pro-pagination a.active,
+.ec-pro-pagination p.active {
   color: #ffffff;
   background-color: #3474d4;
 }

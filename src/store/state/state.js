@@ -6,6 +6,7 @@ export const state = {
     SubmitOTP: null,
     AddedProductToCart: {},
     RemovedProduct: null,
+    SubCategoryProducts: null,
     cart:null,
     product:null,
     ResendOTP: null,

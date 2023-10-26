@@ -41,6 +41,21 @@
                                     <div class="invalid-feedback text-danger mb-2">{{ errors.email }}</div>
                                 </span>
                                 <span class="ec-register-wrap mt-3">
+                                    <label>Type*</label>
+                                    <Field
+                                        as="select"
+                                        name="client_type"
+                                        class="form-control mt-2 mb-0 border"
+                                        :class="{ 'is-invalid': errors.client_type }"
+                                    >
+                                        <option selected disabled>Select</option>
+                                        <option value="user">User</option>
+                                        <option value="wholesale">Wholesale</option>
+                                        <option value="retail">Retail</option>
+                                    </Field>
+                                    <div class="invalid-feedback text-danger mb-2">{{ errors.client_type }}</div>
+                                </span>
+                                <span class="ec-register-wrap mt-3">
                                     <label>Password*</label>
                                     <Field
                                         name="password"
@@ -91,7 +106,6 @@ export default {
     },
     methods:{
         onSubmit(User){
-            console.log(this.$toast)
             this.$store.dispatch("UserRegister", { User: User, toast: this.$toast })
         },
         isLoading(actionName) {
@@ -102,6 +116,7 @@ export default {
         const schema = Yup.object().shape({
             email: Yup.string().required("Email is required").email("Email is invalid"),
             name: Yup.string().required("Name is required"),
+            client_type: Yup.string().required("Type is required"),
             password: Yup.string()
                 .min(8, "Password must be at least 8 characters")
                 .required("Password is required"),

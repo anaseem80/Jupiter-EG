@@ -16,9 +16,12 @@
             </div>
             <div class="row">
                 <!-- New Product Content -->
-                <home-products 
-                :productObject="home_products.productsNewArrival" :title="'new-arrivals'">
-                </home-products>
+                <products-component 
+                 :productObject="home_products.productsNewArrival"
+                 :title="'new-arrivals'"
+                 :class="'col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6 ec-product-content'"
+                >
+                </products-component>
             </div>
         </div>
     </section>
@@ -52,33 +55,33 @@
                     <div class="tab-content">
                         <div class="tab-pane fade for-you show active" id="tab-pro-for-you">
                             <div class="row">
-                                <home-products 
+                                <products-component 
                                 :productObject="home_products.productsSortedAdmin" :title="'for-you'">
-                                </home-products>
+                                </products-component>
                                 <div class="col-sm-12 shop-all-btn"><a href="shop-left-sidebar-col-3.html">Shop All Collection</a></div>
                             </div>
                         </div>
                         <div class="tab-pane fade for-men" id="tab-pro-for-men">
                             <div class="row">
-                                <home-products 
+                                <products-component 
                                 :productObject="home_products.producsForMan" :title="'for-men'">
-                                </home-products>
+                                </products-component>
                                 <div class="col-sm-12 shop-all-btn"><a href="shop-left-sidebar-col-3.html">Shop All Collection</a></div>
                             </div>
                         </div>
                         <div class="tab-pane fade for-women" id="tab-pro-for-women">
                             <div class="row">
-                                <home-products 
+                                <products-component 
                                 :productObject="home_products.producsForWomen" :title="'for-women'">
-                                </home-products>
+                                </products-component>
                                 <div class="col-sm-12 shop-all-btn"><a href="shop-left-sidebar-col-3.html">Shop All Collection</a></div>
                             </div>
                         </div>
                         <div class="tab-pane fade hot-items" id="tab-pro-for-hot-items">
                             <div class="row">
-                                <home-products 
+                                <products-component 
                                 :productObject="home_products.productsHotItem" :title="'hot-items'">
-                                </home-products>
+                                </products-component>
                                 <div class="col-sm-12 shop-all-btn"><a href="shop-left-sidebar-col-3.html">Shop All Collection</a></div>
                             </div>
                         </div>

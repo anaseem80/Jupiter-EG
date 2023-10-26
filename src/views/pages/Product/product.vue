@@ -18,8 +18,8 @@
                                             :autoplay="true"
                                         >
                                         <swiper-slide class="single-slide zoom-image-hover">
-                                                <!-- <img class="img-responsive image-product" @mouseenter="zoomImage()" :src="route + product.product.images[0]['image']"
-                                                    alt=""> -->
+                                                <img class="img-responsive image-product" @mouseenter="zoomImage()" :src="route + product.product.images[0]['image']"
+                                                    alt="">
                                         </swiper-slide>
                                         </swiper>
                                         <swiper
@@ -284,13 +284,13 @@
                                     <div class="row">
                                         <div class="ec-t-review-wrapper">
                                             <h6 class="mb-4" v-if="product.product.reviews.length == 0">No reviews yet, be the first one</h6>
-                                            <div class="ec-t-review-item" v-for="review in product.product.reviews">
+                                            <div class="ec-t-review-item" v-for="review in product.product.reviews" :key="review">
                                                 <div class="ec-t-review-avtar">
                                                     <img src="@/assets/images/review-image/1.jpg" alt="" />
                                                 </div>
                                                 <div class="ec-t-review-content">
                                                     <div class="ec-t-review-top">
-                                                        <div class="ec-t-review-name">Jeny Doe</div>
+                                                        <div class="ec-t-review-name">{{review.user['name']}}</div>
                                                         <div class="ec-t-review-rating">
                                                             <i 
                                                                 class="ecicon eci-star fill"
@@ -341,9 +341,11 @@
             </div>
             <div class="row margin-minus-b-30">
                 <!-- Related Product Content -->
-                <home-products 
-                :productObject="product.related_products" :title="'new-arrivals'">
-                </home-products>
+                <products-component 
+                :productObject="product.related_products" 
+                :title="'new-arrivals'" 
+                :class="'col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6 ec-product-content'">
+                </products-component>
             </div>
         </div>
     </section>

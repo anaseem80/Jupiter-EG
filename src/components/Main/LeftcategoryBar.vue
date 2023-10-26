@@ -16,13 +16,11 @@
                                         v-for="(category, index) in home_products.categoriesWithSubcategories"
                                         :key="category.id"
                                     >
-                                        <div class="ec-sidebar-block-item"><img :src="route + category.image" class="svg_img" alt="drink" />{{category.name}}</div>
+                                        <div class="ec-sidebar-block-item" @click="openSubCat($event.target)"><img :src="route + category.image" class="svg_img" alt="drink" />{{category.name}}</div>
                                         <ul>
                                             <li v-if="category.subcategories == 0" class="text-center">No Products here</li>
                                             <li v-for="subCategory in category.subcategories">
-                                                <p v-if="subCategory.length == 0">asasd</p>
-                                                <div class="ec-sidebar-sub-item"><a href="shop-left-sidebar-col-3.html">{{subCategory.name}}</a>
-                                                </div>
+                                                    <div class="ec-sidebar-sub-item"><router-link :to="`/subCategory/${subCategory.id}`" @click="hideMenu()">{{subCategory.name}}</router-link></div>
                                             </li>
                                         </ul>
                                     </li>
@@ -42,13 +40,7 @@ import { mapActions, mapState } from "vuex";
 export default {
     created(){
         $(document).ready(function(){
-            console.log("asd")
-            $(".ec-sidebar-block .ec-sb-block-content ul li ul").addClass("ec-cat-sub-dropdown");
 
-            $(".ec-sidebar-block .ec-sidebar-block-item").on("click", function() {
-                $('.ec-cat-sub-dropdown').not($(this)).fadeOut()
-                $(this).next().fadeToggle()
-            });
         });
     },
     computed: {
@@ -59,6 +51,15 @@ export default {
         async fetchHomeProducts() {
             await this.GetHomeProducts();
         },
+        openSubCat(e){
+            // $(".ec-sidebar-block .ec-sb-block-content ul li ul").addClass("ec-cat-sub-dropdown");
+            $('.ec-cat-sub-dropdown').not($(e)).fadeOut()
+            $(e).next().fadeToggle()
+        },
+        hideMenu(){
+            $(".ec-side-cat-overlay").fadeOut();
+            $(".category-sidebar").removeClass("ec-open");
+        }
     },
     mounted() {
         this.fetchHomeProducts();

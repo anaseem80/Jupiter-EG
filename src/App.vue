@@ -1,6 +1,7 @@
 <template>
   <layout-header></layout-header>
   <category-bar></category-bar>
+  <mobile-menu></mobile-menu>
   <cart></cart>
   <router-view />
   <Toasts/>
@@ -8,7 +9,6 @@
 </template>
 
 <script>
-import VueCookies from 'vue-cookies'
 export default {
   name: 'App',
 }

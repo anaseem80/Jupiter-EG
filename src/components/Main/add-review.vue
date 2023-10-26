@@ -47,6 +47,7 @@
 <script>
 import { Form, Field } from "vee-validate";
 import * as Yup from "yup";
+import VueCookies from 'vue-cookies'
 
 export default {
   components: {
@@ -74,12 +75,14 @@ export default {
   },
   methods: {
     rate(star) {
-      this.userRating = star; // Update the rating as the user clicks a star
-      this.$emit('update:rating', star); // Emit the rating back to the parent component
+      this.userRating = star;
+      this.$emit('update:rating', star);
     },
     onAddReview(data){
       data.rating = this.userRating
       data.product_id = this.$route.params.id
+      data.user = {name:VueCookies.get("UserData").name, id:VueCookies.get("UserData").id}
+      console.log(data)
       this.$store.dispatch("AddReview", { data: data, toast: this.$toast })
     },
     isLoading(actionName) {

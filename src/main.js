@@ -9,10 +9,11 @@ import SettingsBar from '@/components/Home/settingsBar'
 import Banner from '@/components/Home/banner'
 import ProductsHome from '@/components/Home/products'
 import LeftcategoryBar from '@/components/Main/LeftcategoryBar'
+import FilterSide from '@/components/Main/FilterSide'
 import Cart from '@/components/Main/cart'
 import VueCountdown from '@chenfengyuan/vue-countdown';
-import AddReview from '@/components/Main/add-review.vue';
-
+import AddReview from '@/components/Main/add-review';
+import MobileMenu from '@/components/Main/mobile-menu';
 const app = createApp(App)
 
 
@@ -27,11 +28,13 @@ app.component('layout-footer',Footer)
 /* Main Compontents */
 
 app.component('settings-bar',SettingsBar)
+app.component('filter-side',FilterSide)
 app.component('cart',Cart)
-app.component('home-products',ProductsHome)
+app.component('products-component',ProductsHome)
 app.component('category-bar',LeftcategoryBar)
 app.component('banner',Banner)
 app.component('add-review',AddReview)
+app.component('mobile-menu',MobileMenu)
 
 /* Header Compontents */
 

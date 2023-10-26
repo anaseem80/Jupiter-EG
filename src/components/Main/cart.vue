@@ -55,7 +55,7 @@
                     </table>
                 </div>
                 <div class="cart_btn">
-                    <router-link to="/cart" class="btn btn-primary">View Cart</router-link>
+                    <router-link to="/cart" class="btn btn-primary" @click="hideCart()">View Cart</router-link>
                     <a href="checkout.html" class="btn btn-secondary">Checkout</a>
                 </div>
             </div>
@@ -84,6 +84,11 @@ export default {
         ProductQuantity(sign, id){
             this.$store.dispatch("Product_Increase_Decrease_From_Cart", { id: id, toast: this.$toast, type: sign })
             this.$store.dispatch("GetCartData")
+        },
+        hideCart(){
+            $(".ec-side-cart-overlay").fadeOut();
+            $("#ec-side-cart").removeClass("ec-open");
+            $(".mobile-menu-toggle").find("a").removeClass("close");
         }
     },
     mounted() {

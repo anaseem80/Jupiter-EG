@@ -5,7 +5,7 @@ import VueRouter from "vue-router";
 import VueCookies from 'vue-cookies'
 const actions = {
 
-    UserLogin({commit, state}, {User , toast}){
+    UserLogin({commit, state, dispatch}, {User , toast}){
         commit("LOADING_API",{name: 'UserLogin', status: true})
         axios.post(state.api_route + "login?lang=en", User)
         .then((response) => {
@@ -17,6 +17,8 @@ const actions = {
             VueCookies.set('UserIDToken', response.data.user.id, '1d');
             VueCookies.set('UserToken', response.data.token, '1d');
             VueCookies.set('UserRouteRV', 'register', '1d');
+            VueCookies.set('UserData', response.data.user, '1d');
+            dispatch("GetCartData")
             setTimeout(() => {
                 commit("LOADING_API",{name: 'UserLogin', status: false})
                 router.push("/");
@@ -177,11 +179,12 @@ const actions = {
             commit("LOADING_API",{name: 'Logout', status: true})
             VueCookies.remove('UserIDToken')
             VueCookies.remove('UserToken')
+            VueCookies.remove('UserData')
+            commit("CART_DATA",null)
             commit("SET_AUTHENTICATED", {bool: false, token: null});
             setTimeout(() => {
                 commit("LOADING_API",{name: 'Logout', status: false})
                 router.push("/login");
-                console.log(VueCookies.get("UserToken"))
             }, 1000);
         }
         })
@@ -307,6 +310,22 @@ const actions = {
         })
         .catch(error=>{
           console.log(error)
+        })
+    },
+
+    GetSubCategoryProducts({commit, state},{id, page}){
+        commit("LOADING_API",{name: 'GetSubCategoryProducts', status: true})
+        axios.get(state.api_route + `subcategories/${id}/products?lang=en&${page}`)
+        .then(response=>{
+            if(response.data.status_code == 200){
+                commit("LOADING_API",{name: 'GetSubCategoryProducts', status: false})
+                
+                commit("SUB_CATEGORY_PRODUCTS_DATA",response.data.data)
+            }
+        })
+        .catch(error=>{
+          console.log(error)
+          commit("LOADING_API",{name: 'GetSubCategoryProducts', status: false})
         })
     },
       
