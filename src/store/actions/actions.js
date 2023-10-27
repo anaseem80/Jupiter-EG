@@ -3,6 +3,13 @@ var api = "http://127.0.0.1:8000/api/"
 import { router } from "@/router";
 import VueRouter from "vue-router";
 import VueCookies from 'vue-cookies'
+
+function fadeLoader(){
+    $(".ec-overlay").each(function(){
+        $(this).fadeOut()
+    })
+}
+
 const actions = {
 
     UserLogin({commit, state, dispatch}, {User , toast}){
@@ -319,13 +326,14 @@ const actions = {
         .then(response=>{
             if(response.data.status_code == 200){
                 commit("LOADING_API",{name: 'GetSubCategoryProducts', status: false})
-                
                 commit("SUB_CATEGORY_PRODUCTS_DATA",response.data.data)
+                fadeLoader()
             }
         })
         .catch(error=>{
           console.log(error)
           commit("LOADING_API",{name: 'GetSubCategoryProducts', status: false})
+          fadeLoader()
         })
     },
       
@@ -363,14 +371,19 @@ const actions = {
     },
 
     GetHomeProducts({commit, state}){
+        commit("LOADING_API",{name: 'GetHomeProducts', status: true})
         axios.get(state.api_route + "products?lang=en")
         .then(response=>{
             if(response.data.status_code == 200){
                 commit("GET_HOME_PRODUCTS",response.data.data.HomeData)
+                commit("LOADING_API",{name: 'GetHomeProducts', status: false})
+                fadeLoader()
             }
         })
         .catch(error=>{
           console.log(error)
+          commit("LOADING_API",{name: 'GetHomeProducts', status: false})
+          fadeLoader()
         })
       },
 }

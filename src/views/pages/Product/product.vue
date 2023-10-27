@@ -1,6 +1,7 @@
 <template lang="">
-    <!-- Sart Single product -->
-    <div id="ec-overlay" v-if="isLoading('GetProductData'+$route.params.id)"><span class="loader_img"></span></div>
+    <transition name="fade" mode="out-in">
+        <loader v-if="isLoading('GetProductData'+$route.params.id)" key="loader"></loader>
+    </transition>
     <section class="ec-page-content section-space-p" v-if="product">
         <div class="container">
             <div class="row">
@@ -25,18 +26,11 @@
                                         <swiper
                                             :slides-per-view="4"
                                             :space-between="20"
-                                            class="single-nav-thumb mt-3"
+                                            class="single-nav-thumb gellary mt-3"
                                             :navigation="true"
                                             :modules="modules"
                                             :autoplay="true"
                                         >
-                                        <swiper-slide 
-                                        class="single-slide p-0"
-                                        v-for="image in product.product.images"
-                                        >
-                                                <img class="img-responsive cursor-pointer" :src="route + image['image']" @click="changeImage(route + image['image'])"
-                                                    alt="">
-                                        </swiper-slide>
                                         <swiper-slide 
                                         class="single-slide p-0"
                                         v-for="image in product.product.images"

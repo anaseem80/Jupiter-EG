@@ -79,7 +79,7 @@
                             </a>
                             <!-- Header Cart End -->
                             <!-- Header Cart Start -->
-                            <a href="#ec-side-cart" class="ec-header-btn ec-side-toggle" @click="CartMenuOpen($event.target)">
+                            <a v-if="isAuthenticated.token != null ? isAuthenticated.token : UserIDToken" href="#ec-side-cart" class="ec-header-btn ec-side-toggle" @click="CartMenuOpen($event.target)">
                                 <div class="header-icon"><img src="@/assets/images/icons/cart.svg"
                                         class="svg_img header_svg" alt="" /></div>
                                 <span class="ec-header-count cart-count-lable" v-if="cart">{{cart.cart_items.length}}</span>
@@ -155,7 +155,7 @@
                                 </a>
                                 <!-- Header wishlist End -->
                                 <!-- Header Cart Start -->
-                                <a href="#ec-side-cart" class="ec-header-btn ec-side-toggle" @click="CartMenuOpen($event.target)">
+                                <a v-if="isAuthenticated.token != null ? isAuthenticated.token : UserIDToken" href="#ec-side-cart" class="ec-header-btn ec-side-toggle" @click="CartMenuOpen($event.target)">
                                     <div class="header-icon"><img src="@/assets/images/icons/cart.svg"
                                             class="svg_img header_svg" alt="" /></div>
                                     <span class="ec-header-count cart-count-lable" v-if="cart">{{cart.cart_items.length}}</span>

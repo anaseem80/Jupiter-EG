@@ -5,12 +5,11 @@
                 <div class="ec-pro-image">
                     <a href="product-left-sidebar.html" class="image">
                         <img class="main-image"
-                            :src="route + productsSortedAdmin['image']" alt="Product" 
+                            v-lazy="route + productsSortedAdmin['image']" alt="Product" 
                             :id="'img-'+title+productsSortedAdmin.id"
                             
                             />
-                        <img v-if="productsSortedAdmin['hover_image'] !== null" class="hover-image"
-                            :src="route + productsSortedAdmin['hover_image']" alt="Product" />
+                        <img v-lazy="route + productsSortedAdmin['hover_image']" v-if="productsSortedAdmin['hover_image'] !== null" class="hover-image" alt="Product" />
                     </a>
                     <span class="percentage">20%</span>
                     <a href="#" class="quickview" data-link-action="quickview"

@@ -1,5 +1,6 @@
 <template>
   <layout-header></layout-header>
+  <loader></loader>
   <category-bar></category-bar>
   <mobile-menu></mobile-menu>
   <cart></cart>

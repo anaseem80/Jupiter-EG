@@ -11,9 +11,11 @@ import ProductsHome from '@/components/Home/products'
 import LeftcategoryBar from '@/components/Main/LeftcategoryBar'
 import FilterSide from '@/components/Main/FilterSide'
 import Cart from '@/components/Main/cart'
+import Loader from '@/components/Main/loader'
 import VueCountdown from '@chenfengyuan/vue-countdown';
 import AddReview from '@/components/Main/add-review';
 import MobileMenu from '@/components/Main/mobile-menu';
+import VueLazyload from 'vue-lazyload'
 const app = createApp(App)
 
 
@@ -34,6 +36,7 @@ app.component('products-component',ProductsHome)
 app.component('category-bar',LeftcategoryBar)
 app.component('banner',Banner)
 app.component('add-review',AddReview)
+app.component('loader',Loader)
 app.component('mobile-menu',MobileMenu)
 
 /* Header Compontents */
@@ -72,8 +75,16 @@ import '@/assets/js/main.js'
 
 /* Javascript */
 
+const loadimage = require('@/assets/images/bg/loader.webp')
+
 app.use(router)
 app.use(store)
+app.use(VueLazyload, {
+    preLoad: 1.3,
+    loading: loadimage,
+    attempt: 1
+})
+  
 app.use(Toaster, {
     position: "top-right",
 });

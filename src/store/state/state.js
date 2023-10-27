@@ -1,6 +1,6 @@
 export const state = {
-    api_route: 'http://127.0.0.1:8000/api/',
-    route: 'http://127.0.0.1:8000/',
+    api_route: 'https://jupiter-eg.com/admin-panel/public/api/',
+    route: 'https://jupiter-eg.com/admin-panel/',
     LoginData: null,
     RegisterData: null,
     SubmitOTP: null,

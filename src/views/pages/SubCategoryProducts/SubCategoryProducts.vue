@@ -1,5 +1,7 @@
 <template lang="">
-    <div id="ec-overlay" v-if="isLoading('GetSubCategoryProducts')"><span class="loader_img"></span></div>
+    <transition name="fade" mode="out-in">
+        <loader v-if="isLoading('GetSubCategoryProducts')" key="loader"></loader>
+    </transition>
     <!-- Ec Shop page -->
     <section class="ec-page-content section-space-p" v-if="SubCategoryProducts">
         <div class="container">

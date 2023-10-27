@@ -366,6 +366,9 @@ export default {
                 // this.$refs.swiperRef.swiperRef.swiperNext;
             }
         },
+        isLoading(actionName) {
+            return this.$store.state.Loading[actionName] || false;
+        },
         goToPrevSlide() {
             if (this.$refs.swiperRef) {
                 this.$refs.swiperRef.swiperRef.swiperPrev();

@@ -13,10 +13,11 @@
                 @slideChange="onSlideChange"
             >
                 <swiper-slide 
+                    v-lazy-container="{ selector: 'img' }"
                     v-for="banner in banners"
                     :key="banner.id"
                     class="ec-slide-item swiper-slide d-flex ec-slide-1"
-                    :style="{ backgroundImage: 'url('+ 'http://127.0.0.1:8000/' + banner.image + ')' }"
+                    :style="{ backgroundImage: 'url('+ route + banner.image + ')' }"
                 >
                 <a 
                 :href="banner.banner_url"
@@ -48,7 +49,7 @@ export default {
       SwiperSlide,
     },
     computed: {
-        ...mapState(['banners']),
+        ...mapState(['banners','route']),
     },
     methods: {
         ...mapActions(['GetBanners']),
