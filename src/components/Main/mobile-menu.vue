@@ -8,61 +8,9 @@
                 <div class="ec-menu-content">
                     <ul>
                         <span class="menu-toggle"></span>
-                        <li><a href="index.html">Home</a></li>
-                        <li>
-                            <span class="menu-toggle"></span>
-                            <a href="javascript:void(0)">Categories</a>
-                            <ul class="sub-menu">
-                                <li>
-                                    <a href="javascript:void(0)">Classic Variation</a>
-                                    <ul class="sub-menu">
-                                        <li><a href="shop-left-sidebar-col-3.html">Left sidebar 3 column</a></li>
-                                        <li><a href="shop-left-sidebar-col-4.html">Left sidebar 4 column</a></li>
-                                        <li><a href="shop-right-sidebar-col-3.html">Right sidebar 3 column</a></li>
-                                        <li><a href="shop-right-sidebar-col-4.html">Right sidebar 4 column</a></li>
-                                        <li><a href="shop-full-width.html">Full width 4 column</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)">Classic Variation</a>
-                                    <ul class="sub-menu">
-                                        <li><a href="shop-banner-left-sidebar-col-3.html">Banner left sidebar 3
-                                                column</a></li>
-                                        <li><a href="shop-banner-left-sidebar-col-4.html">Banner left sidebar 4
-                                                column</a></li>
-                                        <li><a href="shop-banner-right-sidebar-col-3.html">Banner right sidebar 3
-                                                column</a></li>
-                                        <li><a href="shop-banner-right-sidebar-col-4.html">Banner right sidebar 4
-                                                column</a></li>
-                                        <li><a href="shop-banner-full-width.html">Banner Full width 4 column</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)">Columns Variation</a>
-                                    <ul class="sub-menu">
-                                        <li><a href="shop-full-width-col-3.html">3 Columns full width</a></li>
-                                        <li><a href="shop-full-width-col-4.html">4 Columns full width</a></li>
-                                        <li><a href="shop-full-width-col-5.html">5 Columns full width</a></li>
-                                        <li><a href="shop-full-width-col-6.html">6 Columns full width</a></li>
-                                        <li><a href="shop-banner-full-width-col-3.html">Banner 3 Columns</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)">List Variation</a>
-                                    <ul class="sub-menu">
-                                        <li><a href="shop-list-left-sidebar.html">Shop left sidebar</a></li>
-                                        <li><a href="shop-list-right-sidebar.html">Shop right sidebar</a></li>
-                                        <li><a href="shop-list-banner-left-sidebar.html">Banner left sidebar</a></li>
-                                        <li><a href="shop-list-banner-right-sidebar.html">Banner right sidebar</a></li>
-                                        <li><a href="shop-list-full-col-2.html">Full width 2 columns</a></li>
-                                    </ul>
-                                </li>
-                                <li><a class="p-0" href="shop-left-sidebar-col-3.html"><img class="img-responsive"
-                                            src="assets/images/menu-banner/1.jpg" alt=""></a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li><a href="offer.html">Hot Offers</a></li>
+                        <li><router-link to="/toprate" @click="hideMenu()">Top Rate</router-link></li>
+                        <li><router-link to="/last" @click="hideMenu()">Last Products</router-link></li>
+                        <li><router-link to="/with-offers" @click="hideMenu()">Hot Offers</router-link></li>
                     </ul>
                 </div>
                 <div class="header-res-lan-curr">
@@ -106,7 +54,12 @@
 </template>
 <script>
 export default {
-    
+    methods:{
+        hideMenu(){
+            $(".ec-side-cat-overlay").fadeOut();
+            $(".category-sidebar").removeClass("ec-open");
+        }
+    }
 }
 </script>
 <style lang="">

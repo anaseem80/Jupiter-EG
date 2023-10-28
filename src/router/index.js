@@ -1,7 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router';
 import Login from '@/views/pages/Auth/login'
 import Home from '@/views/pages/Home/index'
-import SubCategoryProducts from '@/views/pages/SubCategoryProducts/SubCategoryProducts'
+import Products from '@/views/pages/Products/Products'
 import Cart from '@/views/pages/Cart/cart'
 import Product from '@/views/pages/Product/product'
 import Register from '@/views/pages/Auth/register'
@@ -50,10 +50,35 @@ const routes = [
     component: Product,
   },
   {
+    path: "/last",
+    name: "last",
+    component: Products,
+    props: route => ({ apiEndpoint: "products/last" })
+  },
+  {
+    path: "/hotItems",
+    name: "hotItems",
+    component: Products,
+    props: route => ({ apiEndpoint: "products/hotitem" })
+  },
+  {
+    path: "/toprate",
+    name: "toprate",
+    component: Products,
+    props: route => ({ apiEndpoint: "products/toprate" })
+  },
+  {
+    path: "/with-offers",
+    name: "with-offers",
+    component: Products,
+    props: route => ({ apiEndpoint: "products/with-offers" })
+  },
+  {
     path: "/subCategory/:id",
     name: "subCategory",
-    component: SubCategoryProducts,
-  },
+    component: Products,
+    props: route => ({ apiEndpoint: `subcategories/${route.params.id}/products` })
+  }
 ];
 export const router = createRouter({
     history: createWebHistory('/'),

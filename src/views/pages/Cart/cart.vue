@@ -91,7 +91,7 @@
                                     <div class="ec-cart-summary">
                                         <div>
                                             <span class="text-left">Sub-Total</span>
-                                            <span class="text-right">{{cart.cart_prices.subtotal}}</span>
+                                            <span class="text-right">{{subtotal}}</span>
                                         </div>
                                         <div>
                                             <span class="text-left">Total Discount</span>
@@ -112,7 +112,7 @@
                                         </div>
                                         <div class="ec-cart-summary-total">
                                             <span class="text-left">Total Amount</span>
-                                            <span class="text-right">{{cart.cart_prices.total}}</span>
+                                            <span class="text-right">{{totalAmount}}</span>
                                         </div>
                                     </div>
 
@@ -127,11 +127,12 @@
     </section>
 </template>
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 
 export default {
     computed: {
         ...mapState(['cart','route']),
+        ...mapGetters(['subtotal','totalDiscount','couponDiscount','totalAmount']),
     },
     methods:{
         ...mapActions(['GetCartData']),
@@ -143,15 +144,13 @@ export default {
         },
         onRemoveProduct(product){
             this.$store.dispatch("Remove_Product_From_Cart", { product: product, toast: this.$toast })
-            this.$store.dispatch("GetCartData")
         },
         onClearCart(){
             this.$store.dispatch("Clear_Cart", { toast: this.$toast })
-            this.$store.dispatch("GetCartData")
         },
         ProductQuantity(sign, id){
             this.$store.dispatch("Product_Increase_Decrease_From_Cart", { id: id, toast: this.$toast, type: sign })
-            this.$store.dispatch("GetCartData")
+            this.$store.getters.subtotal;
         }
     },
     mounted() {

@@ -202,24 +202,42 @@ const actions = {
     },
 
 
-    Add_Product_To_Cart({commit, state}, {product, quantity, attributeId, token, toast}){
+    Add_Product_To_Cart({commit, state}, {product, quantity, attribute, token, toast}){
+        console.log(attribute)
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
         commit("LOADING_API",{name: 'Add_Product_To_Cart'+product.id, status: true})
-        axios.post(state.api_route + `cart/add?lang=en&quantity=${quantity}&product_id=${product.id}${attributeId != null ? `&attribute_id=${attributeId}` : ''}`, null,{
+        axios.post(state.api_route + `cart/add?lang=en&quantity=${quantity}&product_id=${product.id}${attribute != null ? `&attribute_id=${attribute}` : ''}`, null,{
             headers:{
                 Authorization: 'Bearer ' + actualToken
             }
         })
         .then((response) => {
-        commit("ADDED_PRODUCT_CART",{product:product,quantity: quantity})
-        if(response.data.status_code == 200){
-            toast.success(response.data.message)
-            $(".ec-side-toggle")[2].click()
-            commit("LOADING_API",{name: 'Add_Product_To_Cart'+product.id, status: false})
-        }
+            if(response.data.status_code === 200){
+                console.log(response.data.product)
+                console.log(state.cart.cart_items)
+                const existingItem = state.cart.cart_items.find(item => 
+                    item.product_id == response.data.product.product_id.toString() && 
+                    item.attribute_id == (attribute != null ? attribute : null)
+                );
+                console.log(existingItem)
+                if (existingItem) {
+                    existingItem.quantity = parseInt(existingItem.quantity) + quantity;
+                } else {
+                    state.cart.cart_items.push({
+                        ...response.data.product, 
+                        quantity
+                    });
+                }
+    
+                commit("LOADING_API", { name: 'Add_Product_To_Cart' + product.id, status: false })
+                toast.success(response.data.message)
+                $(".ec-side-toggle")[2].click()
+            }
         })
         .catch((error) => {
-            toast.error(error.response.data.message)
+            if(error){
+                // toast.error(error.response.data.message)
+            }
             commit("LOADING_API",{name: 'Add_Product_To_Cart'+product.id, status: false})
         })
     },
@@ -247,6 +265,7 @@ const actions = {
     },
 
     Remove_Product_From_Cart({commit, state}, {product, toast}){
+        console.log(product)
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
         commit("LOADING_API",{name: 'Remove_Product_From_Cart'+product.id, status: true})
         axios.delete(state.api_route + `cart/remove?lang=en&cart_id=${product.id}`,{
@@ -257,7 +276,16 @@ const actions = {
         .then((response) => {
         commit("REMOVED_PRODUCT_CART",{product:product})
         if(response.data.status_code == 200){
-            toast.success(response.data.message)
+            const productIndex = state.cart.cart_items.findIndex(item => item.id === product.id);
+
+            console.log(product)
+            if (productIndex > -1) {
+                state.cart.cart_items.splice(productIndex, 1);
+                commit("REMOVED_PRODUCT_CART", { product });
+                toast.success(response.data.message);
+            } else {
+                toast.error("Product not found in cart");
+            }
             commit("LOADING_API",{name: 'Remove_Product_From_Cart'+product.id, status: false})
         }
         })
@@ -278,6 +306,7 @@ const actions = {
         .then((response) => {
             if(response.status == 200){
                 toast.success(response.data.message)
+                state.cart.cart_items = []
                 commit("LOADING_API",{name: 'Clear_Cart', status: false})
             }
         })
@@ -289,24 +318,52 @@ const actions = {
     
     Product_Increase_Decrease_From_Cart({commit, state}, {id, toast, type}){
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
-        var sign = type == '+' ? 'increase' : 'reduce'
-        commit("LOADING_API",{name: 'Product_Increase_Decrease_From_Cart'+id, status: true})
-        axios.post(state.api_route + `cart/${sign}?lang=en&cart_id=${id}`,null,{
+        var sign = type === '+' ? 'increase' : 'reduce'
+        commit("LOADING_API",{name: 'Product_Increase_Decrease_From_Cart' + id, status: true})
+    
+        axios.post(state.api_route + `cart/${sign}?lang=en&cart_id=${id}`, null, {
             headers:{
                 Authorization: 'Bearer ' + actualToken
             }
         })
         .then((response) => {
-        if(response.data.status_code == 200){
-            toast.success(response.data.message)
-            commit("LOADING_API",{name: 'Product_Increase_Decrease_From_Cart'+id, status: false})
-        }
+            if(response.data.status_code === 200){
+                const productIndex = state.cart.cart_items.findIndex(item => item.id === id);
+                if (productIndex > -1) {
+                    const currentQuantity = parseInt(state.cart.cart_items[productIndex].quantity, 10);
+                    if (!isNaN(currentQuantity)) {
+                        if (type === '+') {
+                            state.cart.cart_items[productIndex].quantity = currentQuantity + 1;
+                        } else if (type === '-' && currentQuantity > 1) {
+                            state.cart.cart_items[productIndex].quantity = currentQuantity - 1;
+                        } else if (type === '-' && currentQuantity === 1) {
+                            // Remove the product from the cart
+                            state.cart.cart_items.splice(productIndex, 1);
+                            toast.success("Product removed from cart");
+                        }
+                    } else {
+                        toast.error("Invalid quantity");
+                    }
+                } else {
+                    toast.error("Product not found in cart");
+                }
+                
+                commit("LOADING_API", {name: 'Product_Increase_Decrease_From_Cart' + id, status: false});
+                toast.success(response.data.message);
+            }
         })
         .catch((error) => {
-            toast.error(error.response.data.message)
-            commit("LOADING_API",{name: 'Product_Increase_Decrease_From_Cart'+id, status: false})
-        })
+            if(error.response && error.response.data){
+                toast.error(error.response.data.message);
+            } else {
+                toast.error("An error occurred");
+            }
+            commit("LOADING_API", {name: 'Product_Increase_Decrease_From_Cart' + id, status: false});
+        });
     },
+    
+    
+    
 
     GetBanners({commit, state}){
         axios.get(state.api_route + "banners?lang=en")
@@ -320,19 +377,19 @@ const actions = {
         })
     },
 
-    GetSubCategoryProducts({commit, state},{id, page}){
-        commit("LOADING_API",{name: 'GetSubCategoryProducts', status: true})
-        axios.get(state.api_route + `subcategories/${id}/products?lang=en&${page}`)
+    GetProductsByCurrentCategory({commit, state},{id, page, route}){
+        commit("LOADING_API",{name: 'GetProductsByCurrentCategory', status: true})
+        axios.get(state.api_route + `${route}?lang=en&${page}`)
         .then(response=>{
             if(response.data.status_code == 200){
-                commit("LOADING_API",{name: 'GetSubCategoryProducts', status: false})
-                commit("SUB_CATEGORY_PRODUCTS_DATA",response.data.data)
+                commit("LOADING_API",{name: 'GetProductsByCurrentCategory', status: false})
+                commit("CURRENT_PRODUCTS_CATEGORY_PRODUCTS_DATA",response.data.data)
                 fadeLoader()
             }
         })
         .catch(error=>{
           console.log(error)
-          commit("LOADING_API",{name: 'GetSubCategoryProducts', status: false})
+          commit("LOADING_API",{name: 'GetProductsByCurrentCategory', status: false})
           fadeLoader()
         })
     },

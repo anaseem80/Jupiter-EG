@@ -41,15 +41,15 @@
                         <tbody>
                             <tr>
                                 <td class="text-left">Sub-Total :</td>
-                                <td class="text-right">{{cart.cart_prices.subtotal}}</td>
+                                <td class="text-right">{{subtotal}}</td>
                             </tr>
                             <tr>
                                 <td class="text-left">Total Discount :</td>
-                                <td class="text-right">{{cart.cart_prices.total_discount}}</td>
+                                <td class="text-right">{{totalDiscount}}</td>
                             </tr>
                             <tr>
                                 <td class="text-left">Total :</td>
-                                <td class="text-right primary-color">{{cart.cart_prices.total}}</td>
+                                <td class="text-right primary-color">{{totalAmount}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -64,10 +64,11 @@
     <!-- ekka Cart End -->
 </template>
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState,mapGetters } from "vuex";
 export default {
     computed: {
         ...mapState(['cart','route']),
+        ...mapGetters(['subtotal','totalDiscount','couponDiscount','totalAmount']),
     },
     methods: {
         ...mapActions(['GetCartData']),
@@ -79,11 +80,9 @@ export default {
         },
         onRemoveProduct(product){
             this.$store.dispatch("Remove_Product_From_Cart", { product: product, toast: this.$toast })
-            this.$store.dispatch("GetCartData")
         },
         ProductQuantity(sign, id){
             this.$store.dispatch("Product_Increase_Decrease_From_Cart", { id: id, toast: this.$toast, type: sign })
-            this.$store.dispatch("GetCartData")
         },
         hideCart(){
             $(".ec-side-cart-overlay").fadeOut();

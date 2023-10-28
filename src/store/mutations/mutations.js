@@ -30,8 +30,8 @@ const mutations = {
     PRODUCT_DATA(state, product){
       state.product = product
     },
-    SUB_CATEGORY_PRODUCTS_DATA(state, SubCategoryProducts){
-      state.SubCategoryProducts = SubCategoryProducts
+    CURRENT_PRODUCTS_CATEGORY_PRODUCTS_DATA(state, ProductsCategoryProducts){
+      state.ProductsCategoryProducts = ProductsCategoryProducts
     },
     RESET_PASSWORD(state, password){
       state.ResetPassword = password

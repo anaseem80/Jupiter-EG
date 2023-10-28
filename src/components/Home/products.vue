@@ -59,7 +59,7 @@
                         <ul class="ec-opt-swatch ec-change-img">
                             <li 
                                 class="active"
-                                @click="onColorChange($event.target,color,productsSortedAdmin.id,title)"
+                                @click="onColorChange($event.target,color,productsSortedAdmin.id,title,colorAttr)"
                                 :data-src="color.image"
                                 :data-src-hover="color.image"
                                 :data-old="productsSortedAdmin.price"
@@ -134,7 +134,7 @@
                         <ul class="ec-opt-swatch ec-change-img">
                             <li 
                               class="active"
-                                @click="onColorChange($event.target,colorAttr,productsSortedAdmin.id,title)"
+                                @click="onColorChange($event.target,colorAttr,productsSortedAdmin.id,title, colorAttr)"
                                 :data-src="colorAttr.image"
                                 :data-src-hover="colorAttr.image"
                                 :data-old="productsSortedAdmin.price"
@@ -160,18 +160,20 @@
     </div>
 </template>
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 import VueCookies from 'vue-cookies'
 
 export default {
     props:['productObject','title','class'],
     computed: {
         ...mapState(['route']),
+        ...mapGetters(['filterAttribute']),
+        
     },
     data(){
         return{
             UserIDToken: VueCookies.get("UserToken"),
-            selectedAttributeId: {},
+            selectedAttribute: {},
         }
     },
     methods:{
@@ -181,12 +183,11 @@ export default {
             $('#'+$(e).data('div')+$(e).data('color')).addClass('d-block').removeClass('d-none')
         },
         onAddProduct(product){
-            let attributeId = this.selectedAttributeId[this.title + product.id];
-            if(attributeId === undefined){
-                attributeId = null
+            let attribute = this.selectedAttribute[this.title + product.id];
+            if(attribute === undefined){
+                attribute = null
             }
-            this.$store.dispatch("Add_Product_To_Cart", { attributeId: attributeId, product: product, quantity: 1, toast: this.$toast,token: this.UserIDToken })
-            this.$store.dispatch("GetCartData")
+            this.$store.dispatch("Add_Product_To_Cart", { attribute: attribute, product: product, quantity: 1, toast: this.$toast,token: this.UserIDToken })
         },
         fetchProductData(id){
             $(window).scrollTop(0); 
@@ -195,10 +196,11 @@ export default {
         isLoading(actionName) {
             return this.$store.state.Loading[actionName] || false;
         },
-        onColorChange(thisObj,color,id,title){
-            this.selectedAttributeId[title + id] = color.attribute_id;
+        onColorChange(element,color,id,title, object){
+            this.selectedAttribute[title + id] = color.attribute_id;
+            console.log(this.selectedAttribute[title + id] )
             $('#img-'+title+id).attr('src',this.route+'imagesfp/product/'+color.image)
-            var $this = $(thisObj);
+            var $this = $(element);
             var $new_price = $this.closest('.ec-pro-content').find('.new-price');
 
             console.log($this.closest('.ec-pro-image'))

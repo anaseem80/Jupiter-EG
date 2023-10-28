@@ -1,9 +1,8 @@
 <template lang="">
     <transition name="fade" mode="out-in">
-        <loader v-if="isLoading('GetSubCategoryProducts')" key="loader"></loader>
+        <loader v-if="isLoading('GetProductsByCurrentCategory')" key="loader"></loader>
     </transition>
-    <!-- Ec Shop page -->
-    <section class="ec-page-content section-space-p" v-if="SubCategoryProducts">
+    <section class="ec-page-content section-space-p" v-if="ProductsCategoryProducts">
         <div class="container">
             <div class="row">
                 <div class="ec-shop-rightside col-lg-9 order-lg-last col-md-12 order-md-first margin-b-30">
@@ -37,9 +36,9 @@
                     <div class="shop-pro-content">
                         <div class="shop-pro-inner">
                             <div class="row">
-                                <h4 v-if="SubCategoryProducts.products.data.length == 0" class="text-center mb-3">No Products</h4>
+                                <h4 v-if="ProductsCategoryProducts.products.data.length == 0" class="text-center mb-3">No Products</h4>
                                 <products-component 
-                                    :productObject="SubCategoryProducts.products.data" 
+                                    :productObject="ProductsCategoryProducts.products.data" 
                                     :title="'sub-category'"
                                     :class="'col-lg-4 col-md-6 col-sm-6 col-xs-6 mb-6 pro-gl-content'"
                                     >
@@ -48,21 +47,21 @@
                         </div>
                         <!-- Ec Pagination Start -->
                         <div class="ec-pro-pagination">
-                            <span>Showing 1-{{SubCategoryProducts.products.data.length}}</span>
+                            <span>Showing 1-{{ProductsCategoryProducts.products.data.length}}</span>
                             <ul class="ec-pro-pagination-inner">
                                 <li
-                                    v-for="item in SubCategoryProducts.products.last_page"
+                                    v-for="item in ProductsCategoryProducts.products.last_page"
                                 >
                                     <a
                                         class="mb-0 cursor-pointer" 
                                         href="#"
-                                        @click="FetchSubCategoryProducts('page='+item,this.$route.params.id)"
-                                        :class="SubCategoryProducts.products.current_page == item ? 'active' : ''"
+                                        @click="FetchProductsByCurrentCategory('page='+item,this.$route.params.id)"
+                                        :class="ProductsCategoryProducts.products.current_page == item ? 'active' : ''"
                                     >
                                     {{item}}
                                     </a>
                                 </li>
-                                <li class="ms-2"><a class="next" href="#" @click="Next(SubCategoryProducts.products.next_page_url)">Next <i class="ecicon eci-angle-right"></i></a></li>
+                                <li class="ms-2"><a class="next" href="#" @click="Next(ProductsCategoryProducts.products.next_page_url)">Next <i class="ecicon eci-angle-right"></i></a></li>
                             </ul>
                         </div>
                         <!-- Ec Pagination End -->
@@ -80,20 +79,24 @@
 import { mapActions, mapState } from "vuex";
 
 export default {
+    props: ["apiEndpoint", "id"],
     computed: {
-        ...mapState([`SubCategoryProducts`,'route']),
+        ...mapState([`ProductsCategoryProducts`,'route']),
     },
     methods:{
-        ...mapActions(['GetSubCategoryProducts']),
-        async FetchSubCategoryProducts(page, id) {
-            await this.GetSubCategoryProducts({id:id, page:page});
+        ...mapActions(['GetProductsByCurrentCategory']),
+        async FetchProductsByCurrentCategory(page, id) {
+            console.log(page)
+            await this.GetProductsByCurrentCategory({id:id, page:page, route:this.apiEndpoint});
         },
         isLoading(actionName) {
             return this.$store.state.Loading[actionName] || false;
         },
         Next(url){
+            console.log(url)
             if(url!==null){
-                this.FetchSubCategoryProducts(url.split("/").reverse()[0].split("?").reverse()[0],this.$route.params.id)
+                console.log(url.split("/").reverse()[0].split("?").reverse()[0])
+                this.FetchProductsByCurrentCategory(url.split("/").reverse()[0].split("?").reverse()[0],this.$route.params.id)
             }
         },
         showList(){
@@ -112,12 +115,15 @@ export default {
         }
     },
     mounted() {
-        this.FetchSubCategoryProducts(1,this.$route.params.id);
+        this.FetchProductsByCurrentCategory(1,this.$route.params.id);
     },
     watch:{
         $route (to, from){
            if(to.params.id !== from.params.id){
-            this.FetchSubCategoryProducts(1,to.params.id)
+            this.FetchProductsByCurrentCategory(1,to.params.id)
+           }
+           if(to.name != 'subCategory'){
+            this.FetchProductsByCurrentCategory(1,to.params.id)
            }
         }
     } 
