@@ -19743,14 +19743,27 @@ button.btn-close.qty_close {
   top: 10px;
   z-index: 9999;
 }
+.ec-product-inner{
+  border: 1px solid #eeeeee;
+  padding: 15px;
+  border-radius: 15px;
+  height: 100%;
+}
 
+.anticon-star{
+  opacity: 0.7;
+}
+.anticon-star svg{
+  font-size: 14px;
+}
 .ec-product-inner .ec-pro-image {
   -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
   position: relative;
   overflow: hidden;
   border: 1px solid #eeeeee;
-  height: 290px
+  height: 290px;
+  border-radius: 15px;
 }
 .ec-product-inner .ec-pro-image .image {
   position: relative;

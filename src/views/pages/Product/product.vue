@@ -19,7 +19,7 @@
                                             :autoplay="true"
                                         >
                                         <swiper-slide class="single-slide zoom-image-hover">
-                                                <img class="img-responsive image-product" @mouseenter="zoomImage()" :src="route + product.product.images[0]['image']"
+                                                <img class="img-responsive image-product w-100" @mouseenter="zoomImage()" :src="route + product.product.images[0]['image']"
                                                     alt="">
                                         </swiper-slide>
                                         </swiper>
@@ -285,12 +285,11 @@
                                                 <div class="ec-t-review-content">
                                                     <div class="ec-t-review-top">
                                                         <div class="ec-t-review-name">{{review.user['name']}}</div>
-                                                        <div class="ec-t-review-rating">
+                                                        <div class="ec-t-review-rating" >
                                                             <i 
                                                                 class="ecicon eci-star fill"
-                                                                v-for="rate in review.rating"
+                                                                v-for="(rate, index) in parseInt(review.rating)"
                                                             >
-
                                                             </i>
                                                         </div>
                                                     </div>

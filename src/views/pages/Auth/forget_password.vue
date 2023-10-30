@@ -30,10 +30,7 @@
                                     <div class="invalid-feedback text-danger mb-2">{{ errors.email }}</div>
                                 </span>
                                 <span class="ec-login-wrap ec-login-btn">
-                                    <button class="btn btn-primary w-100" :disabled="isLoading('ForgetPassword')" type="submit">
-                                        Reset Password
-                                        <img src="@/assets/images/common/loader-2.gif" width="20" v-if="isLoading('ForgetPassword')" class="ms-3">
-                                    </button>
+                                    <s-button name='Reset Password' action='ForgetPassword'/>
                                 </span>
                             </Form>
                         </div>

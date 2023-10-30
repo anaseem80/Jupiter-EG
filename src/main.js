@@ -6,6 +6,7 @@ import Header from '@/views/layouts/header'
 import Footer from '@/views/layouts/footer'
 import Toaster from '@meforma/vue-toaster'
 import SettingsBar from '@/components/Home/settingsBar'
+import SubmitButton from '@/components/Buttons/submitButton'
 import Banner from '@/components/Home/banner'
 import ProductsHome from '@/components/Home/products'
 import LeftcategoryBar from '@/components/Main/LeftcategoryBar'
@@ -16,6 +17,9 @@ import VueCountdown from '@chenfengyuan/vue-countdown';
 import AddReview from '@/components/Main/add-review';
 import MobileMenu from '@/components/Main/mobile-menu';
 import VueLazyload from 'vue-lazyload'
+import Antd from 'ant-design-vue';
+import 'ant-design-vue/dist/reset.css';
+
 const app = createApp(App)
 
 
@@ -38,6 +42,7 @@ app.component('banner',Banner)
 app.component('add-review',AddReview)
 app.component('loader',Loader)
 app.component('mobile-menu',MobileMenu)
+app.component('s-button',SubmitButton)
 
 /* Header Compontents */
 
@@ -78,6 +83,7 @@ import '@/assets/js/main.js'
 const loadimage = require('@/assets/images/bg/loader.webp')
 
 app.use(router)
+app.use(Antd)
 app.use(store)
 app.use(VueLazyload, {
     preLoad: 1.3,

@@ -41,10 +41,7 @@
                                     <div class="invalid-feedback text-danger mb-2">{{ errors.new_password_confirmation }}</div>
                                 </span>
                                 <span class="ec-login-wrap ec-login-btn">
-                                    <button class="btn btn-primary w-100" :disabled="isLoading('ResetPassword')" type="submit">
-                                        Reset Password
-                                        <img src="@/assets/images/common/loader-2.gif" width="20" v-if="isLoading('ResetPassword')" class="ms-3">
-                                    </button>
+                                    <s-button name='Reset Password' action='ResetPassword'/>
                                 </span>
                             </Form>
                         </div>

@@ -49,19 +49,13 @@
                         <div class="ec-pro-pagination">
                             <span>Showing 1-{{ProductsCategoryProducts.products.data.length}}</span>
                             <ul class="ec-pro-pagination-inner">
-                                <li
-                                    v-for="item in ProductsCategoryProducts.products.last_page"
+                                <a-pagination 
+                                    v-model:current="current" 
+                                    @change="onPageChange"
+                                    @showSizeChange="onShowSizeChange"
+                                    :total="ProductsCategoryProducts.products.last_page + '0'" 
                                 >
-                                    <a
-                                        class="mb-0 cursor-pointer" 
-                                        href="#"
-                                        @click="FetchProductsByCurrentCategory('page='+item,this.$route.params.id)"
-                                        :class="ProductsCategoryProducts.products.current_page == item ? 'active' : ''"
-                                    >
-                                    {{item}}
-                                    </a>
-                                </li>
-                                <li class="ms-2"><a class="next" href="#" @click="Next(ProductsCategoryProducts.products.next_page_url)">Next <i class="ecicon eci-angle-right"></i></a></li>
+                                </a-pagination>
                             </ul>
                         </div>
                         <!-- Ec Pagination End -->
@@ -80,14 +74,21 @@ import { mapActions, mapState } from "vuex";
 
 export default {
     props: ["apiEndpoint", "id"],
+    data(){
+        return{
+            current:1,
+        }
+    },
     computed: {
         ...mapState([`ProductsCategoryProducts`,'route']),
     },
+    created(){
+        $(window).scrollTop(0); 
+    },
     methods:{
         ...mapActions(['GetProductsByCurrentCategory']),
-        async FetchProductsByCurrentCategory(page, id) {
-            console.log(page)
-            await this.GetProductsByCurrentCategory({id:id, page:page, route:this.apiEndpoint});
+        async FetchProductsByCurrentCategory(page) {
+            await this.GetProductsByCurrentCategory({page:page, route:this.apiEndpoint});
         },
         isLoading(actionName) {
             return this.$store.state.Loading[actionName] || false;
@@ -106,6 +107,9 @@ export default {
             $gridCont.addClass('list-view');
             $listView.addClass('width-100');
         },
+        onPageChange(newPage) {
+            this.FetchProductsByCurrentCategory('page='+newPage,this.$route.params.id)
+        },
         showGrid(){
             $(".btn-grid").addClass("active").siblings().removeClass("active")
             var $gridCont = $('.shop-pro-inner');
@@ -120,9 +124,6 @@ export default {
     watch:{
         $route (to, from){
            if(to.params.id !== from.params.id){
-            this.FetchProductsByCurrentCategory(1,to.params.id)
-           }
-           if(to.name != 'subCategory'){
             this.FetchProductsByCurrentCategory(1,to.params.id)
            }
         }

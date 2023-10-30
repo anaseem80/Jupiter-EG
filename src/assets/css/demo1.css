@@ -18353,13 +18353,14 @@ h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  align-items: center;
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: flex-end;
 }
 .ec-header-bottons > * + * {
   padding-right: 9px;
-  margin-left: 27px;
+  margin-left: 20px;
 }
 .ec-header-bottons .ec-header-btn {
   position: relative;
@@ -18423,7 +18424,7 @@ h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
 .ec-header-bottons .ec-header-btn.ec-header-wishlist {
   padding-bottom: 0;
   padding-right: 8px;
-  margin-left: 34px;
+  margin-left: 20px;
 }
 .ec-header-bottons .ec-header-btn.ec-header-wishlist .header-icon {
   margin-top: 3px;
@@ -18840,7 +18841,8 @@ h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   background: #3474d4;
   width: 100%;
 }
-.ec-main-menu > ul > li.active > a:before {
+
+.ec-main-menu > ul > li > a.active::before {
   background: #3474d4;
   width: 100%;
 }
@@ -20229,6 +20231,16 @@ button.btn-close.qty_close {
   color: rgba(68, 68, 68, 0.7);
   background-color: #ffffff;
   cursor: pointer;
+}
+.icon-gif{
+  width:50px !important;
+  height: 50px !important;
+}
+@media(max-width:992px){
+  .icon-gif{
+    width: 40px !important;
+    height: 40px !important;
+  }
 }
 .ec-product-inner .ec-pro-image .ec-pro-actions .ec-btn-group i {
   font-size: 14px;

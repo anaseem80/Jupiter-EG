@@ -40,6 +40,7 @@
             </div>
             <!-- this.$route.params.id -->
             <div class="ec-pro-content">
+                <a-rate v-model:value="productsSortedAdmin.average_rating" disabled />
                 <h5 class="ec-pro-title" @click="fetchProductData(productsSortedAdmin.id)"><router-link :to="'/product/'+productsSortedAdmin['id']">{{productsSortedAdmin['name']}}</router-link></h5>
                 <span class="ec-price">
                     <span class="new-price">{{productsSortedAdmin['final_price']}}</span>

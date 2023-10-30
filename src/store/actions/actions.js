@@ -3,6 +3,7 @@ var api = "http://127.0.0.1:8000/api/"
 import { router } from "@/router";
 import VueRouter from "vue-router";
 import VueCookies from 'vue-cookies'
+import { notification } from "ant-design-vue";
 
 function fadeLoader(){
     $(".ec-overlay").each(function(){
@@ -18,9 +19,12 @@ const actions = {
         .then((response) => {
         commit("USER_LOGIN",User)
         if(response.data.token){
-            toast.success("تم التسجيل بنجاح")
+            notification['success']({
+                message: "Success",
+                description: 'تم التسجيل بنجاح',
+            });
             commit("LOADING_API",{name: 'UserLogin', status: true})
-            commit("SET_AUTHENTICATED", {bool: true, token: response.data.token});
+            commit("SET_AUTHENTICATED", {bool: true, token: response.data.token, user: response.data.user});
             VueCookies.set('UserIDToken', response.data.user.id, '1d');
             VueCookies.set('UserToken', response.data.token, '1d');
             VueCookies.set('UserRouteRV', 'register', '1d');
@@ -34,14 +38,19 @@ const actions = {
         })
         .catch((error) => {
             if(error.response.data.message === "Email not verified."){
-                console.log(User.email)
                 VueCookies.set('emailOTP', User.email, '1d');
-                toast.error("لم يتم تفعيل الإيميل سيتم توجهيك خلال 3 ثوان")
+                notification['info']({
+                    message: "Error",
+                    description: 'لم يتم تفعيل الإيميل سيتم توجهيك خلال 3 ثوان',
+                });
                 setTimeout(() => {
                     router.push("/verification"); 
                 }, 3000);
             }else{
-                toast.error(error.response.data.message)
+                notification['info']({
+                    message: "Error",
+                    description: error.response.data.message,
+                });
             }
             commit("LOADING_API",{name: 'UserLogin', status: false})
         })
@@ -53,7 +62,10 @@ const actions = {
         .then((response) => {
         commit("SUBMIT_OTP",User)
         if(response.data.status_code == 200){
-            toast.success("تم التسجيل بنجاح")
+            notification['success']({
+                message: "Success",
+                description: 'تم التسجيل بنجاح',
+            });
             VueCookies.set('emailOTP', User.email, '1d');
             commit("LOADING_API",{name: 'UserRegister', status: true})
             setTimeout(() => {
@@ -63,7 +75,10 @@ const actions = {
         }
         })
         .catch((error) => {
-            toast.error(error.response.data.message)
+            notification['info']({
+                message: "Error",
+                description: error.response.data.message,
+            });
             commit("LOADING_API",{name: 'UserRegister', status: false})
         })
     },
@@ -85,18 +100,27 @@ const actions = {
                 console.log(response.data)
                 if(response.data.token){
                     VueCookies.remove("emailOTP")
-                    toast.success("الكود صحيح سيتم توجهيك لصفحة تغير كلمة المرور")
+                    notification['success']({
+                        message: "Success",
+                        description: 'الكود صحيح سيتم توجهيك لصفحة تغير كلمة المرور',
+                    });
                     VueCookies.set('tokenOTP', response.data.token, '1d');
                     router.push("/reset_password");
                 }else{
-                    toast.success("تم التفعيل بنحاح")
+                    notification['success']({
+                        message: "Success",
+                        description: 'تم التفعيل بنجاح',
+                    });
                     router.push("/login");
                 }
             }, 1000);
         }
         })
         .catch((error) => {
-            toast.error(error.response.data.message)
+            notification['info']({
+                message: "Error",
+                description: error.response.data.message,
+            });
             commit("LOADING_API",{name: 'SubmitOTP', status: false})
         })
     },
@@ -109,7 +133,10 @@ const actions = {
         .then((response) => {
         commit("USER_LOGIN",email)
         if(response.data.status_code == 200){
-            toast.success("تم إرسال الرمز بنجاح")
+            notification['success']({
+                message: "Success",
+                description: 'تم إرسال الرمز بنجاح',
+            });
             commit("LOADING_API",{name: 'RESEND_OTP', status: true})
             setTimeout(() => {
                 commit("LOADING_API",{name: 'RESEND_OTP', status: false})
@@ -117,7 +144,10 @@ const actions = {
         }
         })
         .catch((error) => {
-            toast.error(error.response.data.message)
+            notification['info']({
+                message: "Error",
+                description: error.response.data.message,
+            });
             commit("LOADING_API",{name: 'RESEND_OTP', status: false})
         })
     },
@@ -129,7 +159,10 @@ const actions = {
         .then((response) => {
         commit("USER_LOGIN",User)
         if(response.data.status_code == 200){
-            toast.success("تم إرسال الرمز بنجاح")
+            notification['success']({
+                message: "Success",
+                description: 'تم إرسال الرمز بنجاح',
+            });
             commit("LOADING_API",{name: 'ForgetPassword', status: true})
             VueCookies.set('emailOTP', User.email, '1d');
             VueCookies.set('UserRouteRV', 'reset_password', '1d');
@@ -140,7 +173,10 @@ const actions = {
         }
         })
         .catch((error) => {
-            toast.error(error.response.data.message)
+            notification['info']({
+                message: "Error",
+                description: error.response.data.message,
+            });
             commit("LOADING_API",{name: 'ForgetPassword', status: false})
         })
     },
@@ -156,7 +192,10 @@ const actions = {
         .then((response) => {
         commit("USER_LOGIN",User)
         if(response.data.status_code == 200){
-            toast.success(response.data.message)
+            notification['success']({
+                message: "Success",
+                description: response.data.message,
+            });
             commit("LOADING_API",{name: 'ResetPassword', status: true})
             VueCookies.remove('tokenOTP')
             setTimeout(() => {
@@ -166,7 +205,10 @@ const actions = {
         }
         })
         .catch((error) => {
-            toast.error(error.response.data.message)
+            notification['info']({
+                message: "Error",
+                description: error.response.data.message,
+            });
             commit("LOADING_API",{name: 'ResetPassword', status: false})
         })
     },
@@ -182,13 +224,16 @@ const actions = {
         .then((response) => {
         commit("LOGOUT",token)
         if(response.data.status_code == 200){
-            toast.success(response.data.message)
+            notification['success']({
+                message: "Success",
+                description: 'تم تسجيل الخروج بنجاح',
+            });
             commit("LOADING_API",{name: 'Logout', status: true})
             VueCookies.remove('UserIDToken')
             VueCookies.remove('UserToken')
             VueCookies.remove('UserData')
             commit("CART_DATA",null)
-            commit("SET_AUTHENTICATED", {bool: false, token: null});
+            commit("SET_AUTHENTICATED", {bool: false, token: null, user: null});
             setTimeout(() => {
                 commit("LOADING_API",{name: 'Logout', status: false})
                 router.push("/login");
@@ -196,7 +241,10 @@ const actions = {
         }
         })
         .catch((error) => {
-            toast.error(error.response.data.message)
+            notification['info']({
+                message: "Error",
+                description: error.response.data.message,
+            });
             commit("LOADING_API",{name: 'Logout', status: false})
         })
     },
@@ -230,13 +278,19 @@ const actions = {
                 }
     
                 commit("LOADING_API", { name: 'Add_Product_To_Cart' + product.id, status: false })
-                toast.success(response.data.message)
+                notification['success']({
+                    message: "Success",
+                    description: response.data.message,
+                });
                 $(".ec-side-toggle")[2].click()
             }
         })
         .catch((error) => {
             if(error){
-                // toast.error(error.response.data.message)
+                notification['info']({
+                    message: "Error",
+                    description: error.response.data.message,
+                });
             }
             commit("LOADING_API",{name: 'Add_Product_To_Cart'+product.id, status: false})
         })
@@ -253,13 +307,19 @@ const actions = {
         })
         .then((response) => {
         if(response.data.status_code == 200){
-            toast.success(response.data.message)
+            notification['success']({
+                message: "Success",
+                description: response.data.message,
+            });
             state.product.product.reviews.push(data)
             commit("LOADING_API",{name: 'AddReview', status: false})
         }
         })
         .catch((error) => {
-            toast.error(error.response.data.message)
+            notification['info']({
+                message: "Error",
+                description: error.response.data.message,
+            });
             commit("LOADING_API",{name: 'AddReview', status: false})
         })
     },
@@ -282,15 +342,24 @@ const actions = {
             if (productIndex > -1) {
                 state.cart.cart_items.splice(productIndex, 1);
                 commit("REMOVED_PRODUCT_CART", { product });
-                toast.success(response.data.message);
+                notification['success']({
+                    message: "Success",
+                    description: response.data.message,
+                });
             } else {
-                toast.error("Product not found in cart");
+                notification['info']({
+                    message: "Error",
+                    description: 'Product not found in cart',
+                });
             }
             commit("LOADING_API",{name: 'Remove_Product_From_Cart'+product.id, status: false})
         }
         })
         .catch((error) => {
-            toast.error(error.response.data.message)
+            notification['info']({
+                message: "Error",
+                description: error.response.data.message,
+            });
             commit("LOADING_API",{name: 'Remove_Product_From_Cart'+product.id, status: false})
         })
     },
@@ -305,13 +374,19 @@ const actions = {
         })
         .then((response) => {
             if(response.status == 200){
-                toast.success(response.data.message)
+                notification['success']({
+                    message: "Success",
+                    description: response.data.message,
+                });
                 state.cart.cart_items = []
                 commit("LOADING_API",{name: 'Clear_Cart', status: false})
             }
         })
         .catch((error) => {
-            toast.error(error.response.data.message)
+            notification['info']({
+                message: "Error",
+                description: error.response.data.message,
+            });
             commit("LOADING_API",{name: 'Clear_Cart', status: false})
         })
     },
@@ -339,7 +414,10 @@ const actions = {
                         } else if (type === '-' && currentQuantity === 1) {
                             // Remove the product from the cart
                             state.cart.cart_items.splice(productIndex, 1);
-                            toast.success("Product removed from cart");
+                            notification['success']({
+                                message: "Success",
+                                description: 'Product Removed From Cart',
+                            });
                         }
                     } else {
                         toast.error("Invalid quantity");
@@ -349,12 +427,18 @@ const actions = {
                 }
                 
                 commit("LOADING_API", {name: 'Product_Increase_Decrease_From_Cart' + id, status: false});
-                toast.success(response.data.message);
+                notification['success']({
+                    message: "Success",
+                    description: response.data.message,
+                });
             }
         })
         .catch((error) => {
             if(error.response && error.response.data){
-                toast.error(error.response.data.message);
+            notification['info']({
+                message: "Error",
+                description: error.response.data.message,
+            });
             } else {
                 toast.error("An error occurred");
             }
@@ -377,7 +461,7 @@ const actions = {
         })
     },
 
-    GetProductsByCurrentCategory({commit, state},{id, page, route}){
+    GetProductsByCurrentCategory({commit, state},{page, route}){
         commit("LOADING_API",{name: 'GetProductsByCurrentCategory', status: true})
         axios.get(state.api_route + `${route}?lang=en&${page}`)
         .then(response=>{

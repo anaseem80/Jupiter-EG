@@ -55,14 +55,22 @@
                     <!-- Header Top responsive Action -->
                     <div class="col d-lg-none ">
                         <div class="ec-header-bottons">
+                            <a-tooltip v-if="isAuthenticated.bool" placement="bottom">
+                                <template #title>You can replace these points!</template>
+                                <a href="wishlist.html" class="ec-header-btn ec-header-wishlist">
+                                    <div class="header-icon"><img src="@/assets/images/icons/icon.gif"
+                                            class="svg_img header_svg icon-gif" alt="" /></div>
+                                    <span class="ec-header-count">{{isAuthenticated.user.points}}</span>
+                                </a>
+                            </a-tooltip>
                             <!-- Header User Start -->
                             <div class="ec-header-user dropdown">
                                 <button class="dropdown-toggle" data-bs-toggle="dropdown"><img
                                         src="@/assets/images/icons/user.svg" class="svg_img header_svg" alt="" /></button>
                                 <ul class="dropdown-menu dropdown-menu-right">
                                     <li><a class="dropdown-item" href="checkout.html">Checkout</a></li>
-                                    <li v-if="isAuthenticated.token != null ? !isAuthenticated.token : !UserIDToken"><router-link class="dropdown-item" to="/login">Login</router-link></li>
-                                        <li v-if="isAuthenticated.token != null ? isAuthenticated.token : UserIDToken">
+                                    <li v-if="!isAuthenticated.bool"><router-link class="dropdown-item" to="/login">Login</router-link></li>
+                                        <li v-if="isAuthenticated.bool">
                                             <button class="dropdown-item" @click="Logout" :disabled="isLoading('Logout')">
                                                 Logout
                                                 <img src="@/assets/images/common/loader-2.gif" width="20" v-if="isLoading('Logout')" class="ms-3">
@@ -130,15 +138,22 @@
                         <!-- Ec Header Button Start -->
                         <div class="align-self-center">
                             <div class="ec-header-bottons">
-
+                                <a-tooltip v-if="isAuthenticated.bool" placement="bottom">
+                                <template #title>You can replace these points!</template>
+                                <a href="wishlist.html" class="ec-header-btn ec-header-wishlist">
+                                    <div class="header-icon"><img src="@/assets/images/icons/icon.gif"
+                                            class="svg_img header_svg icon-gif" alt="" /></div>
+                                    <span class="ec-header-count">{{isAuthenticated.user.points}}</span>
+                                </a>
+                                </a-tooltip>
                                 <!-- Header User Start -->
                                 <div class="ec-header-user dropdown">
                                     <button class="dropdown-toggle" data-bs-toggle="dropdown"><img
                                             src="@/assets/images/icons/user.svg" class="svg_img header_svg" alt="" /></button>
                                     <ul class="dropdown-menu dropdown-menu-right">
                                         <li><a class="dropdown-item" href="checkout.html">Checkout</a></li>
-                                        <li v-if="isAuthenticated.token != null ? !isAuthenticated.token : !UserIDToken"><router-link class="dropdown-item" to="/login">Login</router-link></li>
-                                        <li v-if="isAuthenticated.token != null ? isAuthenticated.token : UserIDToken">
+                                        <li v-if="!isAuthenticated.bool"><router-link class="dropdown-item" to="/login">Login</router-link></li>
+                                        <li v-if="isAuthenticated.bool">
                                             <button class="dropdown-item" @click="Logout" :disabled="isLoading('Logout')">
                                                 Logout
                                                 <img src="@/assets/images/common/loader-2.gif" width="20" v-if="isLoading('Logout')" class="ms-3">
@@ -147,13 +162,16 @@
                                     </ul>
                                 </div>
                                 <!-- Header User End -->
-                                <!-- Header wishlist Start -->
+                                <!-- Header User Start -->
                                 <a href="wishlist.html" class="ec-header-btn ec-header-wishlist">
                                     <div class="header-icon"><img src="@/assets/images/icons/wishlist.svg"
                                             class="svg_img header_svg" alt="" /></div>
                                     <span class="ec-header-count">4</span>
                                 </a>
-                                <!-- Header wishlist End -->
+                                <!-- Header User End -->
+                                <!-- Header Points Start -->       
+                                                 
+                                <!-- Header Points End -->
                                 <!-- Header Cart Start -->
                                 <a v-if="isAuthenticated.token != null ? isAuthenticated.token : UserIDToken" href="#ec-side-cart" class="ec-header-btn ec-side-toggle" @click="CartMenuOpen($event.target)">
                                     <div class="header-icon"><img src="@/assets/images/icons/cart.svg"
@@ -246,9 +264,9 @@
                                 
                                 
                                
-                                <li><router-link to="/toprate">Top Rate</router-link></li>
-                                <li><router-link to="/last">Last Products</router-link></li>
-                                <li><router-link to="/with-offers">Hot Offers</router-link></li>
+                                <li><router-link to="/toprate" @click="$store.dispatch('GetProductsByCurrentCategory',{page: 1, route:'products/toprate'})">Top Rate</router-link></li>
+                                <li><router-link to="/last" @click="$store.dispatch('GetProductsByCurrentCategory',{page: 1, route:'products/last'})">Last Products</router-link></li>
+                                <li><router-link to="/with-offers" @click="$store.dispatch('GetProductsByCurrentCategory',{page: 1, route:'products/with-offers'})">Hot Offers</router-link></li>
                                 <li class="dropdown scroll-to"><a href="javascript:void(0)"><img
                                     src="@/assets/images/icons/scroll.svg" class="svg_img header_svg scroll" alt="" /></a>
                                     <ul class="sub-menu">
@@ -282,7 +300,8 @@ import { mapActions, mapState } from "vuex";
 export default {
     data(){
         return{
-            UserIDToken: VueCookies.get("UserToken")
+            UserIDToken: VueCookies.get("UserToken"),
+            UserData: VueCookies.get("UserData"),
         }
     },
     methods:{

@@ -140,7 +140,7 @@
                                 <img :src="route + categoriesHome['image']" alt=""/>
                             </div>
                             <span class="panel-overlay">
-                                <a href="shop-left-sidebar-col-3.html" class="btn btn-primary">View All</a>
+                                <router-link :to="`/subCategory/${categoriesHome.id}`" class="btn btn-primary">View All</router-link>
                             </span>
                         </div>
                         <!-- 1st Category tab end -->

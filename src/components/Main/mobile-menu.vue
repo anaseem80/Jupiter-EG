@@ -8,9 +8,9 @@
                 <div class="ec-menu-content">
                     <ul>
                         <span class="menu-toggle"></span>
-                        <li><router-link to="/toprate" @click="hideMenu()">Top Rate</router-link></li>
-                        <li><router-link to="/last" @click="hideMenu()">Last Products</router-link></li>
-                        <li><router-link to="/with-offers" @click="hideMenu()">Hot Offers</router-link></li>
+                        <li><router-link to="/toprate" @click="$store.dispatch('GetProductsByCurrentCategory',{page: 1, route:'products/toprate'})">Top Rate</router-link></li>
+                        <li><router-link to="/last" @click="$store.dispatch('GetProductsByCurrentCategory',{page: 1, route:'products/last'})">Last Products</router-link></li>
+                        <li><router-link to="/with-offers" @click="$store.dispatch('GetProductsByCurrentCategory',{page: 1, route:'products/with-offers'})">Hot Offers</router-link></li>
                     </ul>
                 </div>
                 <div class="header-res-lan-curr">

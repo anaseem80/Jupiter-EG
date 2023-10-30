@@ -52,10 +52,7 @@
                                     </p>
                                 </span>
                                 <span class="ec-register-wrap ec-register-btn">
-                                    <button class="btn btn-primary w-100 mt-0" :disabled="isLoading('SubmitOTP')" type="submit">
-                                        Verfiy email
-                                        <img src="@/assets/images/common/loader-2.gif" width="20" v-if="isLoading('SubmitOTP')" class="ms-3">
-                                    </button>
+                                    <s-button name='Verfiy email' action='SubmitOTP'/>
                                 </span>
                             </Form>
                         </div>

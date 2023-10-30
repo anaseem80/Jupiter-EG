@@ -44,10 +44,7 @@
                                     <label><router-link to="/forget_password">Forgot Password?</router-link></label>
                                 </span>
                                 <span class="ec-login-wrap ec-login-btn">
-                                    <button class="btn btn-primary w-100" :disabled="isLoading('UserLogin')" type="submit">
-                                        Login
-                                        <img src="@/assets/images/common/loader-2.gif" width="20" v-if="isLoading('UserLogin')" class="ms-3">
-                                    </button>
+                                    <s-button name='Login' action='UserLogin'/>
                                     <span class="ec-register-wrap ec-register-fp mt-3">
                                         <label>Don't have any account yet?  <router-link to="/register">Register Now!</router-link></label>
                                     </span>
@@ -66,10 +63,12 @@ import * as Yup from "yup";
 import { mapActions, mapState } from "vuex";
 import VueCookies from 'vue-cookies'
 import { router } from "@/router";
+import {LoadingOutlined,} from '@ant-design/icons-vue';
 export default {
     components: {
         Form,
         Field,
+        LoadingOutlined
     },
     data(){
         return{

@@ -67,10 +67,7 @@
                                     <div class="invalid-feedback text-danger mb-2">{{ errors.password }}</div>
                                 </span>
                                 <span class="ec-register-wrap ec-register-btn">
-                                    <button class="btn btn-primary w-100" :disabled="isLoading('UserRegister')" type="submit">
-                                        Register
-                                        <img src="@/assets/images/common/loader-2.gif" width="20" v-if="isLoading('UserRegister')" class="ms-3">
-                                    </button>
+                                    <s-button name='Register' action='UserRegister'/>
                                 </span>
                                 <span class="ec-register-wrap ec-register-fp mt-3">
                                     <label>Already have an account?  <router-link to="/login">Login Now!</router-link></label>
