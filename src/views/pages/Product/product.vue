@@ -8,7 +8,7 @@
                 <div class="ec-pro-rightside ec-common-rightside col-lg-12 col-md-12">                    
                     <!-- Single product content Start -->
                     <div class="single-pro-block">
-                        <div class="single-pro-inner">
+                        <div class="single-pro-inner position-relative">
                             <div class="row">
                                 <div class="col-lg-5 single-pro-img single-pro-img-no-sidebar">
                                     <div class="single-product-scroll">
@@ -44,6 +44,7 @@
                                 <div class="col-lg-7 single-pro-desc single-pro-desc-no-sidebar">
                                     <div class="single-pro-content">
                                         <h5 class="ec-single-title">{{product.product['name']}}</h5>
+                                        {{product.product['rating']}}
                                         <div class="ec-single-rating-wrap">
                                             <div class="ec-single-rating">
                                                 <i class="ecicon eci-star fill"></i>
@@ -52,23 +53,46 @@
                                                 <i class="ecicon eci-star fill"></i>
                                                 <i class="ecicon eci-star-o"></i>
                                             </div>
-                                            <span class="ec-read-review" v-if="product.product.reviews.length == 0"><a href="#ec-spt-nav-review">Be the first to
+                                            <span class="ec-read-review" @click="openReviews()" v-if="product.product.reviews.length == 0"><a href="#ec-spt-nav-review">Be the first to
                                                     review this product</a></span>
                                         </div>
                                         <div class="ec-single-desc">{{product.product['description']}}</div>
 
-                                        <div class="ec-single-sales">
+                                        <div class="ec-single-sales" v-if="product.product['discount_end']">
                                             <div class="ec-single-sales-inner">
                                                 <div class="ec-single-sales-title">sales accelerators</div>
                                                 <div class="ec-single-sales-progress">
                                                     <span class="ec-single-progress-desc">Hurry up!left {{product.product['quantity']}} in
                                                         stock</span>
-                                                    <span class="ec-single-progressbar"></span>
                                                 </div>
-                                                <div class="ec-single-sales-countdown">
-                                                    <div class="ec-single-countdown"><span
-                                                            id="ec-single-countdown"></span></div>
-                                                    <div class="ec-single-count-desc">Time is Running Out!</div>
+                                                <div class="ec-single-sales-countdown d-block">
+                                                    <div class="ec-single-count-desc mb-2">Time is Running Out!</div>   
+                                                    <div class="countdowntimer d-block">
+                                            <div id="ec-fs-count-2" class="style colorDefinition labelformat">
+                                                <vue-countdown class="d-block" :time="calculateTimeRemaining(product.product['discount_end'])" v-slot="{ days, hours, minutes, seconds }">
+                                                    <span class="timerDisplay label4 d-block">
+                                                        <span class="displaySection">
+                                                            <span class="numberDisplay">{{days}}</span>
+                                                            <span class="periodDisplay">Days</span>
+                                                        </span>
+                                                        <span class="displaySection">
+                                                            <span class="numberDisplay">{{hours}}</span>
+                                                            <span class="periodDisplay">Hours</span>
+                                                        </span>
+                                                        <span class="displaySection">
+                                                            <span class="numberDisplay">{{minutes}}</span>
+                                                            <span class="periodDisplay">Minutes</span>
+                                                        </span>
+                                                        <span class="displaySection">
+                                                            <span class="numberDisplay">{{seconds}}</span>
+                                                            <span class="periodDisplay">Seconds</span>
+                                                        </span>
+                                            
+                                                    </span>
+                                                </vue-countdown>
+                                            
+                                            </div>
+                                        </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -78,7 +102,7 @@
                                                 <span class="new-price">{{product.product['final_price']}}</span>
                                             </div>
                                             <div class="ec-single-stoke">
-                                                <span class="ec-single-ps-title">IN STOCK</span>
+                                                <span class="ec-single-ps-title">{{product.product['quantity']}} IN STOCK</span>
                                                 <span class="ec-single-sku" v-if="product.product.type_attribute == 'both' || product.product.type_attribute == 'colors'">SKU#: <span class="sku"></span></span>
                                             </div>
                                         </div>
@@ -194,11 +218,21 @@
                                                 <input class="qty-input" type="text" name="ec_qtybtn" v-model="quantity" />
                                                 <div class="inc ec_qtybtn" @click="increaseDecreaseQuantity('+')">+</div>
                                             </div>
-                                            <div class="ec-single-cart ">
+                                            <div class="ec-single-cart" v-if="product.product.quantity != 0 || userData.client_type !== 'wholesale'">
                                                 <button class="btn btn-primary" @click="onAddProduct(product.product)" :disabled="isLoading('Add_Product_To_Cart'+product.product.id)">
-                                                    Add To Cart
+                                                    Add To Cart a
                                                     <img src="@/assets/images/common/loader-2.gif" width="20" class="ms-3" v-if="isLoading('Add_Product_To_Cart'+product.product.id)">
                                                 </button>
+                                            </div>
+                                            <div class="ec-single-cart" v-if="userData.client_type !== 'wholesale'">
+                                                <button class="btn btn-primary" @click="onAddProduct(product.product)" :disabled="isLoading('Add_Product_To_Cart'+product.product.id)">
+                                                    Price Preview
+                                                    <img src="@/assets/images/common/loader-2.gif" width="20" class="ms-3" v-if="isLoading('Add_Product_To_Cart'+product.product.id)">
+                                                </button>
+                                            </div>
+                                            
+                                            <div class="sold-out position-absolute z-2 w-100" v-if="product.product.quantity == 0">
+                                                <img src="@/assets/images/common/Sold-Out-Transparent.png"/>
                                             </div>
                                             <div class="ec-single-wishlist">
                                                 <a class="ec-btn-group wishlist" title="Wishlist"><img
@@ -251,7 +285,7 @@
                                             role="tablist">More Information</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" data-bs-toggle="tab" data-bs-target="#ec-spt-nav-review"
+                                        <a class="nav-link reviews-tab" data-bs-toggle="tab" data-bs-target="#ec-spt-nav-review"
                                             role="tablist">Reviews</a>
                                     </li>
                                 </ul>
@@ -277,7 +311,7 @@
                                 <div id="ec-spt-nav-review" class="tab-pane fade">
                                     <div class="row">
                                         <div class="ec-t-review-wrapper">
-                                            <h6 class="mb-4" v-if="product.product.reviews.length == 0">No reviews yet, be the first one</h6>
+                                            <h6 class="mb-4" v-if="product.product.reviews.length == 0" data-bs-toggle="tab" data-bs-target="#ec-spt-nav-review">No reviews yet, be the first one</h6>
                                             <div class="ec-t-review-item" v-for="review in product.product.reviews" :key="review">
                                                 <div class="ec-t-review-avtar">
                                                     <img src="@/assets/images/review-image/1.jpg" alt="" />
@@ -349,13 +383,15 @@ import VueCookies from 'vue-cookies'
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Navigation } from 'swiper/modules';
 import { mapActions, mapState } from "vuex";
+import { notification } from "ant-design-vue";
+
 export default {
     components: {
       Swiper,
       SwiperSlide,
     },
     computed: {
-        ...mapState(['product','route']),
+        ...mapState(['product','route','userData']),
         isAuthenticated() {
             return this.$store.state.isAuthenticated;
         },
@@ -384,7 +420,16 @@ export default {
                     this.quantity--
                 }
             }else{
-                this.quantity++
+                if(this.product.product['quantity'] == this.quantity){
+                    this.quantity= this.product.product['quantity']
+                    notification['info']({
+                        message: "Error",
+                        description: 'لقد وصلت للحد الأقصي لكمية المنتج',
+                    });
+                }else{
+                    this.quantity++
+
+                }
             }
         },
         sizeColorChange(e){
@@ -430,7 +475,16 @@ export default {
                 $this.addClass('active').siblings().removeClass('active');
             }
            
-        }
+        },
+        openReviews(){
+            $('.reviews-tab')[0].click()
+        },
+        calculateTimeRemaining(discountEnd) {
+            const discountEndTimestamp = new Date(discountEnd).getTime();
+            const currentTimestamp = new Date().getTime();
+            const timeRemaining = Math.max(discountEndTimestamp - currentTimestamp, 0);
+            return timeRemaining;
+        },
     },
     mounted() {
         this.fetchProduct();

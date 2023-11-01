@@ -702,6 +702,7 @@ body {
   font-style: normal;
   line-height: 1.625;
   position: relative;
+  overflow-x: hidden !important;
   visibility: visible;
   color: #444444;
   letter-spacing: 0.4px;
@@ -19433,7 +19434,7 @@ body.ec-open:before {
   }
 
   .header-logo img {
-    width: 130px;
+    width: 50px;
   }
 
   .header-search {

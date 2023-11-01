@@ -39,12 +39,7 @@
                     <!-- Social Start -->
                     <div class="header-res-social">
                         <div class="header-top-social">
-                            <ul class="mb-0">
-                                <li class="list-inline-item"><a class="hdr-facebook" href="#"><i class="ecicon eci-facebook"></i></a></li>
-                                <li class="list-inline-item"><a class="hdr-twitter" href="#"><i class="ecicon eci-twitter"></i></a></li>
-                                <li class="list-inline-item"><a class="hdr-instagram" href="#"><i class="ecicon eci-instagram"></i></a></li>
-                                <li class="list-inline-item"><a class="hdr-linkedin" href="#"><i class="ecicon eci-linkedin"></i></a></li>
-                            </ul>
+                            <social-links></social-links>
                         </div>
                     </div>
                     <!-- Social End -->
@@ -59,7 +54,8 @@ export default {
             $(".ec-side-cat-overlay").fadeOut();
             $(".category-sidebar").removeClass("ec-open");
         }
-    }
+    },
+   
 }
 </script>
 <style lang="">

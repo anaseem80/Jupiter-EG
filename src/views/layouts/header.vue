@@ -9,12 +9,7 @@
                     <div class="col text-left header-top-left d-none d-lg-block">
                         <div class="header-top-social">
                             <span class="social-text text-upper">Follow us on:</span>
-                            <ul class="mb-0">
-                                <li class="list-inline-item"><a class="hdr-facebook" href="#"><i class="ecicon eci-facebook"></i></a></li>
-                                <li class="list-inline-item"><a class="hdr-twitter" href="#"><i class="ecicon eci-twitter"></i></a></li>
-                                <li class="list-inline-item"><a class="hdr-instagram" href="#"><i class="ecicon eci-instagram"></i></a></li>
-                                <li class="list-inline-item"><a class="hdr-linkedin" href="#"><i class="ecicon eci-linkedin"></i></a></li>
-                            </ul>
+                            <social-links></social-links>
                         </div>
                     </div>
                     <!-- Header Top social End -->
@@ -60,7 +55,7 @@
                                 <a href="wishlist.html" class="ec-header-btn ec-header-wishlist">
                                     <div class="header-icon"><img src="@/assets/images/icons/icon.gif"
                                             class="svg_img header_svg icon-gif" alt="" /></div>
-                                    <span class="ec-header-count">{{isAuthenticated.user.points}}</span>
+                                            <span class="ec-header-count" v-if="userData">{{userData.points}}</span>
                                 </a>
                             </a-tooltip>
                             <!-- Header User Start -->
@@ -116,7 +111,7 @@
                         <!-- Ec Header Logo Start -->
                         <div class="align-self-center">
                             <div class="header-logo">
-                                <router-link to="/"><img src="@/assets/images/logo/logo.png" alt="Site Logo" /><img
+                                <router-link to="/"><img :src="route+settings.logo" alt="Site Logo" /><img
                                         class="dark-logo" src="@/assets/images/logo/dark-logo.png" alt="Site Logo"
                                         style="display: none;" /></router-link>
                             </div>
@@ -143,7 +138,7 @@
                                 <a href="wishlist.html" class="ec-header-btn ec-header-wishlist">
                                     <div class="header-icon"><img src="@/assets/images/icons/icon.gif"
                                             class="svg_img header_svg icon-gif" alt="" /></div>
-                                    <span class="ec-header-count">{{isAuthenticated.user.points}}</span>
+                                    <span class="ec-header-count" v-if="userData">{{userData.points}}</span>
                                 </a>
                                 </a-tooltip>
                                 <!-- Header User Start -->
@@ -194,7 +189,7 @@
                     <!-- Ec Header Logo Start -->
                     <div class="col">
                         <div class="header-logo">
-                            <router-link to="/"><img src="@/assets/images/logo/logo.png" alt="Site Logo" /><img
+                            <router-link to="/"><img :src="route+settings.logo" alt="Site Logo" width="50"/><img
                                     class="dark-logo" src="@/assets/images/logo/dark-logo.png" alt="Site Logo"
                                     style="display: none;" /></router-link>
                         </div>
@@ -221,9 +216,9 @@
                 <div class="row">
                     <div class="col-md-12 align-self-center">
                         <div class="ec-main-menu">
-                            <router-link to="/" class="ec-header-btn ec-sidebar-toggle" @click="CategoryMenuOpen()">
+                            <a href="javascript:void(0)" class="ec-header-btn ec-sidebar-toggle" @click="CategoryMenuOpen()">
                                 <img src="@/assets/images/icons/category-icon.svg" class="svg_img header_svg" alt="icon" />
-                            </router-link>
+                            </a>
                             <ul>
                                 <li><router-link to="/">Home</router-link></li>
                                 <li class="dropdown position-static"><a href="javascript:void(0)">Categories</a>
@@ -305,9 +300,15 @@ export default {
         }
     },
     methods:{
-        ...mapActions(['GetHomeProducts']),
+        ...mapActions(['GetHomeProducts','UserInformation','GetSiteSettings']),
         async fetchHomeProducts() {
             await this.GetHomeProducts();
+        },
+        async fetchUserInformation() {
+            await this.UserInformation();
+        },
+        async fetchGetSiteSettings() {
+            await this.GetSiteSettings();
         },
         Logout(){
             this.$store.dispatch("Logout", { token: this.UserIDToken, toast: this.$toast })
@@ -379,7 +380,7 @@ export default {
         }
     },
     computed: {
-        ...mapState([`home_products`,'route','cart']),
+        ...mapState([`home_products`,'route','cart','userData','settings']),
         isAuthenticated() {
             return this.$store.state.isAuthenticated;
         },
@@ -431,9 +432,9 @@ export default {
         }
     };
 
-
-
-        this.fetchHomeProducts();
+    this.fetchHomeProducts();
+    this.fetchUserInformation();
+    this.fetchGetSiteSettings();
     },
 }
 </script>

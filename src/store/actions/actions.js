@@ -29,7 +29,9 @@ const actions = {
             VueCookies.set('UserToken', response.data.token, '1d');
             VueCookies.set('UserRouteRV', 'register', '1d');
             VueCookies.set('UserData', response.data.user, '1d');
+            dispatch("UserInformation")
             dispatch("GetCartData")
+            dispatch("GetWheelPoints")
             setTimeout(() => {
                 commit("LOADING_API",{name: 'UserLogin', status: false})
                 router.push("/");
@@ -126,7 +128,6 @@ const actions = {
     },
 
     ResendOTP({commit, state}, {email, toast}){
-        commit("LOADING_API",{name: 'RESEND_OTP', status: true})
         axios.post(state.api_route + "verification-notification?lang=en", {
             email:VueCookies.get("emailOTP"),
         })
@@ -234,6 +235,8 @@ const actions = {
             VueCookies.remove('UserData')
             commit("CART_DATA",null)
             commit("SET_AUTHENTICATED", {bool: false, token: null, user: null});
+            commit("USER_DATA", null)
+            commit("WHEEL_POINTS",null)
             setTimeout(() => {
                 commit("LOADING_API",{name: 'Logout', status: false})
                 router.push("/login");
@@ -495,6 +498,64 @@ const actions = {
         })
     },
 
+    GetWheelPoints({commit, state}){
+        var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
+        axios.get(state.api_route + "wheels-points?lang=en", {
+            headers:{
+                Authorization: 'Bearer ' + actualToken
+            }
+        })
+        .then(response=>{
+            if(response.data.status_code == 200){
+                commit("WHEEL_POINTS",response.data.data)
+            }
+        })
+        .catch(error=>{
+          console.log(error)
+        })
+    },
+
+    WheelUpdateUserPoint({commit, state, dispatch}, points){
+        var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
+        axios.post(state.api_route + "points-wheel?lang=en",{
+            points: points,
+            email:state.isAuthenticated.user.email
+        }, {
+            headers:{
+                Authorization: 'Bearer ' + actualToken
+            }
+        })
+        .then(response=>{
+            if(response.data.status_code == 200){
+                dispatch("UserInformation")
+                notification['success']({
+                    message: "Success",
+                    description: response.data.message,
+                });
+            }
+        })
+        .catch(error=>{
+          console.log(error)
+        })
+    },
+
+    UserInformation({commit, state}){
+        var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
+        axios.get(state.api_route + "userInformation?lang=en",{
+            headers:{
+                Authorization: 'Bearer ' + actualToken
+            }
+        })
+        .then(response=>{
+            if(response.data.name){
+                commit("USER_DATA", response.data)
+            }
+        })
+        .catch(error=>{
+          console.log(error)
+        })
+    },
+
     GetProductData({commit, state}, {id}){
         commit("LOADING_API",{name: 'GetProductData'+id, status: true})
         axios.get(state.api_route + `product/${id}?lang=en`)
@@ -526,7 +587,24 @@ const actions = {
           commit("LOADING_API",{name: 'GetHomeProducts', status: false})
           fadeLoader()
         })
-      },
+    },
+
+    GetSiteSettings({commit, state}){
+        commit("LOADING_API",{name: 'GetSiteSettings', status: true})
+        axios.get(state.api_route + "settings?lang=en")
+        .then(response=>{
+            if(response.data.status_code == 200){
+                commit("GET_SITE_SETTINGS",response.data.setting)
+                commit("LOADING_API",{name: 'GetSiteSettings', status: false})
+                fadeLoader()
+            }
+        })
+        .catch(error=>{
+          console.log(error)
+          commit("LOADING_API",{name: 'GetSiteSettings', status: false})
+          fadeLoader()
+        })
+    },
 }
 
 export default actions

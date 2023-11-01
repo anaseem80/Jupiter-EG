@@ -74,6 +74,7 @@ export default {
       data.product_id = this.$route.params.id
       data.user = {name:VueCookies.get("UserData").name, id:VueCookies.get("UserData").id}
       this.$store.dispatch("AddReview", { data: data, toast: this.$toast })
+      
     },
     isLoading(actionName) {
         return this.$store.state.Loading[actionName] || false;

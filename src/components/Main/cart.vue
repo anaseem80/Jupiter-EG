@@ -10,9 +10,11 @@
                 </div>
                 <ul class="eccart-pro-items" v-if="cart">
                     <li v-for="item in cart.cart_items" v-key="item.id" class="position-relative">
+                        <transition name="fade" mode="out-in">
                         <div v-if="isLoading('Remove_Product_From_Cart'+item.id) || isLoading('Product_Increase_Decrease_From_Cart'+item.id)" class="loader position-absolute w-100 h-100 d-flex justify-content-center align-items-center">
-                            <img src="@/assets/images/common/loader-2.gif" width="20" class="ms-3">
+                            <loading-outlined class="fs-3"/>
                         </div>
+                        </transition>
                         <a href="product-left-sidebar.html" class="sidekka_pro_img"><img
                                 :src="item.attribute ? route + item.attribute.image: route + item['image']" alt="product"></a>
                         <div class="ec-pro-content">
@@ -27,7 +29,7 @@
                                 <input class="qty-input" type="text" min="1" name="ec_qtybtn" :value="item['quantity']" disabled />
                                 <div class="inc ec_qtybtn" @click="ProductQuantity('+',item.id)">+</div>
                             </div>
-                            <a href="javascript:void(0)" @click="onRemoveProduct(item)" class="remove">×</a>
+                            <a href="javascript:void(0)" class="ecicon eci-trash-o remove" @click="onRemoveProduct(item)"></a>
                         </div>
                     </li>
                 </ul>
@@ -65,10 +67,14 @@
 </template>
 <script>
 import { mapActions, mapState,mapGetters } from "vuex";
+import {LoadingOutlined} from '@ant-design/icons-vue';
 export default {
     computed: {
         ...mapState(['cart','route']),
         ...mapGetters(['subtotal','totalDiscount','couponDiscount','totalAmount']),
+    },
+    components: {
+        LoadingOutlined
     },
     methods: {
         ...mapActions(['GetCartData']),

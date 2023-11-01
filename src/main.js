@@ -16,6 +16,8 @@ import Loader from '@/components/Main/loader'
 import VueCountdown from '@chenfengyuan/vue-countdown';
 import AddReview from '@/components/Main/add-review';
 import MobileMenu from '@/components/Main/mobile-menu';
+import SocialLinks from '@/components/Main/social-links';
+import wheelSpin from '@/components/wheel-spin/wheel-spin';
 import VueLazyload from 'vue-lazyload'
 import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/reset.css';
@@ -35,6 +37,7 @@ app.component('layout-footer',Footer)
 
 app.component('settings-bar',SettingsBar)
 app.component('filter-side',FilterSide)
+app.component('wheel-spin',wheelSpin)
 app.component('cart',Cart)
 app.component('products-component',ProductsHome)
 app.component('category-bar',LeftcategoryBar)
@@ -42,6 +45,7 @@ app.component('banner',Banner)
 app.component('add-review',AddReview)
 app.component('loader',Loader)
 app.component('mobile-menu',MobileMenu)
+app.component('social-links',SocialLinks)
 app.component('s-button',SubmitButton)
 
 /* Header Compontents */

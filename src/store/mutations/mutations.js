@@ -12,11 +12,20 @@ const mutations = {
     RESEND_OTP(state, otp){
       state.ResendOTP = otp
     },
+    USER_DATA(state, userData){
+      state.userData = userData
+    },
+    GET_SITE_SETTINGS(state, settings){
+      state.settings = settings
+    },
     SET_AUTHENTICATED(state, isAuthenticated) {
       state.isAuthenticated = isAuthenticated;
     },
     FORGET_PASSWORD(state, password){
       state.ForgetPassword = password
+    },
+    WHEEL_POINTS(state, wheelpoints){
+      state.wheelpoints = wheelpoints
     },
     ADDED_PRODUCT_CART(state, AddedProductToCart){
       state.AddedProductToCart = AddedProductToCart

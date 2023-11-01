@@ -4,6 +4,7 @@ import Home from '@/views/pages/Home/index'
 import Products from '@/views/pages/Products/Products'
 import Cart from '@/views/pages/Cart/cart'
 import Product from '@/views/pages/Product/product'
+import Games from '@/views/pages/Games/games'
 import Register from '@/views/pages/Auth/register'
 import Verification from '@/views/pages/Auth/verification'
 import ForgetPassword from '@/views/pages/Auth/forget_password'
@@ -43,6 +44,11 @@ const routes = [
     path: '/cart',
     name: 'Cart',
     component: Cart
+  },
+  {
+    path: '/games',
+    name: 'games',
+    component: Games
   },
   {
     path: "/product/:id",

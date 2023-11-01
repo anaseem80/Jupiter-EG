@@ -26,9 +26,12 @@
                                             <tbody>
                                                 <tr v-for="item in cart.cart_items" class="position-relative">
                                                     <td data-label="Product" class="ec-cart-pro-name">
-                                                        <div v-if="isLoading('Remove_Product_From_Cart'+item.id) || isLoading('Product_Increase_Decrease_From_Cart'+item.id)" class="loader position-absolute top-0 w-100 h-100 d-flex justify-content-center align-items-center">
-                                                        <img src="@/assets/images/common/loader-2.gif" width="20" class="ms-3">
-                                                    </div>
+                                                        <transition name="fade" mode="out-in">
+                                                            <div v-if="isLoading('Remove_Product_From_Cart'+item.id) || isLoading('Product_Increase_Decrease_From_Cart'+item.id)" class="loader position-absolute top-0 w-100 h-100 d-flex justify-content-center align-items-center">
+                                                                <loading-outlined class="fs-3"/>
+                                                            </div>
+                                                        </transition>
+                                                        
                                                         <a
                                                             href="product-left-sidebar.html"><img class="ec-cart-pro-img mr-4"
                                                                 :src="item.attribute ? route + item.attribute.image: route + item['image']"
@@ -65,7 +68,7 @@
                                                 <div class="d-flex">
                                                     <button class="btn btn-dark me-2" @click="onClearCart()" :disabled="isLoading('Clear_Cart')">
                                                         Clear Cart
-                                                        <img src="@/assets/images/common/loader-2.gif" width="20" v-if="isLoading('Clear_Cart')" class="ms-3">
+                                                        <loading-outlined class="ms-2 fs-5" v-if="isLoading('Clear_Cart')"/>
                                                     </button>
                                                     <button class="btn btn-primary">Check Out</button>
                                                 </div>
@@ -128,11 +131,15 @@
 </template>
 <script>
 import { mapActions, mapState, mapGetters } from "vuex";
+import {LoadingOutlined} from '@ant-design/icons-vue';
 
 export default {
     computed: {
         ...mapState(['cart','route']),
         ...mapGetters(['subtotal','totalDiscount','couponDiscount','totalAmount']),
+    },
+    components: {
+        LoadingOutlined
     },
     methods:{
         ...mapActions(['GetCartData']),

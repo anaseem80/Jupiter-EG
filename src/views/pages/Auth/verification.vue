@@ -28,11 +28,14 @@
                                         <div class="col-lg-2 col-4" v-for="(digit, index) in otpDigits" :key="index">
                                         <input
                                             type="text"
+                                            ref="otpInput"
                                             class="form-control mt-2 mb-0 bg-light"
                                             maxlength="1"
                                             min="0"
                                             v-model="otpDigits[index]"
-                                            @input="OTP($event.target.value, index)"
+                                            @input="OTP($event.target, index)"
+                                            @paste="handlePaste"
+                                            @keydown="handleBackspace($event, index)"
                                         />
                                         </div>
                                     </div>
@@ -97,7 +100,28 @@ export default {
         ResendOTP(){
             this.$store.dispatch("ResendOTP", { email: 'anaseemamin@gmail.com' , toast: this.$toast })
         },
-        OTP() {},
+        handlePaste(event) {
+            const pasteData = event.clipboardData.getData('text');
+            if (pasteData.length === this.otpDigits.length) {
+                for (let i = 0; i < this.otpDigits.length; i++) {
+                    this.otpDigits[i] = pasteData[i];
+                }
+                event.preventDefault();
+            }
+        },
+        OTP(e) {
+            if($(e).parent().next().find("input").length == 1){
+                $(e).parent().next().find("input")[0].focus()
+            }
+            console.log()
+        },
+        handleBackspace(event, index) {
+            if (event.key === 'Backspace' && index > 0 && this.otpDigits[index] === '') {
+            this.$nextTick(() => {
+                this.$refs.otpInput[index - 1].focus();
+            });
+            }
+        },
         isLoading(actionName) {
             return this.$store.state.Loading[actionName] || false;
         },

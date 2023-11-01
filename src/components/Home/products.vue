@@ -1,6 +1,9 @@
 <template lang="">
     <div v-for="productsSortedAdmin in productObject" v-key="productsSortedAdmin.key" :class="class">
-        <div class="ec-product-inner">
+        <div class="ec-product-inner position-relative">
+            <div class="sold-out position-absolute z-2" v-if="productsSortedAdmin.quantity == 0">
+                <img src="@/assets/images/common/Sold-Out-Transparent.png"/>
+            </div>
             <div class="ec-pro-image-outer">
                 <div class="ec-pro-image">
                     <a href="product-left-sidebar.html" class="image">
@@ -11,7 +14,7 @@
                             />
                         <img v-lazy="route + productsSortedAdmin['hover_image']" v-if="productsSortedAdmin['hover_image'] !== null" class="hover-image" alt="Product" />
                     </a>
-                    <span class="percentage">20%</span>
+                    <!-- <span class="percentage">20%</span> -->
                     <a href="#" class="quickview" data-link-action="quickview"
                         title="Quick view" data-bs-toggle="modal"
                         data-bs-target="#ec_quickview_modal"><img
@@ -19,6 +22,7 @@
                             alt="" /></a>
                     <div class="ec-pro-actions">
                         <button 
+                            v-if="productsSortedAdmin.quantity != 0"
                             title="Add To Cart" 
                             class="add-to-cart" 
                             :disable="isLoading('Add_Product_To_Cart'+productsSortedAdmin.id)" 
@@ -31,7 +35,8 @@
                         <img
                             src="@/assets/images/icons/cart.svg" class="svg_img pro_svg"
                             alt="" /> 
-                        <img src="@/assets/images/common/loader-2.gif" width="20" class="ms-3 loader-small-button" v-if="isLoading('Add_Product_To_Cart'+productsSortedAdmin.id)"></button>
+                            <loading-outlined class="fs-4 loader-small-button" v-if="isLoading('Add_Product_To_Cart'+productsSortedAdmin.id)"/>
+                        </button>
                         <a class="ec-btn-group wishlist" title="Wishlist"><img
                                 src="@/assets/images/icons/wishlist.svg"
                                 class="svg_img pro_svg" alt="" /></a>
@@ -163,6 +168,7 @@
 <script>
 import { mapActions, mapState, mapGetters } from "vuex";
 import VueCookies from 'vue-cookies'
+import {LoadingOutlined} from '@ant-design/icons-vue';
 
 export default {
     props:['productObject','title','class'],
@@ -176,6 +182,9 @@ export default {
             UserIDToken: VueCookies.get("UserToken"),
             selectedAttribute: {},
         }
+    },
+    components: {
+        LoadingOutlined
     },
     methods:{
         sizeColorChange(e){

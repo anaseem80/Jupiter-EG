@@ -2,6 +2,8 @@
     <!--Banner-->
     <banner></banner>
     <!--Banner-->
+    
+
 
     <section class="section ec-new-product section-space-p" id="arrivals">
         <div class="container">
@@ -322,21 +324,23 @@
             </div>
         </div>
     </section> -->
-    <section class="section ec-offer-section section-space-p section-space-m">
-        <h2 class="d-none">Offer</h2>
-        <div class="container">
-            <div class="row justify-content-end">
-                <div class="col-xl-6 col-lg-7 col-md-7 col-sm-7 align-self-center ec-offer-content">
-                    <h2 class="ec-offer-title">Sunglasses</h2>
-                    <h3 class="ec-offer-stitle slideInDown" data-animation="slideInDown" data-animated="true">Super Offer</h3>
-                    <span class="ec-offer-img zoomIn" data-animation="zoomIn" data-animated="true"><img src="@/assets/images/offer-image/1.png" alt="offer image"></span>
-                    <span class="ec-offer-desc">Acetate Frame Sunglasses</span>
-                    <span class="ec-offer-price">$40.00 Only</span>
-                    <!-- إعلان -->
-                    <a class="btn btn-primary zoomIn" href="shop-left-sidebar-col-3.html" data-animation="zoomIn" data-animated="true">Shop Now</a>
+    <section 
+        class="section ec-offer-section section-space-p section-space-m"
+        :style="{ backgroundImage: 'url('+ route + home_products.advertisements[0]['image'] + ')' }"
+    >
+        <a :href="home_products.advertisements[0]['banner_url']">
+            <h2 class="d-none">Offer</h2>
+            <div class="container">
+                <div class="row justify-content-end">
+                    <div class="col-xl-6 col-lg-7 col-md-7 col-sm-7 align-self-center ec-offer-content">
+                        <h2 class="ec-offer-title text-light">{{home_products.advertisements[0]['name']}}</h2>
+                        <h3 class="ec-offer-stitle slideInDown text-light" data-animation="slideInDown" data-animated="true">Super Offer</h3>
+                        <span class="ec-offer-img zoomIn" data-animation="zoomIn" data-animated="true"><img :src="route + home_products.advertisements[0]['image']" alt="offer image"></span>
+                        <!-- إعلان -->
+                    </div>
                 </div>
             </div>
-        </div>
+        </a>
     </section>
 
 
