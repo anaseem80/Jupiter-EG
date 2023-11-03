@@ -111,8 +111,8 @@
                         <!-- Footer Copyright Start -->
                         <div class="col text-center footer-copy">
                             <div class="footer-bottom-copy ">
-                                <div class="ec-copy">Copyright © 2021-2022 <a class="site-name text-upper"
-                                        href="#">ekka<span>.</span></a>. All Rights Reserved</div>
+                                <div class="ec-copy">Copyright © 2023-2024 <a class="site-name text-upper"
+                                        href="#">JUPITER EG<span>.</span></a>. All Rights Reserved</div>
                             </div>
                         </div>
                         <!-- Footer Copyright End -->

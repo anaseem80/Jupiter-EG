@@ -1,5 +1,6 @@
 <template lang="">
     <!-- Ec cart page -->
+    <breadcrumb title="Cart" :route="$route.name"/>
     <section class="ec-page-content section-space-p">
         <div class="container" v-if="cart">
             <div class="row">
@@ -31,11 +32,13 @@
                                                                 <loading-outlined class="fs-3"/>
                                                             </div>
                                                         </transition>
-                                                        
-                                                        <a
-                                                            href="product-left-sidebar.html"><img class="ec-cart-pro-img mr-4"
+                                                        <h6 @click="fetchProductData(item.product_id)">
+                                                            <router-link
+                                                        :to="'/product/'+item['id']"><img class="ec-cart-pro-img mr-4"
                                                                 :src="item.attribute ? route + item.attribute.image: route + item['image']"
-                                                                alt="" />{{item['name']}}</a></td>
+                                                                alt="" />{{item['name']}}</router-link>
+                                                        </h6>
+                                                       </td>
                                                     <td data-label="Price" class="ec-cart-pro-price">
                                                         <span class="amount">{{item['price']}}</span>
                                                         <div v-if="item.attribute" class="d-flex">
@@ -151,6 +154,14 @@ export default {
         },
         onRemoveProduct(product){
             this.$store.dispatch("Remove_Product_From_Cart", { product: product, toast: this.$toast })
+        },
+        fetchProductData(id){
+            $(".ec-side-cart-overlay").fadeOut();
+            $("#ec-side-cart").removeClass("ec-open");
+            $(".mobile-menu-toggle").find("a").removeClass("close");
+
+            $(window).scrollTop(0); 
+            this.$store.dispatch('GetProductData',{id: id})
         },
         onClearCart(){
             this.$store.dispatch("Clear_Cart", { toast: this.$toast })

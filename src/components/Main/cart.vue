@@ -15,10 +15,10 @@
                             <loading-outlined class="fs-3"/>
                         </div>
                         </transition>
-                        <a href="product-left-sidebar.html" class="sidekka_pro_img"><img
-                                :src="item.attribute ? route + item.attribute.image: route + item['image']" alt="product"></a>
+                        <router-link @click="fetchProductData(item.product_id)" :to="'/product/'+item['product_id']" class="sidekka_pro_img"><img
+                                :src="item.attribute ? route + item.attribute.image: route + item['image']" alt="product"></router-link>
                         <div class="ec-pro-content">
-                            <a href="product-left-sidebar.html" class="cart_pro_title">{{item['name']}}</a>
+                            <router-link @click="fetchProductData(item.product_id)" :to="'/product/'+item['product_id']" class="cart_pro_title">{{item['name']}}</router-link>
                             <span class="cart-price"><span>{{item['price']}}</span> x {{item['quantity']}}</span>
                             <div v-if="item.attribute">
                                 <p class="mb-0">{{item.attribute.color.name_en}}</p>
@@ -86,6 +86,14 @@ export default {
         },
         onRemoveProduct(product){
             this.$store.dispatch("Remove_Product_From_Cart", { product: product, toast: this.$toast })
+        },
+        fetchProductData(id){
+            $(".ec-side-cart-overlay").fadeOut();
+            $("#ec-side-cart").removeClass("ec-open");
+            $(".mobile-menu-toggle").find("a").removeClass("close");
+
+            $(window).scrollTop(0); 
+            this.$store.dispatch('GetProductData',{id: id})
         },
         ProductQuantity(sign, id){
             this.$store.dispatch("Product_Increase_Decrease_From_Cart", { id: id, toast: this.$toast, type: sign })

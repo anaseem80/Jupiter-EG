@@ -464,9 +464,10 @@ const actions = {
         })
     },
 
-    GetProductsByCurrentCategory({commit, state},{page, route}){
+    GetProductsByCurrentCategory({commit, state},{page, route, keyword}){
         commit("LOADING_API",{name: 'GetProductsByCurrentCategory', status: true})
-        axios.get(state.api_route + `${route}?lang=en&${page}`)
+        const method = keyword != undefined ? 'post' : 'get'
+        axios[method](state.api_route + `${route}?lang=en&${page}${keyword != undefined ? `&keyword=${keyword}` : ''}`)
         .then(response=>{
             if(response.data.status_code == 200){
                 commit("LOADING_API",{name: 'GetProductsByCurrentCategory', status: false})
@@ -557,12 +558,12 @@ const actions = {
     },
 
     GetProductData({commit, state}, {id}){
+        commit("PRODUCT_DATA",null)
         commit("LOADING_API",{name: 'GetProductData'+id, status: true})
         axios.get(state.api_route + `product/${id}?lang=en`)
         .then(response=>{
             if(response.data.status_code == 200){
                 commit("PRODUCT_DATA",response.data)
-                console.log(response.data)
                 commit("LOADING_API",{name: 'GetProductData'+id, status: false})
             }
         })

@@ -5,6 +5,7 @@ import Products from '@/views/pages/Products/Products'
 import Cart from '@/views/pages/Cart/cart'
 import Product from '@/views/pages/Product/product'
 import Games from '@/views/pages/Games/games'
+import Error from '@/views/pages/404/404'
 import Register from '@/views/pages/Auth/register'
 import Verification from '@/views/pages/Auth/verification'
 import ForgetPassword from '@/views/pages/Auth/forget_password'
@@ -19,6 +20,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: Login
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "404",
+    component: Error,
   },
   {
     path: '/register',
@@ -57,31 +63,37 @@ const routes = [
   },
   {
     path: "/last",
-    name: "last",
+    name: "Last Products",
     component: Products,
     props: route => ({ apiEndpoint: "products/last" })
   },
   {
     path: "/hotItems",
-    name: "hotItems",
+    name: "Hot Items",
     component: Products,
     props: route => ({ apiEndpoint: "products/hotitem" })
   },
   {
+    path: "/search-product/:keyword",
+    name: "Search",
+    component: Products,
+    props: route => ({ apiEndpoint: "search-product" })
+  },
+  {
     path: "/toprate",
-    name: "toprate",
+    name: "Top rate products",
     component: Products,
     props: route => ({ apiEndpoint: "products/toprate" })
   },
   {
     path: "/with-offers",
-    name: "with-offers",
+    name: "Products Offers",
     component: Products,
     props: route => ({ apiEndpoint: "products/with-offers" })
   },
   {
     path: "/subCategory/:id",
-    name: "subCategory",
+    name: "Sub category",
     component: Products,
     props: route => ({ apiEndpoint: `subcategories/${route.params.id}/products` })
   }

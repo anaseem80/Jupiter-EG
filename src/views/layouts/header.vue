@@ -121,11 +121,7 @@
                         <!-- Ec Header Search Start -->
                         <div class="align-self-center">
                             <div class="header-search">
-                                <form class="ec-btn-group-form" action="#">
-                                    <input class="form-control ec-search-bar" placeholder="Search products..." type="text">
-                                    <button class="submit" type="submit"><img src="@/assets/images/icons/search.svg"
-                                            class="svg_img header_svg" alt="" /></button>
-                                </form>
+                                <search />
                             </div>
                         </div>
                         <!-- Ec Header Search End -->
@@ -198,11 +194,7 @@
                     <!-- Ec Header Search Start -->
                     <div class="col">
                         <div class="header-search">
-                            <form class="ec-btn-group-form" action="#">
-                                <input class="form-control ec-search-bar" placeholder="Search products..." type="text">
-                                <button class="submit" type="submit"><img src="@/assets/images/icons/search.svg"
-                                        class="svg_img header_svg" alt="icon" /></button>
-                            </form>
+                            <search />
                         </div>
                     </div>
                     <!-- Ec Header Search End -->

@@ -24619,7 +24619,7 @@ i.ecicon.eci-star-o {
 .ec-cart-content .table-content table tbody > tr td.ec-cart-pro-name {
   width: 40%;
 }
-.ec-cart-content .table-content table tbody > tr td.ec-cart-pro-name a {
+.ec-cart-content .table-content table tbody > tr td.ec-cart-pro-name h6 {
   color: #444444;
   font-weight: 400;
   text-decoration: none;

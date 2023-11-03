@@ -11,6 +11,8 @@ export const state = {
     cart:null,
     product:null,
     wheelpoints:null,
+    color:null,
+    size:null,
     ResendOTP: null,
     ForgetPassword: null,
     Logout: null,

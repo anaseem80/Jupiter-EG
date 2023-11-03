@@ -12,20 +12,23 @@ import ProductsHome from '@/components/Home/products'
 import LeftcategoryBar from '@/components/Main/LeftcategoryBar'
 import FilterSide from '@/components/Main/FilterSide'
 import Cart from '@/components/Main/cart'
+import Search from '@/components/Search/search'
 import Loader from '@/components/Main/loader'
 import VueCountdown from '@chenfengyuan/vue-countdown';
 import AddReview from '@/components/Main/add-review';
 import MobileMenu from '@/components/Main/mobile-menu';
 import SocialLinks from '@/components/Main/social-links';
 import wheelSpin from '@/components/wheel-spin/wheel-spin';
+import breadcrumb from '@/components/breadcrumb/breadcrumb';
 import VueLazyload from 'vue-lazyload'
 import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/reset.css';
-
 const app = createApp(App)
 
 
-
+app.config.warnHandler = function (msg, vm, trace) {
+    return null
+}
 /* Header Compontents */
 
 app.component('layout-header',Header)
@@ -39,6 +42,7 @@ app.component('settings-bar',SettingsBar)
 app.component('filter-side',FilterSide)
 app.component('wheel-spin',wheelSpin)
 app.component('cart',Cart)
+app.component('search',Search)
 app.component('products-component',ProductsHome)
 app.component('category-bar',LeftcategoryBar)
 app.component('banner',Banner)
@@ -47,6 +51,7 @@ app.component('loader',Loader)
 app.component('mobile-menu',MobileMenu)
 app.component('social-links',SocialLinks)
 app.component('s-button',SubmitButton)
+app.component('breadcrumb',breadcrumb)
 
 /* Header Compontents */
 
@@ -84,7 +89,7 @@ import '@/assets/js/main.js'
 
 /* Javascript */
 
-const loadimage = require('@/assets/images/bg/loader.webp')
+const loadimage = require('@/assets/images/bg/blur.jpg')
 
 app.use(router)
 app.use(Antd)

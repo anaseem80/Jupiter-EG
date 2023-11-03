@@ -113,7 +113,7 @@
                                                     <ul>
                                                         <li 
                                                             v-for="(size,index) in product.product.attribute_for"
-                                                            @click="sizeColorChange($event.target)"
+                                                            @click="sizeColorChange($event.target, size)"
                                                             class="size"
                                                             :data-color="size.size_name_en == null ? size.size.name_en : size.size_name_en +product.product.id"
                                                             :data-id="product.product.id"
@@ -197,7 +197,7 @@
                                                         <li 
                                                             v-for="(size,index) in product.product.attribute_for"
                                                             class="size"
-                                                            @click="sizeColorChange($event.target)"
+                                                            @click="sizeColorChange($event.target, size)"
                                                             :data-color="size.size_name_en == null ? size.size.name_en : size.size_name_en +product.product.id"
                                                             :data-id="product.product.id"
                                                             :class="{ 'active': index === 0 }"
@@ -215,19 +215,20 @@
                                         <div class="ec-single-qty">
                                             <div class="qty-plus-minus">
                                                 <div class="dec ec_qtybtn" @click="increaseDecreaseQuantity('-')">-</div>
-                                                <input class="qty-input" type="text" name="ec_qtybtn" v-model="quantity" />
+                                                <input class="qty-input" type="text" name="ec_qtybtn" v-model="quantity" disabled/>
                                                 <div class="inc ec_qtybtn" @click="increaseDecreaseQuantity('+')">+</div>
                                             </div>
-                                            <div class="ec-single-cart" v-if="product.product.quantity != 0 || userData.client_type !== 'wholesale'">
+                                            <div class="ec-single-cart" v-if="product.product.quantity != 0 && userData.client_type !== 'wholesale'">
                                                 <button class="btn btn-primary" @click="onAddProduct(product.product)" :disabled="isLoading('Add_Product_To_Cart'+product.product.id)">
-                                                    Add To Cart a
+                                                    Add To Cart
                                                     <img src="@/assets/images/common/loader-2.gif" width="20" class="ms-3" v-if="isLoading('Add_Product_To_Cart'+product.product.id)">
                                                 </button>
                                             </div>
-                                            <div class="ec-single-cart" v-if="userData.client_type !== 'wholesale'">
-                                                <button class="btn btn-primary" @click="onAddProduct(product.product)" :disabled="isLoading('Add_Product_To_Cart'+product.product.id)">
-                                                    Price Preview
-                                                    <img src="@/assets/images/common/loader-2.gif" width="20" class="ms-3" v-if="isLoading('Add_Product_To_Cart'+product.product.id)">
+                                            <div class="ec-single-cart" v-if="userData.client_type == 'wholesale'">
+                                                <button class="btn btn-success">
+                                                    <a :href="whatsappLink" @click="whatsappLinkA(product.product)" class="text-light" target="_blank">
+                                                        <i class="ecicon eci-whatsapp me-2 fs-6"></i> Price Preview
+                                                    </a>
                                                 </button>
                                             </div>
                                             
@@ -370,7 +371,7 @@
                 <!-- Related Product Content -->
                 <products-component 
                 :productObject="product.related_products" 
-                :title="'new-arrivals'" 
+                :title="'related-products'" 
                 :class="'col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6 ec-product-content'">
                 </products-component>
             </div>
@@ -390,49 +391,84 @@ export default {
       Swiper,
       SwiperSlide,
     },
-    computed: {
-        ...mapState(['product','route','userData']),
-        isAuthenticated() {
-            return this.$store.state.isAuthenticated;
-        },
-    },
     data(){
         return{
             selectedAttributeId: {},
             quantity: 1,
             userRating: 1,
+            currentProduct: null,
+            color:null,
+            size:null,
             UserIDToken: VueCookies.get("UserToken")
         }
+    },
+    computed: {
+        ...mapState(['product','route','userData']),
+        isAuthenticated() {
+            return this.$store.state.isAuthenticated;
+        },
+        getURL(){
+            return window.location.href;
+        },
+        whatsappLink() {
+            this.loadProduct(this.product.product)
+            this.currentProduct = this.product.product
+            const productName = encodeURIComponent(this.product.product['name']);
+            const quantityText = encodeURIComponent(`and I need for ${this.quantity} Quantity, `);
+            const sizeText = this.size != null ? encodeURIComponent(`and I need for ${this.size} size, `) : '';
+            const colorText = this.color != null ? encodeURIComponent(`and I need for ${this.color} color, `) : '';
+            const getURL = encodeURIComponent(this.getURL);
+            const message = `I am interested in ${productName}%0A${sizeText}%0A${colorText} ${quantityText}%0A${getURL}`;
+
+            return `https://wa.me/+201069000501?text=${message}`;        
+        },
     },
     methods:{
         ...mapActions(['GetProductData']),
         async fetchProduct() {
             await this.GetProductData({id: this.$route.params.id});
+            // this.loadProduct();
         },
+
         zoomImage(e){
             $('.zoom-image-hover').zoom();
         },
         increaseDecreaseQuantity(sign){
-            if(sign=='-'){
-                if(this.quantity==1){
-                    this.quantity=1
-                }else{
-                    this.quantity--
-                }
-            }else{
-                if(this.product.product['quantity'] == this.quantity){
-                    this.quantity= this.product.product['quantity']
-                    notification['info']({
-                        message: "Error",
-                        description: 'لقد وصلت للحد الأقصي لكمية المنتج',
-                    });
-                }else{
-                    this.quantity++
+            const clientType = this.isAuthenticated.user.client_type;
+            const minimumOrder = this.product.product.minimum_order || 1;
+            const maxQuantityAvailable = this.product.product['quantity'];
 
+            if (sign === '-') {
+                // Decrease the quantity with consideration for the minimum order for wholesalers
+                if (clientType === 'wholesale' && this.quantity > minimumOrder) {
+                this.quantity--;
+                } else if (clientType !== 'wholesale' && this.quantity > 1) {
+                this.quantity--;
+                }
+            } else if (sign === '+') {
+                // Increase the quantity with consideration for the maximum quantity available
+                if (this.quantity < maxQuantityAvailable) {
+                // If the user is a wholesale client, they may be able to order more than retail clients
+                const increment = clientType === 'wholesale' ? Math.max(minimumOrder, 1) : 1;
+                // Ensure the quantity does not exceed maxQuantityAvailable
+                this.quantity = Math.min(this.quantity + increment, maxQuantityAvailable);
+                } else {
+                this.notification('info', {
+                    message: "Error",
+                    description: 'لقد وصلت للحد الأقصي لكمية المنتج', // "You have reached the maximum product quantity limit"
+                });
                 }
             }
         },
-        sizeColorChange(e){
+        sizeColorChange(e, size){
+            const product = this.currentProduct
+            if(product.type_attribute == 'both'){
+                this.size = size.size_name_en
+            }
+            if(product.type_attribute == 'sizes'){
+                this.size = size.size.name_en
+            }
+
             $(e).addClass("active").siblings().removeClass("active")
             var $this = $(e);
             if($this.parent().hasClass('size')){
@@ -445,6 +481,28 @@ export default {
                 $('#'+$(e).data('color')).addClass('d-block').removeClass('d-none')
                 $this.addClass('active').siblings().removeClass('active');
             }
+        },
+        onColorChange(thisObj,color,id){
+            const product = this.currentProduct
+            if(product.type_attribute == 'colors'){
+                this.color = color.color.name_en
+            }
+            if(product.type_attribute == 'both'){
+                this.color = color.colorName
+            }
+            this.selectedAttributeId['Product'+id] = color.attribute_id;
+            $('.image-product').attr('src',this.route+'imagesfp/product/'+color.image)
+            var $this = $(thisObj);
+            var $new_price = $('.new-price');
+            var $new_sku = $('.sku');
+            $new_price.text(color.price); 
+            $new_sku.text(color.sku); 
+            if($this.parent().hasClass('color')){
+                $this.parent().addClass('active').siblings().removeClass('active');
+            }else{
+                $this.addClass('active').siblings().removeClass('active');
+            }
+           
         },
         onAddProduct(product){
             let attributeId = this.selectedAttributeId['Product'+product.id];
@@ -460,22 +518,6 @@ export default {
         changeImage(route) {
             $('.image-product').attr('src',route)
         },
-        onColorChange(thisObj,color,id){
-            this.selectedAttributeId['Product'+id] = color.attribute_id;
-            $('.image-product').attr('src',this.route+'imagesfp/product/'+color.image)
-            var $this = $(thisObj);
-            var $new_price = $('.new-price');
-            var $new_sku = $('.sku');
-            console.log($this.closest('.ec-pro-image'))
-            $new_price.text(color.price); 
-            $new_sku.text(color.sku); 
-            if($this.parent().hasClass('color')){
-                $this.parent().addClass('active').siblings().removeClass('active');
-            }else{
-                $this.addClass('active').siblings().removeClass('active');
-            }
-           
-        },
         openReviews(){
             $('.reviews-tab')[0].click()
         },
@@ -485,10 +527,36 @@ export default {
             const timeRemaining = Math.max(discountEndTimestamp - currentTimestamp, 0);
             return timeRemaining;
         },
+        loadProduct(product) {
+            this.quantity = product.minimum_order || 1;
+        },
+        whatsappLinkA(product){
+            if(product.type_attribute == 'both'){
+                if(this.size == null && this.color == null){
+                    this.size = product.attribute_for[0].size_name_en
+                    this.color = product.attribute_for[0].colors[0].colorName
+                }
+            }
+            if(product.type_attribute == 'colors'){
+                if(this.color == null){
+                    this.color = product.attribute_for[0].color.name_en
+                }
+                this.size = null
+            }
+            if(product.type_attribute == 'sizes'){
+                if(this.size == null){
+                    this.size = product.attribute_for[0].size.name_en
+                }
+                this.color = null
+            }
+            if(product.type_attribute == 'none'){
+                this.size = null
+                this.color = null
+            }
+        },
     },
     mounted() {
         this.fetchProduct();
-        console.log("sd")
     },
     setup() {
       return {

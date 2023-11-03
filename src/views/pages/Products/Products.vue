@@ -2,6 +2,7 @@
     <transition name="fade" mode="out-in">
         <loader v-if="isLoading('GetProductsByCurrentCategory')" key="loader"></loader>
     </transition>
+    <breadcrumb :title="$route.name" :route="$route.name"/>
     <section class="ec-page-content section-space-p" v-if="ProductsCategoryProducts">
         <div class="container">
             <div class="row">
@@ -88,7 +89,7 @@ export default {
     methods:{
         ...mapActions(['GetProductsByCurrentCategory']),
         async FetchProductsByCurrentCategory(page) {
-            await this.GetProductsByCurrentCategory({page:page, route:this.apiEndpoint});
+            await this.GetProductsByCurrentCategory({page:page, route:this.apiEndpoint, keyword: this.$route.params.keyword});
         },
         isLoading(actionName) {
             return this.$store.state.Loading[actionName] || false;
@@ -119,7 +120,8 @@ export default {
         }
     },
     mounted() {
-        this.FetchProductsByCurrentCategory(1,this.$route.params.id);
+        var keyword = this.$route.params.keyword != undefined ? this.$route.params.keyword : ''
+        this.FetchProductsByCurrentCategory(1,this.$route.params.id,keyword);
     },
     watch:{
         $route (to, from){
