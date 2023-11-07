@@ -29,6 +29,7 @@ const actions = {
             VueCookies.set('UserToken', response.data.token, '1d');
             VueCookies.set('UserRouteRV', 'register', '1d');
             VueCookies.set('UserData', response.data.user, '1d');
+            VueCookies.remove("emailOTP")
             dispatch("UserInformation")
             dispatch("GetCartData")
             dispatch("GetWheelPoints")
@@ -126,6 +127,46 @@ const actions = {
             commit("LOADING_API",{name: 'SubmitOTP', status: false})
         })
     },
+
+    UpdateUserInfo({commit, state}, {email, emailBOOL}){
+        var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
+        commit("LOADING_API",{name: 'UpdateUserInfo', status: true})
+        axios.post(state.api_route + "updateUserInfo?lang=en", {
+            email:email,
+            name: "ahmed",
+        },{
+            headers:{
+                Authorization: 'Bearer ' + actualToken
+            }
+        })
+        .then((response) => {
+        if(response.data.status_code == 200){
+            setTimeout(() => {
+                commit("LOADING_API",{name: 'UpdateUserInfo', status: false})
+                console.log(response.data)
+                if(response.data.status_code == 200){
+                    notification['success']({
+                        message: "Success",
+                        description: response.data.message,
+                    });
+                }else{
+                    notification['info']({
+                        message: "Error",
+                        description: response.data.message,
+                    });
+                }
+            }, 1000);
+        }
+        })
+        .catch((error) => {
+            notification['info']({
+                message: "Error",
+                description: error.response.data.message,
+            });
+            commit("LOADING_API",{name: 'UpdateUserInfo', status: false})
+        })
+    },
+
 
     ResendOTP({commit, state}, {email, toast}){
         axios.post(state.api_route + "verification-notification?lang=en", {
@@ -237,6 +278,7 @@ const actions = {
             commit("SET_AUTHENTICATED", {bool: false, token: null, user: null});
             commit("USER_DATA", null)
             commit("WHEEL_POINTS",null)
+            VueCookies.remove("emailOTP")
             setTimeout(() => {
                 commit("LOADING_API",{name: 'Logout', status: false})
                 router.push("/login");
@@ -481,7 +523,9 @@ const actions = {
           fadeLoader()
         })
     },
-      
+    
+    
+    
     GetCartData({commit, state}){
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
         axios.get(state.api_route + "cart/items?lang=en", {
@@ -498,6 +542,45 @@ const actions = {
           console.log(error)
         })
     },
+
+
+    GetPopularKeywords({commit, state}){
+        axios.get(state.api_route + "popular")
+        .then(response=>{
+            if(response.data.status_code == 200){
+                commit("POPULAR_KEYWEODS_DATA",response.data.keywords)
+            }
+        })
+        .catch(error=>{
+          console.log(error)
+        })
+    },
+
+    RecentSearch({commit, state}, keyword){
+        commit("RECENT_SEARCH",keyword)
+    },
+
+    EmptyRecentSearch({commit, state}){
+        commit("EMPTY_RECENT_SEARCH")
+        notification['success']({
+            message: "Success",
+            description: "Empty successfully",
+        });
+    },
+
+
+    // AddToPopularKeywords({commit, state}, keyword){
+    //     var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
+    //     axios.get(state.api_route + `popular/view/${keyword}`)
+    //     .then(response=>{
+    //         if(response.data.status_code == 200){
+    //             console.log(response)
+    //         }
+    //     })
+    //     .catch(error=>{
+    //       console.log(error)
+    //     })
+    // },
 
     GetWheelPoints({commit, state}){
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");

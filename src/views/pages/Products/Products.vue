@@ -22,11 +22,11 @@
                             <div class="ec-select-inner">
                                 <select name="ec-select" id="ec-select">
                                     <option selected disabled>Position</option>
-                                    <option value="1">Relevance</option>
-                                    <option value="2">Name, A to Z</option>
-                                    <option value="3">Name, Z to A</option>
-                                    <option value="4">Price, low to high</option>
-                                    <option value="5">Price, high to low</option>
+                                    <option value="1">Highest in demand</option>
+                                    <option value="2">Price, low to high</option>
+                                    <option value="3">Price, high to low</option>
+                                    <option value="4">Newtest</option>
+                                    <option value="5">Discount</option>
                                 </select>
                             </div>
                         </div>

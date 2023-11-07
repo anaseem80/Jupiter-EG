@@ -207,6 +207,7 @@ export default {
             return this.$store.state.Loading[actionName] || false;
         },
         onColorChange(element,color,id,title, object){
+            console.log(color)
             this.selectedAttribute[title + id] = color.attribute_id;
             console.log(this.selectedAttribute[title + id] )
             $('#img-'+title+id).attr('src',this.route+'imagesfp/product/'+color.image)

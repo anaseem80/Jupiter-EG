@@ -110,7 +110,7 @@
                     <div class="ec-flex">
                         <!-- Ec Header Logo Start -->
                         <div class="align-self-center">
-                            <div class="header-logo">
+                            <div class="header-logo" v-if="settings">
                                 <router-link to="/"><img :src="route+settings.logo" alt="Site Logo" /><img
                                         class="dark-logo" src="@/assets/images/logo/dark-logo.png" alt="Site Logo"
                                         style="display: none;" /></router-link>
@@ -184,7 +184,7 @@
 
                     <!-- Ec Header Logo Start -->
                     <div class="col">
-                        <div class="header-logo">
+                        <div class="header-logo" v-if="settings">
                             <router-link to="/"><img :src="route+settings.logo" alt="Site Logo" width="50"/><img
                                     class="dark-logo" src="@/assets/images/logo/dark-logo.png" alt="Site Logo"
                                     style="display: none;" /></router-link>

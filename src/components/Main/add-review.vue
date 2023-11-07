@@ -64,6 +64,11 @@ export default {
         userRating: this.rating,
     };
   },
+  computed:{
+    isAuthenticated() {
+      return this.$store.state.isAuthenticated;
+    },
+  },
   methods: {
     rate(star) {
       this.userRating = star;
@@ -72,9 +77,8 @@ export default {
     onAddReview(data){
       data.rating = this.userRating
       data.product_id = this.$route.params.id
-      data.user = {name:VueCookies.get("UserData").name, id:VueCookies.get("UserData").id}
+      data.user = {name:this.isAuthenticated.user.name, id:this.isAuthenticated.user.id}
       this.$store.dispatch("AddReview", { data: data, toast: this.$toast })
-      
     },
     isLoading(actionName) {
         return this.$store.state.Loading[actionName] || false;

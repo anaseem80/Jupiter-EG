@@ -6,6 +6,7 @@ import Cart from '@/views/pages/Cart/cart'
 import Product from '@/views/pages/Product/product'
 import Games from '@/views/pages/Games/games'
 import Error from '@/views/pages/404/404'
+import Profile from '@/views/pages/Profile/profile'
 import Register from '@/views/pages/Auth/register'
 import Verification from '@/views/pages/Auth/verification'
 import ForgetPassword from '@/views/pages/Auth/forget_password'
@@ -50,6 +51,11 @@ const routes = [
     path: '/cart',
     name: 'Cart',
     component: Cart
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: Profile
   },
   {
     path: '/games',

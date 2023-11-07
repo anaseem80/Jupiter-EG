@@ -18,6 +18,20 @@ const mutations = {
     GET_SITE_SETTINGS(state, settings){
       state.settings = settings
     },
+    POPULAR_KEYWEODS_DATA(state, keywords){
+      state.keywords = keywords
+    },
+    RECENT_SEARCH(state, recent_keywords){
+      var existsItem = state.recent_keywords.find(keyword => keyword == recent_keywords)
+      if(existsItem){
+        return
+      }else{
+        state.recent_keywords.push(recent_keywords)
+      }
+    },
+    EMPTY_RECENT_SEARCH(state){
+      state.recent_keywords = []
+    },
     SET_AUTHENTICATED(state, isAuthenticated) {
       state.isAuthenticated = isAuthenticated;
     },

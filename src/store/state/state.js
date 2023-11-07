@@ -9,6 +9,8 @@ export const state = {
     RemovedProduct: null,
     ProductsCategoryProducts: null,
     cart:null,
+    keywords:null,
+    recent_keywords: [],
     product:null,
     wheelpoints:null,
     color:null,

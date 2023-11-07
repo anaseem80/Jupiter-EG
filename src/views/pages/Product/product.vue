@@ -113,7 +113,7 @@
                                                     <ul>
                                                         <li 
                                                             v-for="(size,index) in product.product.attribute_for"
-                                                            @click="sizeColorChange($event.target, size)"
+                                                            @click="sizeColorChange($event.target, size, product.product)"
                                                             class="size"
                                                             :data-color="size.size_name_en == null ? size.size.name_en : size.size_name_en +product.product.id"
                                                             :data-id="product.product.id"
@@ -140,7 +140,7 @@
                                                     :id="colorAttr.size_name_en+product.product.id"
                                                     >
                                                         <li 
-                                                            @click="onColorChange($event.target,color,product.product.id)"
+                                                            @click="onColorChange($event.target,color,product.product.id, product)"
                                                             :data-src="color.image"
                                                             :data-src-hover="color.image"
                                                             :data-old="product.product.price"
@@ -171,7 +171,7 @@
                                                     }"
                                                     >
                                                         <li 
-                                                            @click="onColorChange($event.target,color,product.product.id)"
+                                                            @click="onColorChange($event.target,color,product.product.id, product)"
                                                             :data-src="color.image"
                                                             :data-src-hover="color.image"
                                                             :data-old="product.product.price"
@@ -197,7 +197,7 @@
                                                         <li 
                                                             v-for="(size,index) in product.product.attribute_for"
                                                             class="size"
-                                                            @click="sizeColorChange($event.target, size)"
+                                                            @click="sizeColorChange($event.target, size, product.product)"
                                                             :data-color="size.size_name_en == null ? size.size.name_en : size.size_name_en +product.product.id"
                                                             :data-id="product.product.id"
                                                             :class="{ 'active': index === 0 }"
@@ -218,20 +218,26 @@
                                                 <input class="qty-input" type="text" name="ec_qtybtn" v-model="quantity" disabled/>
                                                 <div class="inc ec_qtybtn" @click="increaseDecreaseQuantity('+')">+</div>
                                             </div>
-                                            <div class="ec-single-cart" v-if="product.product.quantity != 0 && userData.client_type !== 'wholesale'">
+                                            <!-- product.product.quantity != 0 -->
+                                            <div class="ec-single-cart" v-if="userData && userData.client_type !== 'wholesale'">
                                                 <button class="btn btn-primary" @click="onAddProduct(product.product)" :disabled="isLoading('Add_Product_To_Cart'+product.product.id)">
                                                     Add To Cart
                                                     <img src="@/assets/images/common/loader-2.gif" width="20" class="ms-3" v-if="isLoading('Add_Product_To_Cart'+product.product.id)">
                                                 </button>
                                             </div>
-                                            <div class="ec-single-cart" v-if="userData.client_type == 'wholesale'">
+                                            <div class="ec-single-cart" v-if="!userData">
+                                                <button class="btn btn-primary" @click="onAddProduct(product.product)" :disabled="isLoading('Add_Product_To_Cart'+product.product.id)">
+                                                    Add To Cart
+                                                    <img src="@/assets/images/common/loader-2.gif" width="20" class="ms-3" v-if="isLoading('Add_Product_To_Cart'+product.product.id)">
+                                                </button>
+                                            </div>
+                                            <div class="ec-single-cart" v-if="userData && userData.client_type == 'wholesale'">
                                                 <button class="btn btn-success">
                                                     <a :href="whatsappLink" @click="whatsappLinkA(product.product)" class="text-light" target="_blank">
                                                         <i class="ecicon eci-whatsapp me-2 fs-6"></i> Price Preview
                                                     </a>
                                                 </button>
                                             </div>
-                                            
                                             <div class="sold-out position-absolute z-2 w-100" v-if="product.product.quantity == 0">
                                                 <img src="@/assets/images/common/Sold-Out-Transparent.png"/>
                                             </div>
@@ -356,27 +362,7 @@
     <!-- End Single product -->
 
     <!-- Related Product Start -->
-    <section class="section ec-releted-product section-space-p" v-if="product">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <div class="section-title">
-                        <h2 class="ec-bg-title">Related products</h2>
-                        <h2 class="ec-title">Related products</h2>
-                        <p class="sub-title">Browse The Collection of Top Products</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row margin-minus-b-30">
-                <!-- Related Product Content -->
-                <products-component 
-                :productObject="product.related_products" 
-                :title="'related-products'" 
-                :class="'col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6 ec-product-content'">
-                </products-component>
-            </div>
-        </div>
-    </section>
+    <related-products :product="product"/>
     <!-- Related Product end -->
 </template>
 <script>
@@ -411,7 +397,7 @@ export default {
             return window.location.href;
         },
         whatsappLink() {
-            this.loadProduct(this.product.product)
+            this.loadProduct(this.product.product.minimum_order)
             this.currentProduct = this.product.product
             const productName = encodeURIComponent(this.product.product['name']);
             const quantityText = encodeURIComponent(`and I need for ${this.quantity} Quantity, `);
@@ -425,43 +411,20 @@ export default {
     },
     methods:{
         ...mapActions(['GetProductData']),
+        setQuantityForUser() {
+            if (this.isAuthenticated.user && this.isAuthenticated.user.client_type === 'wholesale') {
+                this.quantity = this.product.product.minimum_order || 1;
+            } else {
+                // set to default or other logic for non-wholesale users
+            }
+        },
         async fetchProduct() {
             await this.GetProductData({id: this.$route.params.id});
-            // this.loadProduct();
         },
-
         zoomImage(e){
             $('.zoom-image-hover').zoom();
         },
-        increaseDecreaseQuantity(sign){
-            const clientType = this.isAuthenticated.user.client_type;
-            const minimumOrder = this.product.product.minimum_order || 1;
-            const maxQuantityAvailable = this.product.product['quantity'];
-
-            if (sign === '-') {
-                // Decrease the quantity with consideration for the minimum order for wholesalers
-                if (clientType === 'wholesale' && this.quantity > minimumOrder) {
-                this.quantity--;
-                } else if (clientType !== 'wholesale' && this.quantity > 1) {
-                this.quantity--;
-                }
-            } else if (sign === '+') {
-                // Increase the quantity with consideration for the maximum quantity available
-                if (this.quantity < maxQuantityAvailable) {
-                // If the user is a wholesale client, they may be able to order more than retail clients
-                const increment = clientType === 'wholesale' ? Math.max(minimumOrder, 1) : 1;
-                // Ensure the quantity does not exceed maxQuantityAvailable
-                this.quantity = Math.min(this.quantity + increment, maxQuantityAvailable);
-                } else {
-                this.notification('info', {
-                    message: "Error",
-                    description: 'لقد وصلت للحد الأقصي لكمية المنتج', // "You have reached the maximum product quantity limit"
-                });
-                }
-            }
-        },
-        sizeColorChange(e, size){
-            const product = this.currentProduct
+        sizeColorChange(e, size, product){
             if(product.type_attribute == 'both'){
                 this.size = size.size_name_en
             }
@@ -482,8 +445,8 @@ export default {
                 $this.addClass('active').siblings().removeClass('active');
             }
         },
-        onColorChange(thisObj,color,id){
-            const product = this.currentProduct
+        onColorChange(thisObj,color,id, product){
+            console.log(product)
             if(product.type_attribute == 'colors'){
                 this.color = color.color.name_en
             }
@@ -527,8 +490,42 @@ export default {
             const timeRemaining = Math.max(discountEndTimestamp - currentTimestamp, 0);
             return timeRemaining;
         },
-        loadProduct(product) {
-            this.quantity = product.minimum_order || 1;
+        loadProduct(minimum_order) {
+            // console.log(parseInt(minimum_order))
+            // this.quantity = null
+            // if (this.isAuthenticated.user && this.isAuthenticated.user.client_type === 'wholesale') {
+            //     if(this.product){
+            //         console.log(this.product)
+            //         this.quantity = this.product.product.minimum_order;
+            //     }
+            // }
+        },
+        increaseDecreaseQuantity(sign){
+            const clientType = this.isAuthenticated.user ? this.isAuthenticated.user.client_type : null;
+            const minimumOrder = this.product.product.minimum_order || 1;
+            const maxQuantityAvailable = this.product.product['quantity'];
+
+            if (sign === '-') {
+                if (clientType && clientType === 'wholesale' && this.quantity > minimumOrder) {
+                    this.quantity--;
+                } else if (clientType && clientType !== 'wholesale' && this.quantity > 1) {
+                    this.quantity--;
+                } else if(this.quantity == 1){
+                    this.quantity = 1;
+                }else if(this.quantity == minimumOrder && clientType === 'wholesale'){
+                    this.quantity = minimumOrder;
+                }
+                else{
+                    this.quantity--;
+                }
+          
+            } else if (sign === '+') {
+                if (this.quantity <  maxQuantityAvailable) {
+                    this.quantity++
+                } else {
+                    this.quantity = maxQuantityAvailable
+                }
+            }
         },
         whatsappLinkA(product){
             if(product.type_attribute == 'both'){
@@ -558,10 +555,21 @@ export default {
     mounted() {
         this.fetchProduct();
     },
+    created() {
+        this.setQuantityForUser();
+    },
     setup() {
       return {
         modules: [Navigation],
       };
+    },
+    watch: {
+        '$route': 'setQuantityForUser',
+        'product.product.minimum_order': function(newVal, oldVal) {
+            if (this.isAuthenticated.user && this.isAuthenticated.user.client_type === 'wholesale') {
+                this.quantity = newVal || 1;
+            }
+        }
     },
 }
 </script>

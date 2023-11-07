@@ -29,7 +29,7 @@
                                         <input
                                             type="text"
                                             ref="otpInput"
-                                            class="form-control mt-2 mb-0 bg-light"
+                                            class="form-control mt-2 mb-0 otp-field border-2"
                                             maxlength="1"
                                             min="0"
                                             v-model="otpDigits[index]"

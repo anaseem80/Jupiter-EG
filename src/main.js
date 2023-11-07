@@ -12,6 +12,7 @@ import ProductsHome from '@/components/Home/products'
 import LeftcategoryBar from '@/components/Main/LeftcategoryBar'
 import FilterSide from '@/components/Main/FilterSide'
 import Cart from '@/components/Main/cart'
+import RelatedProducts from '@/components/Main/related-products'
 import Search from '@/components/Search/search'
 import Loader from '@/components/Main/loader'
 import VueCountdown from '@chenfengyuan/vue-countdown';
@@ -43,6 +44,7 @@ app.component('filter-side',FilterSide)
 app.component('wheel-spin',wheelSpin)
 app.component('cart',Cart)
 app.component('search',Search)
+app.component('related-products',RelatedProducts)
 app.component('products-component',ProductsHome)
 app.component('category-bar',LeftcategoryBar)
 app.component('banner',Banner)
