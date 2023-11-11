@@ -2987,7 +2987,9 @@ textarea.form-control.is-valid {
 .is-invalid ~ .invalid-tooltip {
   display: block;
 }
-
+.email-wrap{
+  word-wrap: break-word;
+}
 .form-control.is-invalid {
   border-color: #fb1313;
   padding-right: 36px;

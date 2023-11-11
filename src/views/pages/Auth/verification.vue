@@ -13,7 +13,7 @@
                     <div class="ec-register-container">
                         <div class="ec-register-form">
                             <div class="text-center">
-                                <p class="text-dark">We have sent the OTP to <span class="fw-bold">{{ otpEmail }}</span> please check your DM.</p>
+                                <p class="text-dark">We have sent the OTP to <span class="fw-bold email-wrap">{{ otpEmail }}</span> please check your DM.</p>
                                 <img src="@/assets/images/common/otp.gif" class="rounded-circle" width="350" alt="">
                             </div>
                                 <Form

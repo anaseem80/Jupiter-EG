@@ -18,6 +18,7 @@
                                     class="form-control"
                                     name="name"
                                     id="name"
+                                    v-model="isAuthenticated.user.name"
                                     placeholder="Enter your new name"
                                     :class="{ 'is-invalid': errors.name }"
                                 />
@@ -29,6 +30,7 @@
                                     class="form-control"
                                     name="email"
                                     id="email"
+                                    v-model="isAuthenticated.user.email"
                                     placeholder="Enter your new email"
                                     :class="{ 'is-invalid': errors.email }"
                                 />
@@ -61,6 +63,11 @@ export default {
         },
         isLoading(actionName) {
             return this.$store.state.Loading[actionName] || false;
+        },
+    },
+    computed: {
+        isAuthenticated() {
+            return this.$store.state.isAuthenticated;
         },
     },
     setup(){
