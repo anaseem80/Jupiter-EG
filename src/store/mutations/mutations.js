@@ -18,6 +18,12 @@ const mutations = {
     GET_SITE_SETTINGS(state, settings){
       state.settings = settings
     },
+    GET_USER_ADDRESSESS(state, addresses){
+      state.addresses = addresses
+    },
+    GET_COUNTRIES(state, countries){
+      state.countries = countries
+    },
     POPULAR_KEYWEODS_DATA(state, keywords){
       state.keywords = keywords
     },

@@ -11,6 +11,7 @@ function fadeLoader(){
     })
 }
 
+
 const actions = {
 
     UserLogin({commit, state, dispatch}, {User , toast}){
@@ -128,34 +129,30 @@ const actions = {
         })
     },
 
-    UpdateUserInfo({commit, state}, {email, emailBOOL}){
+    UpdateUserInfo({commit, state}, data){
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
         commit("LOADING_API",{name: 'UpdateUserInfo', status: true})
-        axios.post(state.api_route + "updateUserInfo?lang=en", {
-            email:email,
-            name: "ahmed",
-        },{
+        axios.post(state.api_route + "updateUserInfo?lang=en",data,{
             headers:{
                 Authorization: 'Bearer ' + actualToken
             }
         })
         .then((response) => {
         if(response.data.status_code == 200){
-            setTimeout(() => {
-                commit("LOADING_API",{name: 'UpdateUserInfo', status: false})
-                console.log(response.data)
-                if(response.data.status_code == 200){
-                    notification['success']({
-                        message: "Success",
-                        description: response.data.message,
-                    });
-                }else{
-                    notification['info']({
-                        message: "Error",
-                        description: response.data.message,
-                    });
-                }
-            }, 1000);
+            commit("LOADING_API",{name: 'UpdateUserInfo', status: false})
+            console.log(response.data)
+            if(response.data.status_code == 200){
+                commit("SET_AUTHENTICATED", {bool: state.isAuthenticated.bool, token: state.isAuthenticated.token, user: response.data.data});
+                notification['success']({
+                    message: "Success",
+                    description: response.data.message,
+                });
+            }else{
+                notification['info']({
+                    message: "Error",
+                    description: response.data.message,
+                });
+            }
         }
         })
         .catch((error) => {
@@ -164,6 +161,40 @@ const actions = {
                 description: error.response.data.message,
             });
             commit("LOADING_API",{name: 'UpdateUserInfo', status: false})
+        })
+    },
+
+    UpdateUserPassword({commit, state}, data){
+        var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
+        commit("LOADING_API",{name: 'UpdateUserPassword', status: true})
+        axios.post(state.api_route + "changePassword",data,{
+            headers:{
+                Authorization: 'Bearer ' + actualToken
+            }
+        })
+        .then((response) => {
+        if(response.data.status_code == 200){
+            commit("LOADING_API",{name: 'UpdateUserPassword', status: false})
+            console.log(response.data)
+            if(response.data.status_code == 200){
+                notification['success']({
+                    message: "Success",
+                    description: response.data.message,
+                });
+            }else{
+                notification['info']({
+                    message: "Error",
+                    description: response.data.message,
+                });
+            }
+        }
+        })
+        .catch((error) => {
+            notification['info']({
+                message: "Error",
+                description: error.response.data.message,
+            });
+            commit("LOADING_API",{name: 'UpdateUserPassword', status: false})
         })
     },
 
@@ -258,6 +289,13 @@ const actions = {
     Logout({commit, state}, {token, toast}){
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
         commit("LOADING_API",{name: 'Logout', status: true})
+        VueCookies.remove('UserIDToken')
+        VueCookies.remove('UserToken')
+        VueCookies.remove('UserData')
+        commit("CART_DATA",null)
+        commit("SET_AUTHENTICATED", {bool: false, token: null, user: null});
+        commit("USER_DATA", null)
+        commit("WHEEL_POINTS",null)
         axios.post(state.api_route + "logout?lang=en", null,{
             headers:{
                 Authorization: 'Bearer ' + actualToken
@@ -501,9 +539,7 @@ const actions = {
                 commit("GET_BANNERS",response.data.banners)
             }
         })
-        .catch(error=>{
-          console.log(error)
-        })
+        .catch(error=>{})
     },
 
     GetProductsByCurrentCategory({commit, state},{page, route, keyword}){
@@ -521,6 +557,90 @@ const actions = {
           console.log(error)
           commit("LOADING_API",{name: 'GetProductsByCurrentCategory', status: false})
           fadeLoader()
+        })
+    },
+
+    
+    GetUserAddresses({commit, state}){
+        var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
+        commit("LOADING_API",{name: 'UserData', status: true})
+        axios.get(state.api_route + `user-addresses`,{
+            headers:{
+                Authorization: 'Bearer ' + actualToken
+            }
+        })
+        .then(response=>{
+            if(response.data.status_code == 200){
+                commit("LOADING_API",{name: 'UserData', status: false})
+                commit("GET_USER_ADDRESSESS",response.data.userAddresses)
+            }
+        })
+        .catch(error=>{
+          commit("LOADING_API",{name: 'UserData', status: false})
+        })
+    },
+
+    AddAddress({commit, state}, {Address, mode}){
+        var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
+        const method = mode == 'add' ? 'post' : 'put'
+        const endpoint = mode == 'add' ? 'store' : 'update'
+        commit("LOADING_API",{name: 'AddAddress', status: true})
+        axios[method](state.api_route + `user-addresses/${endpoint}`,Address,{
+            headers:{
+                Authorization: 'Bearer ' + actualToken
+            }
+        })
+        .then(response=>{
+            if(response.data.status_code == 200){
+                commit("LOADING_API",{name: 'AddAddress', status: false})
+                $(".dismiss-add-address")[0].click()
+                notification['success']({
+                    message: "Success",
+                    description: response.data.message,
+                });
+                var index = state.addresses.findIndex(item => item.id == response.data.userAddress.id);
+                if (index !== -1) {
+                    state.addresses[index] = response.data.userAddress;
+                    console.log("Updated Address:", state.addresses[index]);
+                } else {
+                    state.addresses.push(response.data.userAddress);
+                }            
+            }
+        })
+        .catch(error=>{
+          commit("LOADING_API",{name: 'AddAddress', status: false})
+            notification['success']({
+                message: "Success",
+                description: error.response.data.message,
+            });
+        })
+    },
+    
+    DeleteAddress({commit, state}, address){
+        var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
+        commit("LOADING_API",{name: 'DeleteAddress'+address.id, status: true})
+        axios.delete(state.api_route + `user-addresses/destroy/`+address.id,{
+            headers:{
+                Authorization: 'Bearer ' + actualToken
+            }
+        })
+        .then(response=>{
+            if(response.data.status_code == 200){
+                notification['success']({
+                    message: "Success",
+                    description: response.data.message,
+                });
+                commit("LOADING_API",{name: 'DeleteAddress'+address.id, status: false})
+                var existingAddress = state.addresses.find(item=> item.id == address.id)
+                state.addresses.splice(existingAddress, 1)
+            }
+        })
+        .catch(error=>{
+            commit("LOADING_API",{name: 'DeleteAddress'+address.id, status: false})
+            notification['success']({
+                message: "Success",
+                description: error.response.data.message,
+            });
         })
     },
     
@@ -553,6 +673,17 @@ const actions = {
         })
         .catch(error=>{
           console.log(error)
+        })
+    },
+
+    GetCountries({commit, state}){
+        axios.get(state.api_route + "countries")
+        .then(response=>{
+            if(response.data.status_code == 200){
+                commit("GET_COUNTRIES",response.data.countries)
+            }
+        })
+        .catch(error=>{
         })
     },
 
@@ -619,7 +750,10 @@ const actions = {
             }
         })
         .catch(error=>{
-          console.log(error)
+            notification['warning']({
+                message: "error",
+                description: error.response.data.message,
+            });
         })
     },
 
@@ -637,6 +771,26 @@ const actions = {
         })
         .catch(error=>{
           console.log(error)
+        })
+    },
+
+    SortedProducts({commit, state}, sorted){
+        commit("LOADING_API",{name: 'GetProductsByCurrentCategory', status: true})
+        var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
+        axios.get(state.api_route + "sorted-products?lang=en",{
+            headers:{
+                Authorization: 'Bearer ' + actualToken
+            },
+            params:sorted,
+        })
+        .then(response=>{
+            if(response.data.status_code == 200){
+                commit("LOADING_API",{name: 'GetProductsByCurrentCategory', status: false})
+                commit("CURRENT_PRODUCTS_CATEGORY_PRODUCTS_DATA",response.data)
+            }
+        })
+        .catch(error=>{
+            commit("LOADING_API",{name: 'GetProductsByCurrentCategory', status: false})
         })
     },
 

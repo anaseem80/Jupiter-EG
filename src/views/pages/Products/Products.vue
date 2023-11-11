@@ -1,13 +1,12 @@
 <template lang="">
-    <transition name="fade" mode="out-in">
+    <!-- <transition name="fade" mode="out-in">
         <loader v-if="isLoading('GetProductsByCurrentCategory')" key="loader"></loader>
-    </transition>
+    </transition> -->
     <breadcrumb :title="$route.name" :route="$route.name"/>
     <section class="ec-page-content section-space-p" v-if="ProductsCategoryProducts">
         <div class="container">
             <div class="row">
                 <div class="ec-shop-rightside col-lg-9 order-lg-last col-md-12 order-md-first margin-b-30">
-                    <!-- Shop Top Start -->
                     <div class="ec-pro-list-top d-flex">
                         <div class="col-md-6 ec-grid-list">
                             <div class="ec-gl-btn">
@@ -17,10 +16,13 @@
                                         class="svg_img gl_svg" alt="" /></button>
                             </div>
                         </div>
-                        <div class="col-md-6 ec-sort-select">
+                        <div class="col-md-6 ec-sort-select" v-if="$route.name == 'Sub category'">
                             <span class="sort-by">Sort by</span>
                             <div class="ec-select-inner">
-                                <select name="ec-select" id="ec-select">
+                                <select 
+                                @change="SortedProducts($event.target.value)"
+                                name="ec-select" id="ec-select"
+                                >
                                     <option selected disabled>Position</option>
                                     <option value="1">Highest in demand</option>
                                     <option value="2">Price, low to high</option>
@@ -35,7 +37,12 @@
 
                     <!-- Shop content Start -->
                     <div class="shop-pro-content">
-                        <div class="shop-pro-inner">
+                        <div class="shop-pro-inner position-relative">
+                            <transition name="fade" mode="out-in">
+                                <div class="main-loader position-absolute h-100 w-100" v-if="isLoading('GetProductsByCurrentCategory')">
+                                    <loading-outlined class="ms-3 fs-4"/>
+                                </div>
+                            </transition>
                             <div class="row">
                                 <h4 v-if="ProductsCategoryProducts.products.data.length == 0" class="text-center mb-3">No Products</h4>
                                 <products-component 
@@ -72,6 +79,7 @@
 </template>
 <script>
 import { mapActions, mapState } from "vuex";
+import {LoadingOutlined} from '@ant-design/icons-vue';
 
 export default {
     props: ["apiEndpoint", "id"],
@@ -80,6 +88,9 @@ export default {
             current:1,
         }
     },
+    components: {
+        LoadingOutlined
+    },
     computed: {
         ...mapState([`ProductsCategoryProducts`,'route']),
     },
@@ -87,7 +98,7 @@ export default {
         $(window).scrollTop(0); 
     },
     methods:{
-        ...mapActions(['GetProductsByCurrentCategory']),
+        ...mapActions(['GetProductsByCurrentCategory','SortedProducts']),
         async FetchProductsByCurrentCategory(page) {
             await this.GetProductsByCurrentCategory({page:page, route:this.apiEndpoint, keyword: this.$route.params.keyword});
         },
@@ -95,11 +106,17 @@ export default {
             return this.$store.state.Loading[actionName] || false;
         },
         Next(url){
-            console.log(url)
             if(url!==null){
                 console.log(url.split("/").reverse()[0].split("?").reverse()[0])
                 this.FetchProductsByCurrentCategory(url.split("/").reverse()[0].split("?").reverse()[0],this.$route.params.id)
             }
+        },
+        SortedProducts(selected){
+            const sorted = {
+                sort_type: selected,
+                sub_category_id: this.$route.params.id
+            }
+            this.$store.dispatch("SortedProducts", sorted)
         },
         showList(){
             $(".btn-list").addClass("active").siblings().removeClass("active")
@@ -109,6 +126,7 @@ export default {
             $listView.addClass('width-100');
         },
         onPageChange(newPage) {
+            $(window).scrollTop(0); 
             this.FetchProductsByCurrentCategory('page='+newPage,this.$route.params.id)
         },
         showGrid(){

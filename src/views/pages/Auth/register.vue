@@ -48,7 +48,7 @@
                                         class="form-control mt-2 mb-0 border"
                                         :class="{ 'is-invalid': errors.client_type }"
                                     >
-                                        <option selected disabled>Select</option>
+                                        <option value="" selected disabled>Select Type</option>
                                         <option value="user">User</option>
                                         <option value="wholesale">Wholesale</option>
                                         <option value="retail">Retail</option>

@@ -19,6 +19,8 @@ import VueCountdown from '@chenfengyuan/vue-countdown';
 import AddReview from '@/components/Main/add-review';
 import MobileMenu from '@/components/Main/mobile-menu';
 import SocialLinks from '@/components/Main/social-links';
+import UserSettings from '@/components/Profile/settings';
+import UserAddress from '@/components/Profile/address';
 import wheelSpin from '@/components/wheel-spin/wheel-spin';
 import breadcrumb from '@/components/breadcrumb/breadcrumb';
 import VueLazyload from 'vue-lazyload'
@@ -26,7 +28,12 @@ import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/reset.css';
 const app = createApp(App)
 
+/* Dialogs Compontents */
+import InfoDialog from '@/components/Dialogs/change-info';
+import PasswordDialog from '@/components/Dialogs/password-change';
+import AddAddress from '@/components/Dialogs/add-address';
 
+/* Dialogs Compontents */
 app.config.warnHandler = function (msg, vm, trace) {
     return null
 }
@@ -51,11 +58,18 @@ app.component('banner',Banner)
 app.component('add-review',AddReview)
 app.component('loader',Loader)
 app.component('mobile-menu',MobileMenu)
+app.component('info-dialog',InfoDialog)
+app.component('password-dialog',PasswordDialog)
+app.component('user-settings',UserSettings)
+app.component('user-address',UserAddress)
+app.component('add-address',AddAddress)
 app.component('social-links',SocialLinks)
 app.component('s-button',SubmitButton)
 app.component('breadcrumb',breadcrumb)
 
 /* Header Compontents */
+
+
 
 /* Stylesheet */
 import '@/assets/css/plugins/swiper-bundle.min.css'

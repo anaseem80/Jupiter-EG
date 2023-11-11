@@ -5,6 +5,8 @@ export const state = {
     AddedProductToCart: {},
     selectedAttribute: {},
     userData:null,
+    addresses:null,
+    countries:null,
     settings:null,
     RemovedProduct: null,
     ProductsCategoryProducts: null,

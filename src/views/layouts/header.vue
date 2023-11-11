@@ -428,6 +428,19 @@ export default {
     this.fetchUserInformation();
     this.fetchGetSiteSettings();
     },
+    created(){
+        if(this.UserIDToken == null){
+            if(this.$store.state.isAuthenticated.bool){
+                VueCookies.remove('UserIDToken')
+                VueCookies.remove('UserToken')
+                VueCookies.remove('UserData')
+                this.$store.commit("CART_DATA",null)
+                this.$store.commit("SET_AUTHENTICATED", {bool: false, token: null, user: null});
+                this.$store.commit("USER_DATA", null)
+                this.$store.commit("WHEEL_POINTS",null)
+            }
+        }
+    }
 }
 </script>
 <style lang="">
