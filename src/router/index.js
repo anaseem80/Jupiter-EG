@@ -2,6 +2,7 @@ import {createRouter, createWebHistory} from 'vue-router';
 import Login from '@/views/pages/Auth/login'
 import Home from '@/views/pages/Home/index'
 import Products from '@/views/pages/Products/Products'
+import OrderDetails from '@/views/pages/Order/order-details'
 import Cart from '@/views/pages/Cart/cart'
 import Product from '@/views/pages/Product/product'
 import Games from '@/views/pages/Games/games'
@@ -66,6 +67,11 @@ const routes = [
     path: "/product/:id",
     name: "product",
     component: Product,
+  },
+  {
+    path: "/order/:id",
+    name: "order",
+    component: OrderDetails,
   },
   {
     path: "/last",

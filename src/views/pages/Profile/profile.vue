@@ -29,6 +29,15 @@
                                             Address
                                         </a>
                                         </li>
+                                        <li class="cat-item">
+                                        <a 
+                                        class="cat-link" 
+                                        data-bs-toggle="tab" 
+                                        href="#tab-cat-orders"
+                                        >
+                                            Orders
+                                        </a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -46,6 +55,7 @@
                             <div class="row tab-content">
                                 <user-settings />
                                 <user-address />
+                                <user-orders />
                             </div>
                         </div>
                     </div>

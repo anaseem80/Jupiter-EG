@@ -63,7 +63,7 @@
                                 <button class="dropdown-toggle" data-bs-toggle="dropdown"><img
                                         src="@/assets/images/icons/user.svg" class="svg_img header_svg" alt="" /></button>
                                 <ul class="dropdown-menu dropdown-menu-right">
-                                    <li><a class="dropdown-item" href="checkout.html">Checkout</a></li>
+                                    <li v-if="isAuthenticated.bool"><router-link class="dropdown-item" to="/profile">Profile</router-link></li>
                                     <li v-if="!isAuthenticated.bool"><router-link class="dropdown-item" to="/login">Login</router-link></li>
                                         <li v-if="isAuthenticated.bool">
                                             <button class="dropdown-item" @click="Logout" :disabled="isLoading('Logout')">
@@ -142,7 +142,7 @@
                                     <button class="dropdown-toggle" data-bs-toggle="dropdown"><img
                                             src="@/assets/images/icons/user.svg" class="svg_img header_svg" alt="" /></button>
                                     <ul class="dropdown-menu dropdown-menu-right">
-                                        <li><a class="dropdown-item" href="checkout.html">Checkout</a></li>
+                                        <li v-if="isAuthenticated.bool"><router-link class="dropdown-item" to="/profile">Profile</router-link></li>
                                         <li v-if="!isAuthenticated.bool"><router-link class="dropdown-item" to="/login">Login</router-link></li>
                                         <li v-if="isAuthenticated.bool">
                                             <button class="dropdown-item" @click="Logout" :disabled="isLoading('Logout')">

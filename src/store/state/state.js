@@ -7,6 +7,8 @@ export const state = {
     userData:null,
     addresses:null,
     countries:null,
+    orders:null,
+    order:null,
     settings:null,
     RemovedProduct: null,
     ProductsCategoryProducts: null,

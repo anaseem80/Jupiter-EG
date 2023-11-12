@@ -579,6 +579,44 @@ const actions = {
           commit("LOADING_API",{name: 'UserData', status: false})
         })
     },
+    
+    GetUserOrders({commit, state}){
+        var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
+        commit("LOADING_API",{name: 'UserData', status: true})
+        axios.get(state.api_route + `orders`,{
+            headers:{
+                Authorization: 'Bearer ' + actualToken
+            }
+        })
+        .then(response=>{
+            if(response.data.status_code == 200){
+                commit("LOADING_API",{name: 'UserData', status: false})
+                commit("GET_USER_ORDERS",response.data.orders)
+            }
+        })
+        .catch(error=>{
+          commit("LOADING_API",{name: 'UserData', status: false})
+        })
+    },
+
+    GetUserOrder({commit, state}, id){
+        var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
+        commit("LOADING_API",{name: 'GetUserOrder', status: true})
+        axios.get(state.api_route + `orders/detalis/${id}`,{
+            headers:{
+                Authorization: 'Bearer ' + actualToken
+            }
+        })
+        .then(response=>{
+            if(response.data.status_code == 200){
+                commit("LOADING_API",{name: 'GetUserOrder', status: false})
+                commit("GET_USER_ORDER",response.data.order)
+            }
+        })
+        .catch(error=>{
+          commit("LOADING_API",{name: 'GetUserOrder', status: false})
+        })
+    },
 
     AddAddress({commit, state}, {Address, mode}){
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");

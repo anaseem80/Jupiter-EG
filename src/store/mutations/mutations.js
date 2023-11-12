@@ -21,6 +21,12 @@ const mutations = {
     GET_USER_ADDRESSESS(state, addresses){
       state.addresses = addresses
     },
+    GET_USER_ORDERS(state, orders){
+      state.orders = orders
+    },
+    GET_USER_ORDER(state, order){
+      state.order = order
+    },
     GET_COUNTRIES(state, countries){
       state.countries = countries
     },

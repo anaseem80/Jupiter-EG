@@ -20,6 +20,7 @@ import AddReview from '@/components/Main/add-review';
 import MobileMenu from '@/components/Main/mobile-menu';
 import SocialLinks from '@/components/Main/social-links';
 import UserSettings from '@/components/Profile/settings';
+import Orders from '@/components/Profile/orders';
 import UserAddress from '@/components/Profile/address';
 import wheelSpin from '@/components/wheel-spin/wheel-spin';
 import breadcrumb from '@/components/breadcrumb/breadcrumb';
@@ -63,6 +64,7 @@ app.component('password-dialog',PasswordDialog)
 app.component('user-settings',UserSettings)
 app.component('user-address',UserAddress)
 app.component('add-address',AddAddress)
+app.component('user-orders',Orders)
 app.component('social-links',SocialLinks)
 app.component('s-button',SubmitButton)
 app.component('breadcrumb',breadcrumb)

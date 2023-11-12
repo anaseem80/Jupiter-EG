@@ -21,8 +21,25 @@
                             src="@/assets/images/icons/quickview.svg" class="svg_img pro_svg"
                             alt="" /></a>
                     <div class="ec-pro-actions">
+                        <!-- productsSortedAdmin.quantity != 0 -->
                         <button 
-                            v-if="productsSortedAdmin.quantity != 0"
+                            v-if="userData && userData.client_type !== 'wholesale'"
+                            title="Add To Cart" 
+                            class="add-to-cart" 
+                            :disable="isLoading('Add_Product_To_Cart'+productsSortedAdmin.id)" 
+                            @click="onAddProduct(productsSortedAdmin)"
+                            :class="{
+                                'low-fade': isLoading('Add_Product_To_Cart'+productsSortedAdmin.id)
+                            }"
+                            >
+                        >
+                        <img
+                            src="@/assets/images/icons/cart.svg" class="svg_img pro_svg"
+                            alt="" /> 
+                            <loading-outlined class="fs-4 loader-small-button" v-if="isLoading('Add_Product_To_Cart'+productsSortedAdmin.id)"/>
+                        </button>
+                        <button 
+                            v-if="!userData"
                             title="Add To Cart" 
                             class="add-to-cart" 
                             :disable="isLoading('Add_Product_To_Cart'+productsSortedAdmin.id)" 
@@ -173,7 +190,7 @@ import {LoadingOutlined} from '@ant-design/icons-vue';
 export default {
     props:['productObject','title','class'],
     computed: {
-        ...mapState(['route']),
+        ...mapState(['route','userData']),
         ...mapGetters(['filterAttribute']),
         
     },
