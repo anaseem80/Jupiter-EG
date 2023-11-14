@@ -73,7 +73,7 @@
                                                         Clear Cart
                                                         <loading-outlined class="ms-2 fs-5" v-if="isLoading('Clear_Cart')"/>
                                                     </button>
-                                                    <button class="btn btn-primary">Check Out</button>
+                                                    <router-link to="/checkout" ><button class="btn btn-primary">Check Out</button></router-link>
                                                 </div>
                                             </div>
                                         </div>
@@ -101,20 +101,7 @@
                                         </div>
                                         <div>
                                             <span class="text-left">Total Discount</span>
-                                            <span class="text-right">{{cart.cart_prices.total_discount}}</span>
-                                        </div>
-                                        <div>
-                                            <span class="text-left">Coupan Discount</span>
-                                            <span class="text-right"><a class="ec-cart-coupan">Apply Coupan</a></span>
-                                        </div>
-                                        <div class="ec-cart-coupan-content">
-                                            <form class="ec-cart-coupan-form" name="ec-cart-coupan-form" method="post"
-                                                action="#">
-                                                <input class="ec-coupan" type="text" required=""
-                                                    placeholder="Enter Your Coupan Code" name="ec-coupan" value="">
-                                                <button class="ec-coupan-btn button btn-primary" type="submit"
-                                                    name="subscribe" value="">Apply</button>
-                                            </form>
+                                            <span class="text-right">{{totalDiscount}}</span>
                                         </div>
                                         <div class="ec-cart-summary-total">
                                             <span class="text-left">Total Amount</span>
@@ -135,14 +122,22 @@
 <script>
 import { mapActions, mapState, mapGetters } from "vuex";
 import {LoadingOutlined} from '@ant-design/icons-vue';
-
+import { router } from "@/router";
 export default {
     computed: {
         ...mapState(['cart','route']),
         ...mapGetters(['subtotal','totalDiscount','couponDiscount','totalAmount']),
+        isAuthenticated() {
+            return this.$store.state.isAuthenticated;
+        },
     },
     components: {
         LoadingOutlined
+    },
+    created(){
+        if(this.isAuthenticated.user == null){
+           router.push("/");
+        }
     },
     methods:{
         ...mapActions(['GetCartData']),

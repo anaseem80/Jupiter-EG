@@ -21,6 +21,9 @@ const mutations = {
     GET_USER_ADDRESSESS(state, addresses){
       state.addresses = addresses
     },
+    APPLY_COUPON(state, couponDetails) {
+      state.couponDetails = couponDetails
+    },
     GET_USER_ORDERS(state, orders){
       state.orders = orders
     },
@@ -70,6 +73,12 @@ const mutations = {
     },
     RESET_PASSWORD(state, password){
       state.ResetPassword = password
+    },
+    COUPON_FLAG(state, coupon_flag){
+      state.coupon_flag = coupon_flag
+    },
+    COUPON_FLAG_2(state){
+      state.coupon_flag_2 = !state.coupon_flag_2
     },
     LOGOUT(state, token){
       state.Logout = token

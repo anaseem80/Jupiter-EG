@@ -324,10 +324,29 @@ const actions = {
         }
         })
         .catch((error) => {
-            notification['info']({
-                message: "Error",
-                description: error.response.data.message,
-            });
+            if(error.response.data.message == 'You must log in first'){
+                notification['success']({
+                    message: "Success",
+                    description: 'تم تسجيل الخروج بنجاح',
+                });
+                VueCookies.remove('UserIDToken')
+                VueCookies.remove('UserToken')
+                VueCookies.remove('UserData')
+                commit("CART_DATA",null)
+                commit("SET_AUTHENTICATED", {bool: false, token: null, user: null});
+                commit("USER_DATA", null)
+                commit("WHEEL_POINTS",null)
+                VueCookies.remove("emailOTP")
+                setTimeout(() => {
+                    commit("LOADING_API",{name: 'Logout', status: false})
+                    router.push("/login");
+                }, 1000);
+            }else{
+                notification['info']({
+                    message: "Error",
+                    description: error.response.data.message,
+                });
+            }
             commit("LOADING_API",{name: 'Logout', status: false})
         })
     },
@@ -363,7 +382,7 @@ const actions = {
                 commit("LOADING_API", { name: 'Add_Product_To_Cart' + product.id, status: false })
                 notification['success']({
                     message: "Success",
-                    description: response.data.message,
+                    description: response.data.message + " 🥳",
                 });
                 $(".ec-side-toggle")[2].click()
             }
@@ -392,7 +411,7 @@ const actions = {
         if(response.data.status_code == 200){
             notification['success']({
                 message: "Success",
-                description: response.data.message,
+                description: response.data.message + " 🥳",
             });
             state.product.product.reviews.push(data)
             commit("LOADING_API",{name: 'AddReview', status: false})
@@ -404,6 +423,35 @@ const actions = {
                 description: error.response.data.message,
             });
             commit("LOADING_API",{name: 'AddReview', status: false})
+        })
+    },
+
+    ApplyCoupon({commit, state}, coupon){
+        var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
+        commit("LOADING_API",{name: 'ApplyCoupon', status: true})
+        axios.post(state.api_route + `cart/applycoupon?coupon_code=${coupon}`,null,{
+            headers:{
+                Authorization: 'Bearer ' + actualToken
+            },
+        })
+        .then((response) => {
+        if(response.data.status_code == 200){
+            notification['success']({
+                message: "Success",
+                description: `Great work! you saved ${response.data.coupon['discount_amount']}EGP 😍🥳`,
+            });
+            commit('APPLY_COUPON', response.data.coupon);
+            commit('COUPON_FLAG', false);
+            commit('COUPON_FLAG_2', true);
+            commit("LOADING_API",{name: 'ApplyCoupon', status: false})
+        }
+        })
+        .catch((error) => {
+            notification['info']({
+                message: "Error",
+                description: error.response.data.message,
+            });
+            commit("LOADING_API",{name: 'ApplyCoupon', status: false})
         })
     },
 
@@ -872,6 +920,9 @@ const actions = {
             if(response.data.status_code == 200){
                 commit("GET_SITE_SETTINGS",response.data.setting)
                 commit("LOADING_API",{name: 'GetSiteSettings', status: false})
+                commit('APPLY_COUPON', null);
+                commit('COUPON_FLAG', true);
+                commit('COUPON_FLAG_2', false);
                 fadeLoader()
             }
         })

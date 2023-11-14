@@ -58,7 +58,7 @@
                 </div>
                 <div class="cart_btn">
                     <router-link to="/cart" class="btn btn-primary" @click="hideCart()">View Cart</router-link>
-                    <a href="checkout.html" class="btn btn-secondary">Checkout</a>
+                    <router-link to="/checkout" class="btn btn-secondary" @click="hideCart()">Checkout</router-link>
                 </div>
             </div>
         </div>

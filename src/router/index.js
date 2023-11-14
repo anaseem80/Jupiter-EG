@@ -3,6 +3,7 @@ import Login from '@/views/pages/Auth/login'
 import Home from '@/views/pages/Home/index'
 import Products from '@/views/pages/Products/Products'
 import OrderDetails from '@/views/pages/Order/order-details'
+import CheckOut from '@/views/pages/Order/checkout'
 import Cart from '@/views/pages/Cart/cart'
 import Product from '@/views/pages/Product/product'
 import Games from '@/views/pages/Games/games'
@@ -72,6 +73,11 @@ const routes = [
     path: "/order/:id",
     name: "order",
     component: OrderDetails,
+  },
+  {
+    path: "/checkout",
+    name: "checkout",
+    component: CheckOut,
   },
   {
     path: "/last",

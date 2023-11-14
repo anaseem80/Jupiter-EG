@@ -16,28 +16,40 @@ const getters = {
       const subtotal = parseFloat(getters.subtotal);
       const totalDiscount = parseFloat(getters.totalDiscount);
       const couponDiscount = parseFloat(getters.couponDiscount);
-  
-      const shippingFee = state.cart.cart_items.reduce((acc, item) => {
-        return acc + parseFloat(item.shipping_fee);
-      }, 0);
-  
-      const totalAmount = subtotal - totalDiscount - couponDiscount + shippingFee;
-      return totalAmount.toFixed(2);
+      if(state.cart != null){
+        const shippingFee = state.cart.cart_items.reduce((acc, item) => {
+          return acc + parseFloat(item.shipping_fee);
+        }, 0);
+          
+        const totalAmount = subtotal - totalDiscount - couponDiscount + shippingFee;
+        return totalAmount.toFixed(2);
+      }else{
+        return
+      }
     },
     subtotal: (state) => {
-      return state.cart.cart_items.reduce((acc, item) => {
-        const price = item.attribute && item.attribute.price ? parseFloat(item.attribute.price) : parseFloat(item.price);
-        return acc + (price * parseInt(item.quantity));
-      }, 0).toFixed(2);
+      console.log(state.cart)
+      if(state.cart != null){
+        return state.cart.cart_items.reduce((acc, item) => {
+          const price = item.attribute && item.attribute.price ? parseFloat(item.attribute.price) : parseFloat(item.price);
+          return acc + (price * parseInt(item.quantity));
+        }, 0).toFixed(2);
+      }else{
+        return
+      }
+
     },
     totalDiscount: (state) => {
-      return state.cart.cart_items.reduce((acc, item) => {
-        return acc + (parseFloat(item.discount) * parseInt(item.quantity));
-      }, 0).toFixed(2);
+      if(state.cart != null){
+        return state.cart.cart_items.reduce((acc, item) => {
+          return acc + (parseFloat(item.discount));
+        }, 0).toFixed(2);
+      }else{
+        return
+      }
     },
     couponDiscount: (state, getters) => {
-      const couponDiscountPercentage = 10;
-      return (getters.subtotal * (couponDiscountPercentage / 100)).toFixed(2);
+      return state.couponDetails ? parseFloat(state.couponDetails.discount_amount) : 0;
     }
 }
 

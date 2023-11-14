@@ -83,8 +83,6 @@ export default {
         prepareAddress(mode, address = {}) {
             this.addressMode = mode;
             this.currentAddress = { ...address };
-            console.log(this.currentAddress)
-            console.log(this.addressMode)
         },
         deleteAddress(address){
             this.$store.dispatch("DeleteAddress",address)

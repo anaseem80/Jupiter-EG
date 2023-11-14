@@ -1,9 +1,10 @@
 <template lang="">
     <Form 
-            class="ec-btn-group-form"
-            @submit="onSubmit"
-            :validation-schema="schema"
-            v-slot="{ errors }"
+        class="ec-btn-group-form"
+        v-if="keywords"
+        @submit="onSubmit"
+        :validation-schema="schema"
+        v-slot="{ errors }"
         >
         <Field
             name="keyword"
