@@ -68,6 +68,9 @@ const mutations = {
     PRODUCT_DATA(state, product){
       state.product = product
     },
+    APPLY_TAX(state, tax){
+      state.tax = tax
+    },
     CURRENT_PRODUCTS_CATEGORY_PRODUCTS_DATA(state, ProductsCategoryProducts){
       state.ProductsCategoryProducts = ProductsCategoryProducts
     },

@@ -26,6 +26,7 @@
                                     :value="address['id']" 
                                     class="w-auto h-auto me-2"
                                     v-model="AddressID"
+                                    @change="ApplyTax()"
                                     name="user_address_id"
                                     :id="'address'+address['id']"
                                     >
@@ -37,18 +38,21 @@
                                         {{address['phone']}}
                                     </label>
                                 </div>
-                                <div>
+                                <!-- <div>
                                     <span class="d-flex justify-content-evenly">
                                         <a href="javascript:void(0)" class="me-1" data-bs-toggle="modal" @click="prepareAddress('edit', address)" data-bs-target="#address"><EditOutlined class="fs-6"/></a>
                                         <a href="javascript:void(0)" @click="deleteAddress(address)"><DeleteOutlined class="text-danger fs-6"/></a>
                                     </span>
-                                </div>
+                                </div> -->
                                 </div>
                                 <div v-if="addresses.length == 0" class="mb-2">No addresses found, add new one</div>
                                 <a class="btn btn-lg btn-primary" @click="prepareAddress('add')" data-bs-toggle="modal" data-bs-target="#address" href="javascript:void(0)">Add Address</a>
                             </div>
                             <span class="ec-check-order-btn" v-if="addresses.length > 0">
-                                <a class="btn btn-primary" href="#">Place Order</a>
+                                <button class="btn btn-primary" @click="CreateOrder()" :disabled="AddressID == null || isLoading('OrderCreate')">
+                                    Place Order
+                                    <loading-outlined class="fs-6 ms-2" v-if="isLoading('OrderCreate')"/>
+                                </button>
                             </span>
                         </div>
                     </div>
@@ -58,19 +62,32 @@
                 <div class="ec-checkout-rightside col-lg-4 col-md-12">
                     <div class="ec-sidebar-wrap">
                         <!-- Sidebar Summary Block -->
-                        <div class="ec-sidebar-block">
-                            <div class="ec-sb-title">
+                        <div class="ec-sidebar-block position-relative">
+                            <div class="ec-sb-title mb-2">
                                 <h3 class="ec-sidebar-title">Summary</h3>
                             </div>
                             <div class="ec-sb-block-content">
+                                <transition name="fade" mode="out-in">
+                                    <div v-if="isLoading('ApplyCoupon') || isLoading('ApplyTax')" class="loader position-absolute top-0 w-100 h-100 d-flex justify-content-center align-items-center">
+                                        <loading-outlined class="fs-3"/>
+                                    </div>
+                                </transition>
                                 <div class="ec-checkout-summary">
                                     <div>
                                         <span class="text-left">Sub-Total</span>
-                                        <span class="text-right">{{subtotal}}</span>
+                                        <span class="text-right">EGP{{subtotal}}</span>
                                     </div>
                                     <div>
                                         <span class="text-left">Total discount</span>
-                                        <span class="text-right">{{totalDiscount}}</span>
+                                        <span class="text-right">EGP{{totalDiscount}}</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-left">Country Tax</span>
+                                        <span class="text-right">EGP{{countryTax}}</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-left">Shipping fee</span>
+                                        <span class="text-right">EGP{{shippingFee}}</span>
                                     </div>
                                     <div>
                                         <span class="text-left">Coupan Discount</span>
@@ -89,13 +106,13 @@
                                     <div v-if="couponDetails">
                                         <div>
                                             {{couponDetails['code']}} 
-                                            <b class="text-success">{{couponDetails['discount_amount']}}EGP</b>
+                                            <b class="text-success">EGP{{couponDetails['discount_amount']}}</b>
                                         </div>
                                         <a href="javascript:void(0)" @click="deleteCoupon()"><DeleteOutlined class="text-danger fs-6"/></a>
                                     </div>
                                     <div class="ec-checkout-summary-total">
                                         <span class="text-left">Total Amount</span>
-                                        <span class="text-right">{{totalAmount}}</span>
+                                        <span class="text-right">EGP{{totalAmount}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -115,21 +132,18 @@
                                     <form action="#">
                                         <span class="ec-pay-option">
                                             <span class="d-block">
-                                                <input type="radio" class="h-auto w-auto me-2" id="pay1" name="radio-group" checked>
+                                                <input type="radio" v-model="payment_method" value="cash_on_delivery" class="h-auto w-auto me-2" id="pay1" name="radio-group" checked>
                                                 <label for="pay1">Cash On Delivery</label>
                                             </span>
                                             <span class="d-block">
-                                                <input type="radio" class="h-auto w-auto me-2" id="pay2" name="radio-group">
+                                                <input type="radio" v-model="payment_method" value="paymob" class="h-auto w-auto me-2" id="pay2" name="radio-group">
                                                 <label for="pay2">Paymob</label>
                                             </span>
                                         </span>
                                         <span class="ec-pay-commemt">
                                             <span class="ec-pay-opt-head">Add Comments About Your Order</span>
-                                            <textarea name="your-commemt" placeholder="Comments"></textarea>
+                                            <textarea name="your-commemt" v-model="description" placeholder="Comments"></textarea>
                                         </span>
-                                        <!-- <span class="ec-pay-agree"><input type="checkbox" value=""><a href="#">I have
-                                                read and agree to the <span>Terms & Conditions</span></a><span
-                                                class="checked"></span></span> -->
                                     </form>
                                 </div>
                             </div>
@@ -151,6 +165,8 @@ export default {
         return{
             addressMode: 'add',
             coupanFlag:false,
+            description:"",
+            payment_method:"cash_on_delivery",
             Coupon:null,
             AddressID:null,
             currentAddress: {},
@@ -164,7 +180,7 @@ export default {
     },
     computed: {
         ...mapState(['addresses','couponDetails','coupon_flag','coupon_flag_2']),
-        ...mapGetters(['subtotal','totalDiscount','couponDiscount','totalAmount']),
+        ...mapGetters(['subtotal','totalDiscount','couponDiscount','totalAmount','countryTax','shippingFee']),
         isAuthenticated() {
             return this.$store.state.isAuthenticated;
         },
@@ -177,9 +193,6 @@ export default {
     methods: {
         ...mapActions(['GetUserAddresses']),
         async fetchUserAddresses() {
-            if(this.addresses.length > 0){
-                this.AddressID = this.addresses[0].id
-            }
             await this.GetUserAddresses();
         },
         prepareAddress(mode, address = {}) {
@@ -195,6 +208,13 @@ export default {
                 this.AddressID = null
             }
         },
+        ApplyTax(){
+            let coupon;
+            if(this.couponDetails != null){
+                coupon = this.couponDetails['code']
+            }
+            this.$store.dispatch("ApplyTax",{coupon:coupon, address_id:this.AddressID})
+        },
         deleteCoupon(){
             this.$store.commit('APPLY_COUPON', null);
             this.$store.commit('COUPON_FLAG', true);
@@ -205,6 +225,18 @@ export default {
         isLoading(actionName) {
             return this.$store.state.Loading[actionName] || false;
         },
+        CreateOrder(){
+            let coupon;
+            if(this.couponDetails != null){
+                coupon = this.couponDetails['code']
+            }
+            this.$store.dispatch("OrderCreate",{
+                coupon:coupon, 
+                user_address_id:this.AddressID, 
+                payment_method:this.payment_method,
+                description: this.description
+            })
+        }
     },
     mounted() {
         this.fetchUserAddresses();

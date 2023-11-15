@@ -15,20 +15,16 @@ const getters = {
     totalAmount: (state, getters) => {
       const subtotal = parseFloat(getters.subtotal);
       const totalDiscount = parseFloat(getters.totalDiscount);
-      const couponDiscount = parseFloat(getters.couponDiscount);
+      const countryTax = parseFloat(getters.countryTax);
+      const shippingFee = parseFloat(getters.shippingFee);
       if(state.cart != null){
-        const shippingFee = state.cart.cart_items.reduce((acc, item) => {
-          return acc + parseFloat(item.shipping_fee);
-        }, 0);
-          
-        const totalAmount = subtotal - totalDiscount - couponDiscount + shippingFee;
+        const totalAmount = subtotal - totalDiscount + shippingFee + countryTax;
         return totalAmount.toFixed(2);
       }else{
         return
       }
     },
     subtotal: (state) => {
-      console.log(state.cart)
       if(state.cart != null){
         return state.cart.cart_items.reduce((acc, item) => {
           const price = item.attribute && item.attribute.price ? parseFloat(item.attribute.price) : parseFloat(item.price);
@@ -37,13 +33,22 @@ const getters = {
       }else{
         return
       }
-
     },
-    totalDiscount: (state) => {
+    countryTax: (state) => {
+      return state.tax ? parseFloat(state.tax.country_tax) : 0;
+    },
+    shippingFee: (state) => {
       if(state.cart != null){
-        return state.cart.cart_items.reduce((acc, item) => {
-          return acc + (parseFloat(item.discount));
-        }, 0).toFixed(2);
+        return state.tax != null ? parseFloat(state.tax.total_shipping_fee).toFixed(2) : state.cart.cart_prices['total_shipping_fee'].toFixed(2);
+      }else{
+        return
+      }
+    },
+    totalDiscount: (state, getters) => {
+      const couponDiscount = parseFloat(getters.couponDiscount);
+      console.log()
+      if(state.cart != null){
+          return (state.cart.cart_prices['total_discount'] + couponDiscount).toFixed(2);
       }else{
         return
       }

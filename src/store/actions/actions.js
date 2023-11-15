@@ -455,6 +455,59 @@ const actions = {
         })
     },
 
+    ApplyTax({commit, state}, {coupon, address_id}){
+        var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
+        commit("LOADING_API",{name: 'ApplyTax', status: true})
+        axios.get(state.api_route + `cart/checkout?${coupon != null ? `coupon_code=${coupon}&` : ''}user_address_id=${address_id}`,{
+            headers:{
+                Authorization: 'Bearer ' + actualToken
+            },
+        })
+        .then((response) => {
+        if(response.data.status_code == 200){
+            notification['success']({
+                message: "Success",
+                description: response.data.message,
+            });
+            commit('APPLY_TAX', response.data.check_out);
+            commit("LOADING_API",{name: 'ApplyTax', status: false})
+        }
+        })
+        .catch((error) => {
+            notification['info']({
+                message: "Error",
+                description: error.response.data.message,
+            });
+            commit("LOADING_API",{name: 'ApplyTax', status: false})
+        })
+    },
+
+    OrderCreate({commit, state}, {coupon, user_address_id, description, payment_method}){
+        var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
+        commit("LOADING_API",{name: 'OrderCreate', status: true})
+        axios.get(state.api_route + `orders/create?${coupon != null ? `coupon_code=${coupon}&` : ''}${description != "" ? `description=${description}&` : ''}user_address_id=${user_address_id}&payment_method=${payment_method}&token=${actualToken}`,{
+            headers:{
+                Authorization: 'Bearer ' + actualToken
+            },
+        })
+        .then((response) => {
+        if(response.data.status_code == 200){
+            notification['success']({
+                message: "Success",
+                description: response.data.message,
+            });
+            commit("LOADING_API",{name: 'OrderCreate', status: false})
+        }
+        })
+        .catch((error) => {
+            notification['info']({
+                message: "Error",
+                description: error.response.data.message,
+            });
+            commit("LOADING_API",{name: 'OrderCreate', status: false})
+        })
+    },
+
     Remove_Product_From_Cart({commit, state}, {product, toast}){
         console.log(product)
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
@@ -923,6 +976,7 @@ const actions = {
                 commit('APPLY_COUPON', null);
                 commit('COUPON_FLAG', true);
                 commit('COUPON_FLAG_2', false);
+                commit('APPLY_TAX', null);
                 fadeLoader()
             }
         })

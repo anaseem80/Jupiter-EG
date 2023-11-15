@@ -9,6 +9,7 @@ export const state = {
     countries:null,
     orders:null,
     order:null,
+    tax:null,
     settings:null,
     RemovedProduct: null,
     couponDetails:null,
