@@ -5,8 +5,9 @@
         <div class="container" v-if="cart">
             <div class="row">
                 <div class="col-12 text-center" v-if="cart.cart_items.length < 1">
-                    <h4>No Items here</h4>
-                    <router-link to="/">Back to home</router-link>
+                    <img src="@/assets/images/vendor/empty.gif" width="250" alt="">
+                    <h4>{{$t("Your cart is empty!")}} 😓</h4>
+                    <router-link to="/" class="btn btn-primary rounded-pill mt-3">{{$t("Back to home")}}</router-link>
                 </div>
                 <div class="ec-cart-leftside col-lg-8 col-md-12 " v-if="cart.cart_items.length > 0">
                     <!-- cart content Start -->
@@ -18,10 +19,10 @@
                                         <table>
                                             <thead>
                                                 <tr>
-                                                    <th>Product</th>
-                                                    <th>Price</th>
-                                                    <th style="text-align: center;">Quantity</th>
-                                                    <th>Action</th>
+                                                    <th>{{$t("Product")}}</th>
+                                                    <th>{{$t("Price")}}</th>
+                                                    <th style="text-align: center;">{{$t("Quantity")}}</th>
+                                                    <th>{{$t("Action")}}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -67,13 +68,13 @@
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="ec-cart-update-bottom">
-                                                <a href="#">Continue Shopping</a>
+                                                <router-link to="/">{{$t("Continue Shopping")}}</router-link>
                                                 <div class="d-flex">
                                                     <button class="btn btn-dark me-2" @click="onClearCart()" :disabled="isLoading('Clear_Cart')">
-                                                        Clear Cart
+                                                        {{$t("Clear Cart")}}
                                                         <loading-outlined class="ms-2 fs-5" v-if="isLoading('Clear_Cart')"/>
                                                     </button>
-                                                    <router-link to="/checkout" ><button class="btn btn-primary">Check Out</button></router-link>
+                                                    <router-link to="/checkout" ><button class="btn btn-primary">{{$t("Checkout")}}</button></router-link>
                                                 </div>
                                             </div>
                                         </div>
@@ -90,21 +91,21 @@
                         <!-- Sidebar Summary Block -->
                         <div class="ec-sidebar-block">
                             <div class="ec-sb-title">
-                                <h3 class="ec-sidebar-title">Summary</h3>
+                                <h3 class="ec-sidebar-title">{{$t("Summary")}}</h3>
                             </div>
                             <div class="ec-sb-block-content border-0">
                                 <div class="ec-cart-summary-bottom">
                                     <div class="ec-cart-summary">
                                         <div>
-                                            <span class="text-left">Sub-Total</span>
+                                            <span class="text-left">{{$t("Sub Total")}}</span>
                                             <span class="text-right">{{subtotal}}</span>
                                         </div>
                                         <div>
-                                            <span class="text-left">Total Discount</span>
+                                            <span class="text-left">{{$t("Total Discount")}}</span>
                                             <span class="text-right">{{totalDiscount}}</span>
                                         </div>
                                         <div class="ec-cart-summary-total">
-                                            <span class="text-left">Total Amount</span>
+                                            <span class="text-left">{{$t("Total")}}</span>
                                             <span class="text-right">{{totalAmount}}</span>
                                         </div>
                                     </div>

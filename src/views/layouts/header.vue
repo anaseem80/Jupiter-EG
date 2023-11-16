@@ -14,18 +14,18 @@
                     </div>
                     <!-- Header Top social End -->
                     <!-- Header Top Message Start -->
-                    <div class="col text-center header-top-center">
+                    <!-- <div class="col text-center header-top-center">
                         <div class="header-top-message text-upper">
                             <span>Free Shipping</span>This Week Order Over - $75
                         </div>
-                    </div>
+                    </div> -->
                     <!-- Header Top Message End -->
                     <!-- Header Top Language Currency -->
                     <div class="col header-top-right d-none d-lg-block">
                         <div class="header-top-lan-curr d-flex justify-content-end">
                             <!-- Currency Start -->
                             <div class="header-top-curr dropdown">
-                                <button class="dropdown-toggle text-upper" data-bs-toggle="dropdown">Currency <i
+                                <button class="dropdown-toggle text-upper" data-bs-toggle="dropdown">{{$t("Currency")}} <i
                                         class="ecicon eci-caret-down" aria-hidden="true"></i></button>
                                 <ul class="dropdown-menu">
                                     <li class="active"><a class="dropdown-item" href="#">USD $</a></li>
@@ -34,14 +34,7 @@
                             </div>
                             <!-- Currency End -->
                             <!-- Language Start -->
-                            <div class="header-top-lan dropdown">
-                                <button class="dropdown-toggle text-upper" data-bs-toggle="dropdown">Language <i
-                                        class="ecicon eci-caret-down" aria-hidden="true"></i></button>
-                                <ul class="dropdown-menu">
-                                    <li class="active"><a class="dropdown-item" href="#">English</a></li>
-                                    <li><a class="dropdown-item" href="#">Italiano</a></li>
-                                </ul>
-                            </div>
+                            <language-dropdown />
                             <!-- Language End -->
 
                         </div>
@@ -63,11 +56,11 @@
                                 <button class="dropdown-toggle" data-bs-toggle="dropdown"><img
                                         src="@/assets/images/icons/user.svg" class="svg_img header_svg" alt="" /></button>
                                 <ul class="dropdown-menu dropdown-menu-right">
-                                    <li v-if="isAuthenticated.bool"><router-link class="dropdown-item" to="/profile">Profile</router-link></li>
-                                    <li v-if="!isAuthenticated.bool"><router-link class="dropdown-item" to="/login">Login</router-link></li>
+                                    <li v-if="isAuthenticated.bool"><router-link class="dropdown-item" to="/profile">{{$t('Profile')}}</router-link></li>
+                                    <li v-if="!isAuthenticated.bool"><router-link class="dropdown-item" to="/login">{{$t('Login')}}</router-link></li>
                                         <li v-if="isAuthenticated.bool">
                                             <button class="dropdown-item" @click="Logout" :disabled="isLoading('Logout')">
-                                                Logout
+                                                {{$t('Logout')}}
                                                 <img src="@/assets/images/common/loader-2.gif" width="20" v-if="isLoading('Logout')" class="ms-3">
                                             </button>
                                     </li>
@@ -142,11 +135,11 @@
                                     <button class="dropdown-toggle" data-bs-toggle="dropdown"><img
                                             src="@/assets/images/icons/user.svg" class="svg_img header_svg" alt="" /></button>
                                     <ul class="dropdown-menu dropdown-menu-right">
-                                        <li v-if="isAuthenticated.bool"><router-link class="dropdown-item" to="/profile">Profile</router-link></li>
-                                        <li v-if="!isAuthenticated.bool"><router-link class="dropdown-item" to="/login">Login</router-link></li>
+                                        <li v-if="isAuthenticated.bool"><router-link class="dropdown-item" to="/profile">{{$t('Profile')}}</router-link></li>
+                                        <li v-if="!isAuthenticated.bool"><router-link class="dropdown-item" to="/login">{{$t('Login')}}</router-link></li>
                                         <li v-if="isAuthenticated.bool">
                                             <button class="dropdown-item" @click="Logout" :disabled="isLoading('Logout')">
-                                                Logout
+                                                {{$t('Logout')}}
                                                 <img src="@/assets/images/common/loader-2.gif" width="20" v-if="isLoading('Logout')" class="ms-3">
                                             </button>
                                         </li>
@@ -212,8 +205,8 @@
                                 <img src="@/assets/images/icons/category-icon.svg" class="svg_img header_svg" alt="icon" />
                             </a>
                             <ul>
-                                <li><router-link to="/">Home</router-link></li>
-                                <li class="dropdown position-static"><a href="javascript:void(0)">Categories</a>
+                                <li><router-link to="/">{{$t('Home')}}</router-link></li>
+                                <li class="dropdown position-static"><a href="javascript:void(0)">{{$t('Categories')}}</a>
                                     <ul class="mega-menu d-block">
                                         <li class="d-flex">
                                             <ul 
@@ -251,21 +244,16 @@
                                 
                                 
                                
-                                <li><router-link to="/toprate" @click="$store.dispatch('GetProductsByCurrentCategory',{page: 1, route:'products/toprate'})">Top Rate</router-link></li>
-                                <li><router-link to="/last" @click="$store.dispatch('GetProductsByCurrentCategory',{page: 1, route:'products/last'})">Last Products</router-link></li>
-                                <li><router-link to="/with-offers" @click="$store.dispatch('GetProductsByCurrentCategory',{page: 1, route:'products/with-offers'})">Hot Offers</router-link></li>
+                                <li><router-link to="/toprate" @click="$store.dispatch('GetProductsByCurrentCategory',{page: 1, route:'products/toprate'})">{{$t('Top Rate')}}</router-link></li>
+                                <li><router-link to="/last" @click="$store.dispatch('GetProductsByCurrentCategory',{page: 1, route:'products/last'})">{{$t('Last Products')}}</router-link></li>
+                                <li><router-link to="/with-offers" @click="$store.dispatch('GetProductsByCurrentCategory',{page: 1, route:'products/with-offers'})">{{$t('Hot Offers')}}</router-link></li>
                                 <li class="dropdown scroll-to"><a href="javascript:void(0)"><img
                                     src="@/assets/images/icons/scroll.svg" class="svg_img header_svg scroll" alt="" /></a>
                                     <ul class="sub-menu">
-                                        <li class="menu_title">Scroll To Section</li>
-                                        <li><a href="javascript:void(0)" data-scroll="collection" class="nav-scroll">Top Collection</a></li>
-                                        <li><a href="javascript:void(0)" data-scroll="categories" class="nav-scroll">Categories</a></li>
-                                        <li><a href="javascript:void(0)" data-scroll="offers" class="nav-scroll">Offers</a></li>
-                                        <li><a href="javascript:void(0)" data-scroll="vendors" class="nav-scroll">Top Vendors</a></li>
-                                        <li><a href="javascript:void(0)" data-scroll="services" class="nav-scroll">Services</a></li>
-                                        <li><a href="javascript:void(0)" data-scroll="arrivals" class="nav-scroll">New Arrivals</a></li>
-                                        <li><a href="javascript:void(0)" data-scroll="reviews" class="nav-scroll">Client Review</a></li>
-                                        <li><a href="javascript:void(0)" data-scroll="insta" class="nav-scroll">Instagram Feed</a></li>
+                                        <li class="menu_title">Sections</li>
+                                        <li><router-link to="/toprate" @click="$store.dispatch('GetProductsByCurrentCategory',{page: 1, route:'products/toprate'})">{{$t('Top Rate')}}</router-link></li>
+                                        <li><router-link to="/last" @click="$store.dispatch('GetProductsByCurrentCategory',{page: 1, route:'products/last'})">{{$t('Last Products')}}</router-link></li>
+                                        <li><router-link to="/with-offers" @click="$store.dispatch('GetProductsByCurrentCategory',{page: 1, route:'products/with-offers'})">{{$t('Hot Offers')}}</router-link></li>
                                     </ul>
                                 </li>
                             </ul>

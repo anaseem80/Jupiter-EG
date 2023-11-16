@@ -53,39 +53,40 @@
                                                 <i class="ecicon eci-star fill"></i>
                                                 <i class="ecicon eci-star-o"></i>
                                             </div>
-                                            <span class="ec-read-review" @click="openReviews()" v-if="product.product.reviews.length == 0"><a href="#ec-spt-nav-review">Be the first to
-                                                    review this product</a></span>
+                                            <span class="ec-read-review" @click="openReviews()" v-if="product.product.reviews.length == 0">
+                                                <a href="#ec-spt-nav-review">{{$t("Be the first review to this product")}}
+                                                </a></span>
                                         </div>
                                         <div class="ec-single-desc">{{product.product['description']}}</div>
 
                                         <div class="ec-single-sales" v-if="product.product['discount_end']">
                                             <div class="ec-single-sales-inner">
-                                                <div class="ec-single-sales-title">sales accelerators</div>
+                                                <div class="ec-single-sales-title">{{$t("sales accelerators")}}</div>
                                                 <div class="ec-single-sales-progress">
-                                                    <span class="ec-single-progress-desc">Hurry up!left {{product.product['quantity']}} in
-                                                        stock</span>
+                                                    <span class="ec-single-progress-desc"> {{$t("Hurry up!left")}} {{product.product['quantity']}} 
+                                                         {{$t("in stock")}}</span>
                                                 </div>
                                                 <div class="ec-single-sales-countdown d-block">
-                                                    <div class="ec-single-count-desc mb-2">Time is Running Out!</div>   
+                                                    <div class="ec-single-count-desc mb-2">{{$t("Time is Running Out!")}}</div>   
                                                     <div class="countdowntimer d-block">
                                             <div id="ec-fs-count-2" class="style colorDefinition labelformat">
                                                 <vue-countdown class="d-block" :time="calculateTimeRemaining(product.product['discount_end'])" v-slot="{ days, hours, minutes, seconds }">
                                                     <span class="timerDisplay label4 d-block">
                                                         <span class="displaySection">
                                                             <span class="numberDisplay">{{days}}</span>
-                                                            <span class="periodDisplay">Days</span>
+                                                            <span class="periodDisplay">{{$t("Days")}}</span>
                                                         </span>
                                                         <span class="displaySection">
                                                             <span class="numberDisplay">{{hours}}</span>
-                                                            <span class="periodDisplay">Hours</span>
+                                                            <span class="periodDisplay">{{$t("Hours")}}</span>
                                                         </span>
                                                         <span class="displaySection">
                                                             <span class="numberDisplay">{{minutes}}</span>
-                                                            <span class="periodDisplay">Minutes</span>
+                                                            <span class="periodDisplay">{{$t("Minutes")}}</span>
                                                         </span>
                                                         <span class="displaySection">
                                                             <span class="numberDisplay">{{seconds}}</span>
-                                                            <span class="periodDisplay">Seconds</span>
+                                                            <span class="periodDisplay">{{$t("Seconds")}}</span>
                                                         </span>
                                             
                                                     </span>
@@ -98,17 +99,17 @@
                                         </div>
                                         <div class="ec-single-price-stoke">
                                             <div class="ec-single-price">
-                                                <span class="ec-single-ps-title">As low as</span>
+                                                <span class="ec-single-ps-title">{{$t("As low as")}}</span>
                                                 <span class="new-price">{{product.product['final_price']}}</span>
                                             </div>
                                             <div class="ec-single-stoke">
-                                                <span class="ec-single-ps-title">{{product.product['quantity']}} IN STOCK</span>
+                                                <span class="ec-single-ps-title">{{product.product['quantity']}} {{$t("IN STOCK")}}</span>
                                                 <span class="ec-single-sku" v-if="product.product.type_attribute == 'both' || product.product.type_attribute == 'colors'">SKU#: <span class="sku"></span></span>
                                             </div>
                                         </div>
                                         <div class="ec-pro-variation" v-if="product.product.type_attribute == 'both'">
                                             <div class="ec-pro-variation-inner ec-pro-variation-size">
-                                                <span>SIZE</span>
+                                                <span>{{$t("SIZE")}}</span>
                                                 <div class="ec-pro-variation-content">
                                                     <ul>
                                                         <li 
@@ -129,7 +130,7 @@
                                                 </div>
                                             </div>
                                             <div class="ec-pro-variation-inner ec-pro-variation-color">
-                                                <span>Color</span>
+                                                <span>{{$t("Color")}}</span>
                                                 <div class="ec-pro-variation-content">
                                                     <ul
                                                     v-for="(colorAttr,index) in product.product.attribute_for"
@@ -161,7 +162,7 @@
                                         </div>
                                         <div class="ec-pro-variation" v-if="product.product.type_attribute == 'colors'">
                                             <div class="ec-pro-variation-inner ec-pro-variation-color">
-                                                <span>Color</span>
+                                                <span>{{$t("Color")}}</span>
                                                 <div class="ec-pro-variation-content">
                                                     <ul
                                                     v-for="(color,index) in product.product.attribute_for"
@@ -191,7 +192,7 @@
                                         </div>
                                         <div class="ec-pro-variation" v-if="product.product.type_attribute == 'sizes'">
                                             <div class="ec-pro-variation-inner ec-pro-variation-size">
-                                                <span>SIZE</span>
+                                                <span>{{$t("SIZE")}}</span>
                                                 <div class="ec-pro-variation-content">
                                                     <ul>
                                                         <li 
@@ -221,20 +222,20 @@
                                             <!-- product.product.quantity != 0 -->
                                             <div class="ec-single-cart" v-if="userData && userData.client_type !== 'wholesale'">
                                                 <button class="btn btn-primary" @click="onAddProduct(product.product)" :disabled="isLoading('Add_Product_To_Cart'+product.product.id)">
-                                                    Add To Cart
+                                                    {{$t("Add To Cart")}}
                                                     <img src="@/assets/images/common/loader-2.gif" width="20" class="ms-3" v-if="isLoading('Add_Product_To_Cart'+product.product.id)">
                                                 </button>
                                             </div>
                                             <div class="ec-single-cart" v-if="!userData">
                                                 <button class="btn btn-primary" @click="onAddProduct(product.product)" :disabled="isLoading('Add_Product_To_Cart'+product.product.id)">
-                                                    Add To Cart
+                                                    {{$t("Add To Cart")}}
                                                     <img src="@/assets/images/common/loader-2.gif" width="20" class="ms-3" v-if="isLoading('Add_Product_To_Cart'+product.product.id)">
                                                 </button>
                                             </div>
                                             <div class="ec-single-cart" v-if="userData && userData.client_type == 'wholesale'">
                                                 <button class="btn btn-success">
                                                     <a :href="whatsappLink" @click="whatsappLinkA(product.product)" class="text-light" target="_blank">
-                                                        <i class="ecicon eci-whatsapp me-2 fs-6"></i> Price Preview
+                                                        <i class="ecicon eci-whatsapp me-2 fs-6"></i> {{$t("Price Preview")}}
                                                     </a>
                                                 </button>
                                             </div>
@@ -285,15 +286,11 @@
                                 <ul class="nav nav-tabs">
                                     <li class="nav-item">
                                         <a class="nav-link active" data-bs-toggle="tab"
-                                            data-bs-target="#ec-spt-nav-details" role="tablist">Detail</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" data-bs-toggle="tab" data-bs-target="#ec-spt-nav-info"
-                                            role="tablist">More Information</a>
+                                            data-bs-target="#ec-spt-nav-details" role="tablist">{{$t("Detail")}}</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link reviews-tab" data-bs-toggle="tab" data-bs-target="#ec-spt-nav-review"
-                                            role="tablist">Reviews</a>
+                                            role="tablist">{{$t("Reviews")}}</a>
                                     </li>
                                 </ul>
                             </div>
@@ -305,20 +302,11 @@
                                         </p>
                                     </div>
                                 </div>
-                                <div id="ec-spt-nav-info" class="tab-pane fade">
-                                    <div class="ec-single-pro-tab-moreinfo">
-                                        <ul>
-                                            <li><span>Weight</span> 1000 g</li>
-                                            <li><span>Dimensions</span> 35 × 30 × 7 cm</li>
-                                            <li><span>Color</span> Black, Pink, Red, White</li>
-                                        </ul>
-                                    </div>
-                                </div>
 
                                 <div id="ec-spt-nav-review" class="tab-pane fade">
                                     <div class="row">
                                         <div class="ec-t-review-wrapper">
-                                            <h6 class="mb-4" v-if="product.product.reviews.length == 0" data-bs-toggle="tab" data-bs-target="#ec-spt-nav-review">No reviews yet, be the first one</h6>
+                                            <h6 class="mb-4" v-if="product.product.reviews.length == 0" data-bs-toggle="tab" data-bs-target="#ec-spt-nav-review">{{$t("No reviews yet, be the first one")}}</h6>
                                             <div class="ec-t-review-item" v-for="review in product.product.reviews" :key="review">
                                                 <div class="ec-t-review-avtar">
                                                     <img src="@/assets/images/review-image/1.jpg" alt="" />
@@ -342,7 +330,7 @@
                                             </div>
                                         </div>
                                         <div class="ec-ratting-content">
-                                            <h3>Add a Review</h3>
+                                            <h3>{{$t("Add a Review")}}</h3>
                                             <div class="ec-ratting-form">
                                                 <add-review v-model="userRating" :max-stars="5" v-if="isAuthenticated.token != null ? isAuthenticated.token : UserIDToken"/>
                                                 <h6 v-if="isAuthenticated.token != null ? !isAuthenticated.token : !UserIDToken">You need to <router-link to="/login">Login</router-link> to can add reviews</h6>

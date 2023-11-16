@@ -8,7 +8,7 @@
                         <!-- Sidebar Category Block -->
                         <div class="ec-sidebar-block">
                             <div class="ec-sb-title">
-                                <h3 class="ec-sidebar-title">Category<button class="ec-close">×</button></h3>
+                                <h3 class="ec-sidebar-title">{{$t("Categories")}}<button class="ec-close">×</button></h3>
                             </div>
                             <div class="ec-sb-block-content">
                                 <ul>

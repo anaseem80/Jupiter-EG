@@ -4,6 +4,7 @@ import { router } from "@/router";
 import VueRouter from "vue-router";
 import VueCookies from 'vue-cookies'
 import { notification } from "ant-design-vue";
+import getters from '../getters/getters'
 
 function fadeLoader(){
     $(".ec-overlay").each(function(){
@@ -11,12 +12,11 @@ function fadeLoader(){
     })
 }
 
-
 const actions = {
 
     UserLogin({commit, state, dispatch}, {User , toast}){
         commit("LOADING_API",{name: 'UserLogin', status: true})
-        axios.post(state.api_route + "login?lang=en", User)
+        axios.post(state.api_route + "login", User)
         .then((response) => {
         commit("USER_LOGIN",User)
         if(response.data.token){
@@ -62,7 +62,7 @@ const actions = {
 
     UserRegister({commit, state}, {User , toast}){
         commit("LOADING_API",{name: 'UserRegister', status: true})
-        axios.post(state.api_route + "register?lang=en", User)
+        axios.post(state.api_route + "register", User)
         .then((response) => {
         commit("SUBMIT_OTP",User)
         if(response.data.status_code == 200){
@@ -90,7 +90,7 @@ const actions = {
     SubmitOTP({commit, state}, {OTP, toast}){
         commit("LOADING_API",{name: 'SubmitOTP', status: true})
         console.log(OTP)
-        axios.post(state.api_route + "verify-email?lang=en", {
+        axios.post(state.api_route + "verify-email", {
             otp:OTP,
             email:VueCookies.get("emailOTP"),
             route: VueCookies.get("UserRouteRV")
@@ -132,7 +132,7 @@ const actions = {
     UpdateUserInfo({commit, state}, data){
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
         commit("LOADING_API",{name: 'UpdateUserInfo', status: true})
-        axios.post(state.api_route + "updateUserInfo?lang=en",data,{
+        axios.post(state.api_route + "updateUserInfo",data,{
             headers:{
                 Authorization: 'Bearer ' + actualToken
             }
@@ -200,7 +200,7 @@ const actions = {
 
 
     ResendOTP({commit, state}, {email, toast}){
-        axios.post(state.api_route + "verification-notification?lang=en", {
+        axios.post(state.api_route + "verification-notification", {
             email:VueCookies.get("emailOTP"),
         })
         .then((response) => {
@@ -228,7 +228,7 @@ const actions = {
     ForgetPassword({commit, state}, {User, toast}){
         console.log(User)
         commit("LOADING_API",{name: 'ForgetPassword', status: true})
-        axios.post(state.api_route + "forgot-password?lang=en", User)
+        axios.post(state.api_route + "forgot-password", User)
         .then((response) => {
         commit("USER_LOGIN",User)
         if(response.data.status_code == 200){
@@ -257,7 +257,7 @@ const actions = {
     ResetPassword({commit, state}, {User, token, toast}){
         console.log(token)
         commit("LOADING_API",{name: 'ResetPassword', status: true})
-        axios.post(state.api_route + "reset-password?lang=en", User, {
+        axios.post(state.api_route + "reset-password", User, {
             headers:{
                 Authorization: 'Bearer ' + token 
             }
@@ -296,7 +296,7 @@ const actions = {
         commit("SET_AUTHENTICATED", {bool: false, token: null, user: null});
         commit("USER_DATA", null)
         commit("WHEEL_POINTS",null)
-        axios.post(state.api_route + "logout?lang=en", null,{
+        axios.post(state.api_route + "logout", null,{
             headers:{
                 Authorization: 'Bearer ' + actualToken
             }
@@ -352,11 +352,11 @@ const actions = {
     },
 
 
-    Add_Product_To_Cart({commit, state}, {product, quantity, attribute, token, toast}){
-        console.log(attribute)
+    Add_Product_To_Cart({commit, state, getters}, {product, quantity, attribute, token, toast}){
+        const locale = getters.CurrentLang;
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
         commit("LOADING_API",{name: 'Add_Product_To_Cart'+product.id, status: true})
-        axios.post(state.api_route + `cart/add?lang=en&quantity=${quantity}&product_id=${product.id}${attribute != null ? `&attribute_id=${attribute}` : ''}`, null,{
+        axios.post(state.api_route + `cart/add?lang=${locale}&quantity=${quantity}&product_id=${product.id}${attribute != null ? `&attribute_id=${attribute}` : ''}`, null,{
             headers:{
                 Authorization: 'Bearer ' + actualToken
             }
@@ -402,7 +402,7 @@ const actions = {
     AddReview({commit, state}, {data, toast}){
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
         commit("LOADING_API",{name: 'AddReview', status: true})
-        axios.post(state.api_route + `create-review?lang=en`, data,{
+        axios.post(state.api_route + `create-review`, data,{
             headers:{
                 Authorization: 'Bearer ' + actualToken
             }
@@ -491,11 +491,13 @@ const actions = {
             },
         })
         .then((response) => {
-        if(response.data.status_code == 200){
+        if(response.data.order_id){
             notification['success']({
                 message: "Success",
                 description: response.data.message,
             });
+            state.cart.cart_items = []
+            router.push("/")
             commit("LOADING_API",{name: 'OrderCreate', status: false})
         }
         })
@@ -512,7 +514,7 @@ const actions = {
         console.log(product)
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
         commit("LOADING_API",{name: 'Remove_Product_From_Cart'+product.id, status: true})
-        axios.delete(state.api_route + `cart/remove?lang=en&cart_id=${product.id}`,{
+        axios.delete(state.api_route + `cart/remove?cart_id=${product.id}`,{
             headers:{
                 Authorization: 'Bearer ' + actualToken
             }
@@ -551,7 +553,7 @@ const actions = {
     Clear_Cart({commit, state}, {toast}){
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
         commit("LOADING_API",{name: 'Clear_Cart', status: true})
-        axios.delete(state.api_route + `cart/clear?lang=en`,{
+        axios.delete(state.api_route + `cart/clear`,{
             headers:{
                 Authorization: 'Bearer ' + actualToken
             }
@@ -580,7 +582,7 @@ const actions = {
         var sign = type === '+' ? 'increase' : 'reduce'
         commit("LOADING_API",{name: 'Product_Increase_Decrease_From_Cart' + id, status: true})
     
-        axios.post(state.api_route + `cart/${sign}?lang=en&cart_id=${id}`, null, {
+        axios.post(state.api_route + `cart/${sign}?cart_id=${id}`, null, {
             headers:{
                 Authorization: 'Bearer ' + actualToken
             }
@@ -634,7 +636,7 @@ const actions = {
     
 
     GetBanners({commit, state}){
-        axios.get(state.api_route + "banners?lang=en")
+        axios.get(state.api_route + "banners")
         .then(response=>{
             if(response.data.status_code == 200){
                 commit("GET_BANNERS",response.data.banners)
@@ -643,10 +645,11 @@ const actions = {
         .catch(error=>{})
     },
 
-    GetProductsByCurrentCategory({commit, state},{page, route, keyword}){
+    GetProductsByCurrentCategory({commit, state, getters},{page, route, keyword}){
+        const locale = getters.CurrentLang;
         commit("LOADING_API",{name: 'GetProductsByCurrentCategory', status: true})
         const method = keyword != undefined ? 'post' : 'get'
-        axios[method](state.api_route + `${route}?lang=en&${page}${keyword != undefined ? `&keyword=${keyword}` : ''}`)
+        axios[method](state.api_route + `${route}?lang=${locale}&${page}${keyword != undefined ? `&keyword=${keyword}` : ''}`)
         .then(response=>{
             if(response.data.status_code == 200){
                 commit("LOADING_API",{name: 'GetProductsByCurrentCategory', status: false})
@@ -785,9 +788,10 @@ const actions = {
     
     
     
-    GetCartData({commit, state}){
+    GetCartData({commit, state, getters}){
+        const locale = getters.CurrentLang;
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
-        axios.get(state.api_route + "cart/items?lang=en", {
+        axios.get(state.api_route + `cart/items?lang=${locale}`, {
             headers:{
                 Authorization: 'Bearer ' + actualToken
             }
@@ -854,7 +858,7 @@ const actions = {
 
     GetWheelPoints({commit, state}){
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
-        axios.get(state.api_route + "wheels-points?lang=en", {
+        axios.get(state.api_route + "wheels-points", {
             headers:{
                 Authorization: 'Bearer ' + actualToken
             }
@@ -871,7 +875,7 @@ const actions = {
 
     WheelUpdateUserPoint({commit, state, dispatch}, points){
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
-        axios.post(state.api_route + "points-wheel?lang=en",{
+        axios.post(state.api_route + "points-wheel",{
             points: points,
             email:state.isAuthenticated.user.email
         }, {
@@ -898,7 +902,7 @@ const actions = {
 
     UserInformation({commit, state}){
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
-        axios.get(state.api_route + "userInformation?lang=en",{
+        axios.get(state.api_route + "userInformation",{
             headers:{
                 Authorization: 'Bearer ' + actualToken
             }
@@ -913,10 +917,11 @@ const actions = {
         })
     },
 
-    SortedProducts({commit, state}, sorted){
+    SortedProducts({commit, state, getters}, sorted){
+        const locale = getters.CurrentLang;
         commit("LOADING_API",{name: 'GetProductsByCurrentCategory', status: true})
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
-        axios.get(state.api_route + "sorted-products?lang=en",{
+        axios.get(state.api_route + `sorted-products?lang=${locale}`,{
             headers:{
                 Authorization: 'Bearer ' + actualToken
             },
@@ -933,10 +938,11 @@ const actions = {
         })
     },
 
-    GetProductData({commit, state}, {id}){
+    GetProductData({commit, state, getters}, {id}){
+        const locale = getters.CurrentLang;
         commit("PRODUCT_DATA",null)
         commit("LOADING_API",{name: 'GetProductData'+id, status: true})
-        axios.get(state.api_route + `product/${id}?lang=en`)
+        axios.get(state.api_route + `product/${id}?lang=${locale}`)
         .then(response=>{
             if(response.data.status_code == 200){
                 commit("PRODUCT_DATA",response.data)
@@ -949,9 +955,10 @@ const actions = {
         })
     },
 
-    GetHomeProducts({commit, state}){
+    GetHomeProducts({commit, state, getters}){
+        const locale = getters.CurrentLang;
         commit("LOADING_API",{name: 'GetHomeProducts', status: true})
-        axios.get(state.api_route + "products?lang=en")
+        axios.get(state.api_route + `products?lang=${locale}`)
         .then(response=>{
             if(response.data.status_code == 200){
                 commit("GET_HOME_PRODUCTS",response.data.data.HomeData)
@@ -966,9 +973,11 @@ const actions = {
         })
     },
 
-    GetSiteSettings({commit, state}){
+    GetSiteSettings({commit, state, getters}){
+        const locale = getters.CurrentLang;
+        commit("RESET_LOADING_STATE")
         commit("LOADING_API",{name: 'GetSiteSettings', status: true})
-        axios.get(state.api_route + "settings?lang=en")
+        axios.get(state.api_route + `settings?lang=${locale}`)
         .then(response=>{
             if(response.data.status_code == 200){
                 commit("GET_SITE_SETTINGS",response.data.setting)

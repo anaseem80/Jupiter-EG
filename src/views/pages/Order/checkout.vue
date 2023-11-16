@@ -1,7 +1,11 @@
 <template lang="">
     <!-- Ec checkout page -->
     <section class="ec-page-content section-space-p">
-        <div class="container">
+        <div class="col-12 text-center" v-if="cart && cart.cart_items.length < 1">
+            <h4>No Items here</h4>
+            <router-link to="/">Back to home</router-link>
+        </div>
+        <div class="container" v-if="cart && cart.cart_items.length > 0">
             <div class="row">
                 <div class="ec-checkout-leftside col-lg-8 col-md-12 ">
                     <!-- checkout content Start -->
@@ -9,9 +13,9 @@
                         <div class="ec-checkout-inner">
                             <div class="ec-checkout-wrap margin-bottom-30 padding-bottom-3">
                                 <div class="ec-checkout-block ec-check-bill">
-                                    <h3 class="ec-checkout-title">Billing Details</h3>
+                                    <h3 class="ec-checkout-title">{{$t("Billing Details")}}</h3>
                                     <div class="ec-bl-block-content">
-                                        <div class="ec-check-subtitle">Checkout Options</div>
+                                        <div class="ec-check-subtitle">{{$t("Checkout Options")}}</div>
                                     </div>
                                 </div>
                             </div>
@@ -46,11 +50,11 @@
                                 </div> -->
                                 </div>
                                 <div v-if="addresses.length == 0" class="mb-2">No addresses found, add new one</div>
-                                <a class="btn btn-lg btn-primary" @click="prepareAddress('add')" data-bs-toggle="modal" data-bs-target="#address" href="javascript:void(0)">Add Address</a>
+                                <a class="btn btn-lg btn-primary" @click="prepareAddress('add')" data-bs-toggle="modal" data-bs-target="#address" href="javascript:void(0)">{{$t("Add Address")}}</a>
                             </div>
                             <span class="ec-check-order-btn" v-if="addresses.length > 0">
                                 <button class="btn btn-primary" @click="CreateOrder()" :disabled="AddressID == null || isLoading('OrderCreate')">
-                                    Place Order
+                                    {{$t("Place Order")}}
                                     <loading-outlined class="fs-6 ms-2" v-if="isLoading('OrderCreate')"/>
                                 </button>
                             </span>
@@ -64,7 +68,7 @@
                         <!-- Sidebar Summary Block -->
                         <div class="ec-sidebar-block position-relative">
                             <div class="ec-sb-title mb-2">
-                                <h3 class="ec-sidebar-title">Summary</h3>
+                                <h3 class="ec-sidebar-title">{{$t("Summary")}}</h3>
                             </div>
                             <div class="ec-sb-block-content">
                                 <transition name="fade" mode="out-in">
@@ -74,30 +78,30 @@
                                 </transition>
                                 <div class="ec-checkout-summary">
                                     <div>
-                                        <span class="text-left">Sub-Total</span>
+                                        <span class="text-left">{{$t("Sub Total")}}</span>
                                         <span class="text-right">EGP{{subtotal}}</span>
                                     </div>
                                     <div>
-                                        <span class="text-left">Total discount</span>
+                                        <span class="text-left">{{$t("Total Discount")}}</span>
                                         <span class="text-right">EGP{{totalDiscount}}</span>
                                     </div>
                                     <div>
-                                        <span class="text-left">Country Tax</span>
+                                        <span class="text-left">{{$t("Country Tax")}}</span>
                                         <span class="text-right">EGP{{countryTax}}</span>
                                     </div>
                                     <div>
-                                        <span class="text-left">Shipping fee</span>
+                                        <span class="text-left">{{$t("Shipping fee")}}</span>
                                         <span class="text-right">EGP{{shippingFee}}</span>
                                     </div>
                                     <div>
-                                        <span class="text-left">Coupan Discount</span>
+                                        <span class="text-left">{{$t("Coupan Discount")}}</span>
                                     </div>
                                     <transition name="fade" mode="out-in">
                                         <div class="ec-checkout-coupan-content d-block" v-if="coupon_flag">
                                         <form class="ec-checkout-coupan-form" name="ec-checkout-coupan-form" @submit.prevent="ApplyCoupon">
-                                            <input class="ec-coupan" type="text" v-model="Coupon" required="" placeholder="Enter Your Coupan Code" name="ec-coupan">
+                                            <input class="ec-coupan" type="text" v-model="Coupon" required="" :placeholder="$t('Enter Your Coupan Code')" name="ec-coupan">
                                             <button class="ec-coupan-btn button btn-primary d-flex align-items-center" type="submit" name="subscribe" :disabled="isLoading('ApplyCoupon')">
-                                                Apply
+                                                {{$t("Apply")}}
                                                 <loading-outlined class="ms-3" v-if="isLoading('ApplyCoupon')"/>
                                             </button>
                                         </form>
@@ -111,7 +115,7 @@
                                         <a href="javascript:void(0)" @click="deleteCoupon()"><DeleteOutlined class="text-danger fs-6"/></a>
                                     </div>
                                     <div class="ec-checkout-summary-total">
-                                        <span class="text-left">Total Amount</span>
+                                        <span class="text-left">{{$t("Total")}}</span>
                                         <span class="text-right">EGP{{totalAmount}}</span>
                                     </div>
                                 </div>
@@ -123,26 +127,25 @@
                         <!-- Sidebar Payment Block -->
                         <div class="ec-sidebar-block">
                             <div class="ec-sb-title">
-                                <h3 class="ec-sidebar-title">Payment Method</h3>
+                                <h3 class="ec-sidebar-title">{{$t("Payment Method")}}</h3>
                             </div>
                             <div class="ec-sb-block-content">
                                 <div class="ec-checkout-pay">
-                                    <div class="ec-pay-desc">Please select the preferred payment method to use on this
-                                        order.</div>
+                                    <div class="ec-pay-desc">{{$t("Please select the preferred payment method to use on this order.")}}</div>
                                     <form action="#">
                                         <span class="ec-pay-option">
                                             <span class="d-block">
                                                 <input type="radio" v-model="payment_method" value="cash_on_delivery" class="h-auto w-auto me-2" id="pay1" name="radio-group" checked>
-                                                <label for="pay1">Cash On Delivery</label>
+                                                <label for="pay1">{{$t("Cash On Delivery")}}</label>
                                             </span>
                                             <span class="d-block">
                                                 <input type="radio" v-model="payment_method" value="paymob" class="h-auto w-auto me-2" id="pay2" name="radio-group">
-                                                <label for="pay2">Paymob</label>
+                                                <label for="pay2">{{$t("Paymob")}}</label>
                                             </span>
                                         </span>
                                         <span class="ec-pay-commemt">
-                                            <span class="ec-pay-opt-head">Add Comments About Your Order</span>
-                                            <textarea name="your-commemt" v-model="description" placeholder="Comments"></textarea>
+                                            <span class="ec-pay-opt-head">{{$t("Add Comments About Your Order")}}</span>
+                                            <textarea name="your-commemt" v-model="description"></textarea>
                                         </span>
                                     </form>
                                 </div>
@@ -179,7 +182,7 @@ export default {
         LoadingOutlined
     },
     computed: {
-        ...mapState(['addresses','couponDetails','coupon_flag','coupon_flag_2']),
+        ...mapState(['addresses','couponDetails','coupon_flag','coupon_flag_2','cart']),
         ...mapGetters(['subtotal','totalDiscount','couponDiscount','totalAmount','countryTax','shippingFee']),
         isAuthenticated() {
             return this.$store.state.isAuthenticated;
@@ -191,9 +194,12 @@ export default {
         }
     },
     methods: {
-        ...mapActions(['GetUserAddresses']),
+        ...mapActions(['GetUserAddresses','GetCartData']),
         async fetchUserAddresses() {
             await this.GetUserAddresses();
+        },
+        async fetchCart() {
+            await this.GetCartData();
         },
         prepareAddress(mode, address = {}) {
             this.addressMode = mode;
@@ -240,6 +246,7 @@ export default {
     },
     mounted() {
         this.fetchUserAddresses();
+        this.fetchCart();
         this.AddressID = null
     },
 }

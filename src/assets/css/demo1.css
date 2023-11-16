@@ -38,55 +38,55 @@
   Fonts Family & Style CSS
 ---------------------------------------------------*/
 @font-face {
-  font-family: "Poppins, sans-serif";
+  
   src: url("./../fonts/poppins/Poppins-Thin.ttf") format("truetype");
   font-weight: 100;
   font-style: normal;
 }
 @font-face {
-  font-family: "Poppins, sans-serif";
+  
   src: url("./../fonts/poppins/Poppins-ExtraLight.ttf") format("truetype");
   font-weight: 200;
   font-style: normal;
 }
 @font-face {
-  font-family: "Poppins, sans-serif";
+  
   src: url("./../fonts/poppins/Poppins-Light.ttf");
   font-weight: 300;
   font-style: normal;
 }
 @font-face {
-  font-family: "Poppins, sans-serif";
+  
   src: url("./../fonts/poppins/Poppins-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
 }
 @font-face {
-  font-family: "Poppins, sans-serif";
+  
   src: url("./../fonts/poppins/Poppins-Medium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
 }
 @font-face {
-  font-family: "Poppins, sans-serif";
+  
   src: url("./../fonts/poppins/Poppins-SemiBold.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
 }
 @font-face {
-  font-family: "Poppins, sans-serif";
+  
   src: url("./../fonts/poppins/Poppins-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
 }
 @font-face {
-  font-family: "Poppins, sans-serif";
+  
   src: url("./../fonts/poppins/Poppins-ExtraBold.ttf") format("truetype");
   font-weight: 800;
   font-style: normal;
 }
 @font-face {
-  font-family: "Poppins, sans-serif";
+  
   src: url("./../fonts/poppins/Poppins-Black.ttf") format("truetype");
   font-weight: 900;
   font-style: normal;
@@ -96,25 +96,25 @@
   src: url("./../fonts/fjalla/FjallaOne-Regular.ttf") format("truetype");
 }
 @font-face {
-  font-family: "Montserrat";
+  
   src: url("./../fonts/montserrat/Montserrat-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
 }
 @font-face {
-  font-family: "Montserrat";
+  
   src: url("./../fonts/montserrat/Montserrat-SemiBold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
 }
 @font-face {
-  font-family: "Montserrat";
+  
   src: url("./../fonts/montserrat/Montserrat-Bold.ttf") format("truetype");
   font-weight: 800;
   font-style: normal;
 }
 @font-face {
-  font-family: "Montserrat";
+  
   src: url("./../fonts/montserrat/Montserrat-ExtraBold.ttf") format("truetype");
   font-weight: 900;
   font-style: normal;
@@ -696,7 +696,7 @@ progress {
 body {
   margin: 0 auto;
   background-color: #ffffff;
-  font-family: "Poppins, sans-serif";
+  
   font-size: 14px;
   font-weight: 400;
   font-style: normal;
@@ -2989,6 +2989,10 @@ textarea.form-control.is-valid {
 }
 .email-wrap{
   word-wrap: break-word;
+}
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500&display=swap');
+.CairoFont{
+  font-family: "Cairo" !important;
 }
 .form-control.is-invalid {
   border-color: #fb1313;
@@ -5734,7 +5738,7 @@ textarea.form-control.is-invalid {
   z-index: 1070;
   display: block;
   margin: 0;
-  font-family: "Poppins, sans-serif";
+  
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -5889,7 +5893,7 @@ textarea.form-control.is-invalid {
   z-index: 1060;
   display: block;
   max-width: 276px;
-  font-family: "Poppins, sans-serif";
+  
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -15898,13 +15902,13 @@ body {
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  font-family: "Poppins, sans-serif";
+  
   font-weight: 300;
   top: 0 !important;
 }
 
 h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
-  font-family: "Montserrat";
+  
 }
 
 /*----  Section  ----*/
@@ -16056,7 +16060,7 @@ h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   position: relative;
 }
 .section-title .ec-title {
-  font-family: "Montserrat";
+  
   font-size: 30px;
   font-weight: 800;
   margin-bottom: 7px;
@@ -18089,7 +18093,7 @@ h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   color: #444444;
   display: block;
   font-size: 15px;
-  font-family: "Montserrat";
+  
   line-height: 22px;
   font-weight: 700;
   margin: 0 auto;
@@ -18545,7 +18549,7 @@ h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   color: #444444;
   display: block;
   position: relative;
-  font-family: "Poppins, sans-serif";
+  
 }
 .ec-main-menu ul li .main-label-note-new {
   -webkit-transition: all 0.3s ease-in-out;
@@ -19007,7 +19011,7 @@ body.ec-open:before {
 .ec-side-cart .ec-cart-inner .ec-cart-title .cart_title {
   font-size: 17px;
   color: #555;
-  font-family: "Montserrat";
+  
   font-weight: 600;
 }
 .ec-side-cart .ec-cart-inner .ec-cart-title .ec-close {
@@ -19077,7 +19081,7 @@ body.ec-open:before {
 .ec-side-cart .ec-menu-title .menu_title {
   font-size: 18px;
   color: #ff7e02;
-  font-family: "Poppins, sans-serif";
+  
   font-weight: 600;
 }
 .ec-side-cart .ec-menu-title .ec-close {
@@ -20454,7 +20458,7 @@ button.btn-close.qty_close {
   font-size: 16px;
   line-height: 1.5;
   font-weight: 400;
-  font-family: "Poppins, sans-serif";
+  
 }
 .ec-product-inner .ec-pro-content .ec-pro-title a:hover {
   color: #ff7e02;
@@ -20479,7 +20483,7 @@ button.btn-close.qty_close {
   color: #555;
   font-weight: 700;
   font-size: 15px;
-  font-family: "Montserrat";
+  
 }
 .ec-product-inner .ec-pro-content .ec-price span.old-price {
   font-size: 15px;
@@ -20907,7 +20911,7 @@ i.ecicon.eci-star.fill {
   color: #555;
   margin-bottom: 2px;
   letter-spacing: 1px;
-  font-family: "Montserrat";
+  
   font-weight: 800;
   position: relative;
   padding-top: 0;
@@ -21088,7 +21092,7 @@ i.ecicon.eci-star.fill {
 .ec-category-section .ec-cat-tab-nav .cat-link .cat-desc span {
   margin-top: 5px;
   font-size: 17px;
-  font-family: "Montserrat";
+  
   font-weight: 700;
   color: #444444;
   letter-spacing: 0;
@@ -21306,7 +21310,7 @@ i.ecicon.eci-star.fill {
   margin: 0 0 2px;
 }
 .ec-fs-pro-inner .ec-fs-pro-title a {
-  font-family: "Poppins, sans-serif";
+  
   font-weight: 400;
   font-size: 20px;
   color: #777;
@@ -21535,7 +21539,7 @@ i.ecicon.eci-star.fill {
   color: #ff7e02;
   margin-bottom: 5px;
   letter-spacing: 2px;
-  font-family: "Montserrat";
+  
   text-transform: uppercase;
   line-height: 1;
   font-weight: 800;
@@ -21545,7 +21549,7 @@ i.ecicon.eci-star.fill {
   color: #ff7e02;
   margin-bottom: 13px;
   letter-spacing: 1.5px;
-  font-family: "Montserrat";
+  
   text-transform: uppercase;
 }
 .ec-offer-content .btn-primary {
@@ -21617,7 +21621,7 @@ section.ec-test-section {
           flex-direction: column;
 }
 .ec-test-section .ec-test-name {
-  font-family: "Montserrat";
+  
   font-size: 22px;
   font-weight: 600;
   margin-bottom: 6px;
@@ -21845,7 +21849,7 @@ section.ec-instagram-section {
   border-top: 1px solid #eeeeee;
 }
 .ec-footer .footer-top .ec-footer-widget .ec-footer-heading {
-  font-family: "Montserrat";
+  
   font-size: 17px;
   font-weight: 600;
   margin-bottom: 11px;
@@ -22563,7 +22567,7 @@ div#ec_news_signup {
   line-height: 1.5;
   letter-spacing: 0.5px;
   font-weight: 400;
-  font-family: "Poppins, sans-serif";
+  
   text-transform: capitalize;
 }
 .category-sidebar .cat-sidebar .ec-sb-pro-sl .ec-sb-pro-sl-item .ec-pro-content .ec-pro-rating {

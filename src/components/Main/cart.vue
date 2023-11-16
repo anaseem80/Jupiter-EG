@@ -2,10 +2,13 @@
     <!-- ekka Cart Start -->
     <div class="ec-side-cart-overlay"></div>
     <div id="ec-side-cart" class="ec-side-cart">
-        <div class="ec-cart-inner">
+        <div 
+        class="ec-cart-inner"
+        :class="{'justify-content-start': cart && cart.cart_items.length === 0}"
+        >
             <div class="ec-cart-top">
                 <div class="ec-cart-title">
-                    <span class="cart_title">My Cart</span>
+                    <span class="cart_title">{{$t("My Cart")}}</span>
                     <button class="ec-close">×</button>
                 </div>
                 <ul class="eccart-pro-items" v-if="cart">
@@ -35,30 +38,34 @@
                 </ul>
             </div>
             <div v-if="cart">
-                <p class="text-center" v-if="cart.cart_items.length < 1">No Items found</p>
+                <div class="col-12 text-center" v-if="cart.cart_items.length < 1">
+                    <img src="@/assets/images/vendor/empty.gif" width="250" alt="">
+                    <h4>{{$t("Your cart is empty!")}} 😓</h4>
+                    <router-link to="/" @click="hideCart()" class="btn btn-primary rounded-pill mt-3">{{$t("Continue Shopping")}}</router-link>
+                </div>
             </div>
             <div class="ec-cart-bottom" v-if="cart && cart.cart_items.length > 0">
                 <div class="cart-sub-total">
                     <table class="table cart-table">
                         <tbody>
                             <tr>
-                                <td class="text-left">Sub-Total :</td>
+                                <td class="text-left">{{$t("Sub Total")}} :</td>
                                 <td class="text-right">{{subtotal}}</td>
                             </tr>
                             <tr>
-                                <td class="text-left">Total Discount :</td>
+                                <td class="text-left">{{$t("Total Discount")}} :</td>
                                 <td class="text-right">{{totalDiscount}}</td>
                             </tr>
                             <tr>
-                                <td class="text-left">Total :</td>
+                                <td class="text-left">{{$t("Total")}} :</td>
                                 <td class="text-right primary-color">{{totalAmount}}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="cart_btn">
-                    <router-link to="/cart" class="btn btn-primary" @click="hideCart()">View Cart</router-link>
-                    <router-link to="/checkout" class="btn btn-secondary" @click="hideCart()">Checkout</router-link>
+                    <router-link to="/cart" class="btn btn-primary" @click="hideCart()">{{$t("View Cart")}}</router-link>
+                    <router-link to="/checkout" class="btn btn-secondary" @click="hideCart()">{{$t("Checkout")}}</router-link>
                 </div>
             </div>
         </div>

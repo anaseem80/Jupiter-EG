@@ -15,13 +15,17 @@
             @focus="SearchDropdownFocus()"
             @blur:outside="SearchDropdownBlur()"
             class="form-control mt-2 mb-0 dropdown-toggle"
-            placeholder="Enter your keyword here..."
+            :placeholder="$t('Enter your keyword here...')"
         />
-        <div class="search-dropdown rounded-0 border-0 w-100 bg-white position-absolute p-3 shadow-sm dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <p v-if="recent_keywords.length == 0">No recent search</p>
+        <div 
+        class="search-dropdown rounded-0 border-0 w-100 bg-white position-absolute p-3 shadow-sm dropdown-menu" 
+        aria-labelledby="dropdownMenuButton1"
+        :class="{'text-end': $i18n.locale == 'ar'}"
+        >
+            <p v-if="recent_keywords.length == 0">{{$t("No recent search")}}</p>
             <div class="recent-search" v-if="recent_keywords.length > 0">
                 <div class="d-flex justify-content-between align-items-center">
-                    <p class="mb-0 fw-bold">Recent search</p>
+                    <p class="mb-0 fw-bold">{{$t('Recent search')}}</p>
                     <i @click="emptyRecentSearch()" class="ecicon eci-trash-o cursor-pointer"></i>
                 </div>
                 <ul class="d-flex flex-wrap">
@@ -34,7 +38,7 @@
             </div>
             <p v-if="keywords.length == 0">No recent search and view</p>
             <div class="search-view mt-3" v-if="keywords.length > 0">
-                <p class="mb-0 fw-bold">Search and view</p>
+                <p class="mb-0 fw-bold">{{$t('Search and view')}}</p>
                 <ul class="d-flex flex-wrap">
                     <li
                     v-for="keyword in keywords"
@@ -45,7 +49,7 @@
             </div>
             <p v-if="keywords.length == 0">No Popular search</p>
             <div class="search-view mt-3 border rounded p-3 popular-search position-relative" v-if="keywords.length > 0">
-                <p class="mb-0 fw-bold"><i class="ecicon eci-fire text-danger"></i> Popular search</p>
+                <p class="mb-0 fw-bold"><i class="ecicon eci-fire text-danger"></i> {{$t('Popular search')}}</p>
                 <ul class="p-0 mt-2">
                     <li
                     v-for="(keyword, index) in keywords"

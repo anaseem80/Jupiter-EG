@@ -1,3 +1,4 @@
+import i18n from "@/localization/i18n.js"
 const getters = {
     filterAttribute: (state) => (color, title, id, attrID) => {
         const localState = { ...state };
@@ -55,6 +56,9 @@ const getters = {
     },
     couponDiscount: (state, getters) => {
       return state.couponDetails ? parseFloat(state.couponDetails.discount_amount) : 0;
+    },
+    CurrentLang: (state, getters) => {
+      return i18n.global.locale;
     }
 }
 

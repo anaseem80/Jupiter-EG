@@ -8,26 +8,19 @@
                 <div class="ec-menu-content">
                     <ul>
                         <span class="menu-toggle"></span>
-                        <li><router-link to="/toprate" @click="$store.dispatch('GetProductsByCurrentCategory',{page: 1, route:'products/toprate'})">Top Rate</router-link></li>
-                        <li><router-link to="/last" @click="$store.dispatch('GetProductsByCurrentCategory',{page: 1, route:'products/last'})">Last Products</router-link></li>
-                        <li><router-link to="/with-offers" @click="$store.dispatch('GetProductsByCurrentCategory',{page: 1, route:'products/with-offers'})">Hot Offers</router-link></li>
+                        <li><router-link to="/toprate" @click="$store.dispatch('GetProductsByCurrentCategory',{page: 1, route:'products/toprate'})">{{$t("Top Rate")}}</router-link></li>
+                        <li><router-link to="/last" @click="$store.dispatch('GetProductsByCurrentCategory',{page: 1, route:'products/last'})">{{$t("Last Products")}}</router-link></li>
+                        <li><router-link to="/with-offers" @click="$store.dispatch('GetProductsByCurrentCategory',{page: 1, route:'products/with-offers'})">{{$t("Hot Offers")}}</router-link></li>
                     </ul>
                 </div>
                 <div class="header-res-lan-curr">
                     <div class="header-top-lan-curr">
                         <!-- Language Start -->
-                        <div class="header-top-lan dropdown">
-                            <button class="dropdown-toggle text-upper" data-bs-toggle="dropdown">Language <i
-                                    class="ecicon eci-caret-down" aria-hidden="true"></i></button>
-                            <ul class="dropdown-menu">
-                                <li class="active"><a class="dropdown-item" href="#">English</a></li>
-                                <li><a class="dropdown-item" href="#">Italiano</a></li>
-                            </ul>
-                        </div>
+                        <language-dropdown />
                         <!-- Language End -->
                         <!-- Currency Start -->
                         <div class="header-top-curr dropdown">
-                            <button class="dropdown-toggle text-upper" data-bs-toggle="dropdown">Currency <i
+                            <button class="dropdown-toggle text-upper" data-bs-toggle="dropdown">{{$t("Currency")}} <i
                                     class="ecicon eci-caret-down" aria-hidden="true"></i></button>
                             <ul class="dropdown-menu">
                                 <li class="active"><a class="dropdown-item" href="#">USD $</a></li>

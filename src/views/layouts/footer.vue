@@ -6,8 +6,8 @@
                 <div class="container">
                     <div class="row">
                         <div class="text-center footer-off-msg">
-                            <span>Win a contest! Get this limited-editon</span><a href="#" target="_blank">View
-                                Detail</a>
+                            <span>{{$t("Win a contest! Get this limited edition")}}</span>
+                            <a href="#" target="_blank">{{$t("Play Now!")}}</a>
                         </div>
                     </div>
                 </div>

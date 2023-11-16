@@ -10,9 +10,9 @@
             <div class="row">
                 <div class="col-md-12 text-center">
                     <div class="section-title">
-                        <h2 class="ec-bg-title">New Arrivals</h2>
-                        <h2 class="ec-title">New Arrivals</h2>
-                        <p class="sub-title">Browse The Collection of Top Products</p>
+                        <h2 class="ec-bg-title">{{$t("New Arrivals")}}</h2>
+                        <h2 class="ec-title">{{$t("New Arrivals")}}</h2>
+                        <p class="sub-title">{{$t("Browse The Collection of New Arrivals")}}</p>
                     </div>
                 </div>
             </div>
@@ -101,8 +101,8 @@
                 <div class="col-md-12 text-center">
                     <div class="section-title">
                         <h2 class="ec-bg-title">Our Top Collection</h2>
-                        <h2 class="ec-title">Top Sales</h2>
-                        <p class="sub-title">Browse The Collection of Top Categories</p>
+                        <h2 class="ec-title">{{$t("Top Sales")}}</h2>
+                        <p class="sub-title">{{$t("Browse The Collection of Top Categories")}}</p>
                     </div>
                 </div>
             </div>
@@ -121,7 +121,7 @@
                                 :class="{ 'active show': index === 0 }"
                                 :href="'#tab-cat-'+categoriesHome.id"
                             >
-                                <div class="cat-desc"><span>{{categoriesHome.name_en}}</span><span>{{categoriesHome.products_count}} Products</span></div>
+                                <div class="cat-desc"><span>{{$i18n.locale == "en" ? categoriesHome.name_en : categoriesHome.name_ar}}</span><span>{{categoriesHome.products_count}} {{$t("Products")}}</span></div>
                             </a>
                         </li>
                     </ul>
@@ -254,8 +254,8 @@
                             <img src="@/assets/images/icons/service_1.svg" class="svg_img" alt="">
                         </div>
                         <div class="ec-service-desc">
-                            <h2>Free Shipping</h2>
-                            <p>Free shipping inside Egypt or order above $200</p>
+                            <h2>{{$t("Free Shipping")}}</h2>
+                            <p>{{$t("Free shipping inside Egypt or order above $200")}}</p>
                         </div>
                     </div>
                 </div>
@@ -265,8 +265,8 @@
                             <img src="@/assets/images/icons/service_2.svg" class="svg_img" alt="">
                         </div>
                         <div class="ec-service-desc">
-                            <h2>Best prices</h2>
-                            <p>Contact us 24 hours a day, 7 days a week</p>
+                            <h2>{{$t("Best prices")}}</h2>
+                            <p>{{$t("Contact us 24 hours a day, 7 days a week")}}</p>
                         </div>
                     </div>
                 </div>
@@ -276,8 +276,8 @@
                             <img src="@/assets/images/icons/service_3.svg" class="svg_img" alt="">
                         </div>
                         <div class="ec-service-desc">
-                            <h2>Cash back</h2>
-                            <p>Simply return it within 30 days for an exchange</p>
+                            <h2>{{$t("Cash back")}}</h2>
+                            <p>{{$t("Simply return it within 30 days for an exchange")}}</p>
                         </div>
                     </div>
                 </div>
@@ -287,8 +287,8 @@
                             <img src="@/assets/images/icons/service_4.svg" class="svg_img" alt="">
                         </div>
                         <div class="ec-service-desc">
-                            <h2>Payment Secure</h2>
-                            <p>Contact us 24 hours a day, 7 days a week</p>
+                            <h2>{{$t("Payment Secure")}}</h2>
+                            <p>{{$t("Contact us 24 hours a day, 7 days a week")}}</p>
                         </div>
                     </div>
                 </div>

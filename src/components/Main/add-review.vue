@@ -5,7 +5,7 @@
           v-slot="{ errors }"
       >
       <div class="ec-ratting-star">
-          <span>Your rating:</span>
+          <span>{{$t("Your rating")}}:</span>
           <div class="ec-t-review-rating">
               <div class="star-rating">
               <i
@@ -25,13 +25,13 @@
             <Field 
               as="textarea"
               name="review"
-              placeholder="Enter Your Comment"
+              :placeholder="$t('Enter Your Comment')"
               class="mb-0"
               :class="{ 'is-invalid': errors.review }"
             >
           </Field>
           <div class="invalid-feedback text-danger mb-3">{{ errors.review }}</div>
-          <s-button name='Submit' action='AddReview'/>
+          <s-button :name="$t('Submit')" action='AddReview'/>
       </div>
     </Form>
 </template>

@@ -71,6 +71,11 @@ const mutations = {
     APPLY_TAX(state, tax){
       state.tax = tax
     },
+    RESET_LOADING_STATE(state) {
+        Object.keys(state.Loading).forEach(key => {
+            state.Loading[key] = false;
+        });
+    },
     CURRENT_PRODUCTS_CATEGORY_PRODUCTS_DATA(state, ProductsCategoryProducts){
       state.ProductsCategoryProducts = ProductsCategoryProducts
     },

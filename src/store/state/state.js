@@ -1,3 +1,4 @@
+import i18n from "@/localization/i18n.js"
 export const state = {
     api_route: 'https://jupiter-eg.com/admin-panel/public/api/',
     route: 'https://jupiter-eg.com/admin-panel/',
@@ -21,6 +22,7 @@ export const state = {
     recent_keywords: [],
     product:null,
     wheelpoints:null,
+    lang:i18n.global.locale,
     color:null,
     size:null,
     ResendOTP: null,

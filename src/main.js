@@ -18,6 +18,7 @@ import Loader from '@/components/Main/loader'
 import VueCountdown from '@chenfengyuan/vue-countdown';
 import AddReview from '@/components/Main/add-review';
 import MobileMenu from '@/components/Main/mobile-menu';
+import Language from '@/components/lang/language';
 import SocialLinks from '@/components/Main/social-links';
 import UserSettings from '@/components/Profile/settings';
 import Orders from '@/components/Profile/orders';
@@ -26,6 +27,7 @@ import wheelSpin from '@/components/wheel-spin/wheel-spin';
 import breadcrumb from '@/components/breadcrumb/breadcrumb';
 import VueLazyload from 'vue-lazyload'
 import Antd from 'ant-design-vue';
+import i18n from "@/localization/i18n.js"
 import 'ant-design-vue/dist/reset.css';
 const app = createApp(App)
 
@@ -59,6 +61,7 @@ app.component('banner',Banner)
 app.component('add-review',AddReview)
 app.component('loader',Loader)
 app.component('mobile-menu',MobileMenu)
+app.component('language-dropdown',Language)
 app.component('info-dialog',InfoDialog)
 app.component('password-dialog',PasswordDialog)
 app.component('user-settings',UserSettings)
@@ -81,6 +84,11 @@ import '@/assets/css/plugins/animate.css'
 import '@/assets/css/plugins/countdownTimer.css'
 import '@/assets/css/plugins/slick.min.css'
 import '@/assets/css/plugins/bootstrap.css'
+
+if(i18n.global.locale == 'ar'){
+    alert("arabic")
+}
+
 import '@/assets/css/demo1.css'
 import '@/assets/css/responsive.css'
 import '@/assets/css/backgrounds/bg-4.css'
@@ -104,13 +112,13 @@ import '@/assets/js/plugins/jquery.sticky-sidebar.js'
 import '@/assets/js/plugins/slick.min.js'
 import '@/assets/js/vendor/index.js'
 import '@/assets/js/main.js'
-
 /* Javascript */
 
 const loadimage = require('@/assets/images/bg/blur.jpg')
 
 app.use(router)
 app.use(Antd)
+app.use(i18n)
 app.use(store)
 app.use(VueLazyload, {
     preLoad: 1.3,

@@ -21,6 +21,7 @@
     "vee-validate": "^4.11.8",
     "vue": "^3.3.4",
     "vue-cookies": "^1.8.3",
+    "vue-i18n": "^9.6.5",
     "vue-lazyload": "^3.0.0",
     "vue-rating-input": "^1.1.0",
     "vue-router": "^4.2.5",
