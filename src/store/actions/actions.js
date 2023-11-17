@@ -485,6 +485,9 @@ const actions = {
     OrderCreate({commit, state}, {coupon, user_address_id, description, payment_method}){
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
         commit("LOADING_API",{name: 'OrderCreate', status: true})
+        if(payment_method=='paymob'){
+            window.location.replace(state.api_route + `orders/create?${coupon != null ? `coupon_code=${coupon}&` : ''}${description != "" ? `description=${description}&` : ''}user_address_id=${user_address_id}&payment_method=${payment_method}&token=${actualToken}`)
+        }
         axios.get(state.api_route + `orders/create?${coupon != null ? `coupon_code=${coupon}&` : ''}${description != "" ? `description=${description}&` : ''}user_address_id=${user_address_id}&payment_method=${payment_method}&token=${actualToken}`,{
             headers:{
                 Authorization: 'Bearer ' + actualToken
@@ -497,7 +500,7 @@ const actions = {
                 description: response.data.message,
             });
             state.cart.cart_items = []
-            router.push("/")
+            router.push("/order-success")
             commit("LOADING_API",{name: 'OrderCreate', status: false})
         }
         })
@@ -660,6 +663,24 @@ const actions = {
         .catch(error=>{
           console.log(error)
           commit("LOADING_API",{name: 'GetProductsByCurrentCategory', status: false})
+          fadeLoader()
+        })
+    },
+
+    
+    GetSidePageData({commit, state, getters},route){
+        const locale = getters.CurrentLang;
+        commit("LOADING_API",{name: 'GetSidePageData', status: true})
+        axios.get(state.api_route + `${route}?lang=${locale}`)
+        .then(response=>{
+            if(response.data.status_code == 200){
+                commit("LOADING_API",{name: 'GetSidePageData', status: false})
+                commit("GET_SIDE_PAGES_DATA",response.data.data)
+                fadeLoader()
+            }
+        })
+        .catch(error=>{
+          commit("LOADING_API",{name: 'GetSidePageData', status: false})
           fadeLoader()
         })
     },

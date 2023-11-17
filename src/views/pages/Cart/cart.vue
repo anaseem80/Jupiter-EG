@@ -42,9 +42,9 @@
                                                        </td>
                                                     <td data-label="Price" class="ec-cart-pro-price">
                                                         <span class="amount">{{item['price']}}</span>
-                                                        <div v-if="item.attribute" class="d-flex">
-                                                            <p class="mb-0 me-2">{{item.attribute.color.name_en}}</p>
-                                                            <p class="mb-0">{{item.attribute.size.name_en}}</p>
+                                                        <div v-if="item.attribute">
+                                                            <p class="mb-0">{{item.attribute.color != null ? ($i18n.locale == 'en' ? item.attribute.color.name_en : item.attribute.color.name_ar) : ""}}</p>
+                                                            <p class="mb-0">{{item.attribute.size != null ? ($i18n.locale == 'en' ? item.attribute.size.name_en : item.attribute.size.name_ar) : ""}}</p>
                                                         </div>
                                                     </td>
                                                     <td data-label="Quantity" class="ec-cart-pro-qty"

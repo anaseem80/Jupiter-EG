@@ -24,8 +24,8 @@
                             <router-link @click="fetchProductData(item.product_id)" :to="'/product/'+item['product_id']" class="cart_pro_title">{{item['name']}}</router-link>
                             <span class="cart-price"><span>{{item['price']}}</span> x {{item['quantity']}}</span>
                             <div v-if="item.attribute">
-                                <p class="mb-0">{{item.attribute.color.name_en}}</p>
-                                <p class="mb-0">{{item.attribute.size.name_en}}</p>
+                                <p class="mb-0">{{item.attribute.color != null ? ($i18n.locale == 'en' ? item.attribute.color.name_en : item.attribute.color.name_ar) : ""}}</p>
+                                <p class="mb-0">{{item.attribute.size != null ? ($i18n.locale == 'en' ? item.attribute.size.name_en : item.attribute.size.name_ar) : ""}}</p>
                             </div>
                             <div class="qty-plus-minus">
                                 <div class="dec ec_qtybtn" @click="ProductQuantity('-',item.id)">-</div>

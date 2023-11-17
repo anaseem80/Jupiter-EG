@@ -71,6 +71,9 @@ const mutations = {
     APPLY_TAX(state, tax){
       state.tax = tax
     },
+    GET_SIDE_PAGES_DATA(state, sidePageData){
+      state.sidePageData = sidePageData
+    },
     RESET_LOADING_STATE(state) {
         Object.keys(state.Loading).forEach(key => {
             state.Loading[key] = false;

@@ -22,6 +22,7 @@ export const state = {
     recent_keywords: [],
     product:null,
     wheelpoints:null,
+    sidePageData:null,
     lang:i18n.global.locale,
     color:null,
     size:null,

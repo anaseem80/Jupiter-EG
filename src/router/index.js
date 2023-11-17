@@ -6,9 +6,11 @@ import OrderDetails from '@/views/pages/Order/order-details'
 import CheckOut from '@/views/pages/Order/checkout'
 import Cart from '@/views/pages/Cart/cart'
 import Product from '@/views/pages/Product/product'
+import SidePage from '@/views/pages/SidePages/side-pages'
 import Games from '@/views/pages/Games/games'
 import Error from '@/views/pages/404/404'
 import Profile from '@/views/pages/Profile/profile'
+import ThankYou from '@/views/pages/Order/thank-you'
 import Register from '@/views/pages/Auth/register'
 import Verification from '@/views/pages/Auth/verification'
 import ForgetPassword from '@/views/pages/Auth/forget_password'
@@ -33,6 +35,11 @@ const routes = [
     path: '/register',
     name: 'register',
     component: Register
+  },
+  {
+    path: '/order-success',
+    name: 'order-success',
+    component: ThankYou
   },
   {
     path: '/verification',
@@ -78,6 +85,42 @@ const routes = [
     path: "/checkout",
     name: "checkout",
     component: CheckOut,
+  },
+  {
+    path: "/terms",
+    name: "Terms & Conditions",
+    component: SidePage,
+    props: route => ({ apiEndpoint: "terms" })
+  },
+  {
+    path: "/about",
+    name: "About Us",
+    component: SidePage,
+    props: route => ({ apiEndpoint: "about" })
+  },
+  {
+    path: "/privacy",
+    name: "Privacy and policy",
+    component: SidePage,
+    props: route => ({ apiEndpoint: "privacy" })
+  },
+  {
+    path: "/return-policy",
+    name: "Return Policy",
+    component: SidePage,
+    props: route => ({ apiEndpoint: "return-policy" })
+  },
+  {
+    path: "/store-policy",
+    name: "Store Policy",
+    component: SidePage,
+    props: route => ({ apiEndpoint: "store-policy" })
+  },
+  {
+    path: "/seller-policy",
+    name: "Seller Policy",
+    component: SidePage,
+    props: route => ({ apiEndpoint: "seller-policy" })
   },
   {
     path: "/last",
