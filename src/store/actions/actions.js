@@ -353,6 +353,7 @@ const actions = {
 
 
     Add_Product_To_Cart({commit, state, getters}, {product, quantity, attribute, token, toast}){
+        console.log(attribute)
         const locale = getters.CurrentLang;
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
         commit("LOADING_API",{name: 'Add_Product_To_Cart'+product.id, status: true})
@@ -423,6 +424,28 @@ const actions = {
                 description: error.response.data.message,
             });
             commit("LOADING_API",{name: 'AddReview', status: false})
+        })
+    },
+
+    ContactUS({commit, state}, data){
+        var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
+        commit("LOADING_API",{name: 'ContactUS', status: true})
+        axios.post(state.api_route + `contact`, data)
+        .then((response) => {
+        if(response.data.status_code == 200){
+            notification['success']({
+                message: "Success",
+                description: response.data.message + " 🥳",
+            });
+            commit("LOADING_API",{name: 'ContactUS', status: false})
+        }
+        })
+        .catch((error) => {
+            notification['info']({
+                message: "Error",
+                description: error.response.data.message,
+            });
+            commit("LOADING_API",{name: 'ContactUS', status: false})
         })
     },
 

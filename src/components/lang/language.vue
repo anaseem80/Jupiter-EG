@@ -33,7 +33,7 @@ export default {
         }
     },
     created(){
-    $("body").addClass("CairoFont")
+    $("body").addClass("CairoFont rtl")
     if(localStorage.getItem("lang")=="ar"){
         this.$i18n.locale = 'ar';
         this.flag = arabic

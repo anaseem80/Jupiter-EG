@@ -4,9 +4,9 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="section-title">
-                        <h2 class="ec-bg-title">Log In</h2>
-                        <h2 class="ec-title">Log In</h2>
-                        <p class="sub-title mb-3">Best place to buy and sell digital products</p>
+                        <h2 class="ec-bg-title">{{$t("Log in")}}</h2>
+                        <h2 class="ec-title">{{$t("Log in")}}</h2>
+                        <p class="sub-title mb-3">{{$t("Best place to buy and sell digital products")}}</p>
                     </div>
                 </div>
                 <div class="ec-login-wrapper col-lg-6">
@@ -19,7 +19,7 @@
                                     v-slot="{ errors }"
                                 >
                                 <span class="ec-login-wrap">
-                                    <label>Email Address*</label>
+                                    <label>{{$t("Email Address")}}*</label>
                                     <Field
                                         name="email"
                                         type="text"
@@ -30,7 +30,7 @@
                                     <div class="invalid-feedback text-danger mb-2">{{ errors.email }}</div>
                                 </span>
                                 <span class="ec-login-wrap mt-3">
-                                    <label>Password*</label>
+                                    <label>{{$t("Password")}}*</label>
                                     <Field
                                         name="password"
                                         type="password"
@@ -41,12 +41,12 @@
                                     <div class="invalid-feedback text-danger mb-2">{{ errors.password }}</div>
                                 </span>
                                 <span class="ec-login-wrap ec-login-fp mt-3">
-                                    <label><router-link to="/forget_password">Forgot Password?</router-link></label>
+                                    <label><router-link to="/forget_password">{{$t("Forgot Password")}}</router-link></label>
                                 </span>
                                 <span class="ec-login-wrap ec-login-btn">
-                                    <s-button name='Login' action='UserLogin'/>
+                                    <s-button :name='$t("Login")' action='UserLogin'/>
                                     <span class="ec-register-wrap ec-register-fp mt-3">
-                                        <label>Don't have any account yet?  <router-link to="/register">Register Now!</router-link></label>
+                                        <label>{{$t("Don't have any account yet")}}  <router-link to="/register">{{$t("Register Now")}}!</router-link></label>
                                     </span>
                                 </span>
                             </Form>

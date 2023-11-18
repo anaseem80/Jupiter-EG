@@ -15529,6 +15529,12 @@ li {
     text-align: center;
   }
 }
+.rtl .form-control{
+  padding-right: 20px;
+}
+.rtl .is-invalid{
+  padding-right: 30px !important;
+}
 @media (min-width: 1450px) {
   .container-xl {
     max-width: 1400px;
@@ -21852,7 +21858,7 @@ section.ec-instagram-section {
   
   font-size: 17px;
   font-weight: 600;
-  margin-bottom: 11px;
+  margin: 27px 0;
   color: #777;
   letter-spacing: 0.7px;
   position: relative;

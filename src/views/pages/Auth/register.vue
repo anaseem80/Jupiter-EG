@@ -4,9 +4,9 @@
             <div class="row">
                 <div class="col-md-12 text-center">
                     <div class="section-title">
-                        <h2 class="ec-bg-title">Register</h2>
-                        <h2 class="ec-title">Register</h2>
-                        <p class="sub-title mb-3">Best place to buy and sell digital products</p>
+                        <h2 class="ec-bg-title">{{$t("Register")}}</h2>
+                        <h2 class="ec-title">{{$t("Register")}}</h2>
+                        <p class="sub-title mb-3">{{$t("Best place to buy and sell digital products")}}</p>
                     </div>
                 </div>
                 <div class="ec-register-wrapper col-lg-6">
@@ -19,58 +19,58 @@
                                     v-slot="{ errors }"
                                 >
                                 <span class="ec-register-wrap">
-                                    <label>Name*</label>
+                                    <label>{{$t("Name*")}}</label>
                                     <Field
                                         name="name"
                                         type="text"
                                         class="form-control mt-2 mb-0"
-                                        placeholder="Enter your email add..."
+                                        :placeholder="$t('Your name..')"
                                         :class="{ 'is-invalid': errors.name }"
                                     />
                                     <div class="invalid-feedback text-danger mb-2">{{ errors.name }}</div>
                                 </span>
                                 <span class="ec-register-wrap mt-3">
-                                    <label>Email Address*</label>
+                                    <label>{{$t("Email Address*")}}</label>
                                     <Field
                                         name="email"
                                         type="text"
                                         class="form-control mt-2 mb-0"
-                                        placeholder="Enter your email add..."
+                                        :placeholder="$t('Enter your email add...')"
                                         :class="{ 'is-invalid': errors.email }"
                                     />
                                     <div class="invalid-feedback text-danger mb-2">{{ errors.email }}</div>
                                 </span>
                                 <span class="ec-register-wrap mt-3">
-                                    <label>Type*</label>
+                                    <label>{{$t("Type*")}}</label>
                                     <Field
                                         as="select"
                                         name="client_type"
                                         class="form-control mt-2 mb-0 border"
                                         :class="{ 'is-invalid': errors.client_type }"
                                     >
-                                        <option value="" selected disabled>Select Type</option>
-                                        <option value="user">User</option>
-                                        <option value="wholesale">Wholesale</option>
-                                        <option value="retail">Retail</option>
+                                        <option value="" selected disabled>{{$t("Select Type")}}</option>
+                                        <option value="user">{{$t("User")}}</option>
+                                        <option value="wholesale">{{$t("Wholesale")}}</option>
+                                        <option value="retail">{{$t("Retail")}}</option>
                                     </Field>
                                     <div class="invalid-feedback text-danger mb-2">{{ errors.client_type }}</div>
                                 </span>
                                 <span class="ec-register-wrap mt-3">
-                                    <label>Password*</label>
+                                    <label>{{$t("Password*")}}</label>
                                     <Field
                                         name="password"
                                         type="password"
                                         class="form-control mt-2 mb-0"
-                                        placeholder="Enter your password"
+                                        :placeholder="$t('Enter your password')"
                                         :class="{ 'is-invalid': errors.password }"
                                     />
                                     <div class="invalid-feedback text-danger mb-2">{{ errors.password }}</div>
                                 </span>
                                 <span class="ec-register-wrap ec-register-btn">
-                                    <s-button name='Register' action='UserRegister'/>
+                                    <s-button :name="$t('Register')" action='UserRegister'/>
                                 </span>
                                 <span class="ec-register-wrap ec-register-fp mt-3">
-                                    <label>Already have an account?  <router-link to="/login">Login Now!</router-link></label>
+                                    <label>{{$t("Already have an account?")}}  <router-link to="/login">{{$t("Login Now!")}}</router-link></label>
                                 </span>
                             </Form>
                         </div>
@@ -93,7 +93,8 @@ export default {
     },
     data(){
         return{
-            UserIDToken: VueCookies.get("UserIDToken")
+            UserIDToken: VueCookies.get("UserIDToken"),
+            lang: this.$store.getters.CurrentLang
         }
     },
     created(){

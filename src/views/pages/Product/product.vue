@@ -172,7 +172,7 @@
                                                     }"
                                                     >
                                                         <li 
-                                                            @click="onColorChange($event.target,color,product.product.id, product)"
+                                                            @click="onColorChange($event.target,color.color,product.product.id, product)"
                                                             :data-src="color.image"
                                                             :data-src-hover="color.image"
                                                             :data-old="product.product.price"
@@ -198,15 +198,16 @@
                                                         <li 
                                                             v-for="(size,index) in product.product.attribute_for"
                                                             class="size"
-                                                            @click="sizeColorChange($event.target, size, product.product)"
-                                                            :data-color="size.size_name_en == null ? size.size.name_en : size.size_name_en +product.product.id"
+                                                            @click="sizeColorChange($event.target, size.size, product.product)"
+                                                            :data-color="size.size.size_name_en == null ? size.size.size_name_en : size.size.size_name_en +product.product.id"
                                                             :data-id="product.product.id"
                                                             :class="{ 'active': index === 0 }"
                                                             >
+                                                            <!-- {{size.size}} -->
                                                             <a 
                                                             class="ec-opt-sz"
                                                             >
-                                                            {{size.size.name_en}}
+                                                            {{size.size.size_name_en}}
                                                             </a>
                                                         </li>
                                                     </ul>
@@ -417,7 +418,8 @@ export default {
                 this.size = size.size_name_en
             }
             if(product.type_attribute == 'sizes'){
-                this.size = size.size.name_en
+                this.size = size.size_name_en
+                this.selectedAttributeId['Product' + product.id] = size.attribute_id;
             }
 
             $(e).addClass("active").siblings().removeClass("active")
@@ -434,7 +436,7 @@ export default {
             }
         },
         onColorChange(thisObj,color,id, product){
-            console.log(product)
+            console.log(color.attribute_id)
             if(product.type_attribute == 'colors'){
                 this.color = color.color.name_en
             }
@@ -460,7 +462,7 @@ export default {
             if(attributeId === undefined){
                 attributeId = null
             }
-            this.$store.dispatch("Add_Product_To_Cart", { attributeId: attributeId, product: product, quantity: this.quantity, toast: this.$toast,token: this.UserIDToken })
+            this.$store.dispatch("Add_Product_To_Cart", {product: product, quantity: this.quantity, attribute: attributeId, token: this.UserIDToken,toast: this.$toast })
             this.$store.dispatch("GetCartData")
         },
         isLoading(actionName) {

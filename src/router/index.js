@@ -9,6 +9,7 @@ import Product from '@/views/pages/Product/product'
 import SidePage from '@/views/pages/SidePages/side-pages'
 import Games from '@/views/pages/Games/games'
 import Error from '@/views/pages/404/404'
+import Contact from '@/views/pages/Contact/contact'
 import Profile from '@/views/pages/Profile/profile'
 import ThankYou from '@/views/pages/Order/thank-you'
 import Register from '@/views/pages/Auth/register'
@@ -75,6 +76,11 @@ const routes = [
     path: "/product/:id",
     name: "product",
     component: Product,
+  },
+  {
+    path: "/contact",
+    name: "contact",
+    component: Contact,
   },
   {
     path: "/order/:id",

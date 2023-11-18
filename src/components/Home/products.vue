@@ -14,14 +14,7 @@
                             />
                         <img v-lazy="route + productsSortedAdmin['hover_image']" v-if="productsSortedAdmin['hover_image'] !== null" class="hover-image" alt="Product" />
                     </a>
-                    <!-- <span class="percentage">20%</span> -->
-                    <a href="#" class="quickview" data-link-action="quickview"
-                        title="Quick view" data-bs-toggle="modal"
-                        data-bs-target="#ec_quickview_modal"><img
-                            src="@/assets/images/icons/quickview.svg" class="svg_img pro_svg"
-                            alt="" /></a>
                     <div class="ec-pro-actions">
-                        <!-- productsSortedAdmin.quantity != 0 -->
                         <button 
                             v-if="userData && userData.client_type !== 'wholesale'"
                             title="Add To Cart" 
@@ -131,16 +124,19 @@
                         <ul class="ec-opt-size">
                             <li 
                             v-for="(size,index) in productsSortedAdmin.attribute_for"
+                            @click="sizeColorChange($event.target, productsSortedAdmin.type_attribute , size.size, title,productsSortedAdmin.id )"
+                            :data-color="title+ size.size.size_name_en == null ? size.size.name_en : size.size.size_name_en +productsSortedAdmin.id"
+                            :data-div="title"
+                            :data-id="productsSortedAdmin.id"
+                            :class="{ 'active': index === 0 }"
                             >
                             <a 
-                              :href="'#tab-color-'+size.size.name_en+productsSortedAdmin.id"
+                              :href="'#tab-color-'+size.size.size_name_en+productsSortedAdmin.id"
                               data-bs-toggle="tab"
                               class="ec-opt-sz"
-                              data-old="$25.00"
-                              data-new="$20.00"
                               data-tooltip="Small"
                               >
-                              {{size.size.name_en}}
+                              {{size.size.size_name_en}}
                             </a>
                             </li>
                         </ul>
@@ -156,20 +152,18 @@
                         <span class="ec-pro-opt-label">Color</span>
                         <ul class="ec-opt-swatch ec-change-img">
                             <li 
-                              class="active"
-                                @click="onColorChange($event.target,colorAttr,productsSortedAdmin.id,title, colorAttr)"
-                                :data-src="colorAttr.image"
-                                :data-src-hover="colorAttr.image"
+                                class="active"
+                                @click="onColorChange($event.target,colorAttr.color,productsSortedAdmin.id,title)"
+                                :data-src="colorAttr.color.image"
+                                :data-src-hover="colorAttr.color.image"
                                 :data-old="productsSortedAdmin.price"
-                                :data-new="colorAttr.price"
-                                :data-tooltip="colorAttr.color.name_en"
+                                :data-new="colorAttr.color.price"
+                                :data-tooltip="colorAttr.color.colorName"
                             >
                                 <a 
-                                    href="#" 
+                                    href="javascript:void(0)" 
                                     class="ec-opt-clr-img"
-                                    data-src="@/assets/images/product-image/6_1.jpg"
-                                    data-src-hover="@/assets/images/product-image/6_1.jpg"
-                                    data-tooltip="Gray"><span
+                                    ><span
                                     :style="{ backgroundColor: colorAttr.color.color_code, }">
                                   </span>
                                 </a>
@@ -204,13 +198,17 @@ export default {
         LoadingOutlined
     },
     methods:{
-        sizeColorChange(e){
+        sizeColorChange(e, type, size, title, id){
+            if(type!=undefined){
+                this.selectedAttribute[title + id] = size.attribute_id;
+            }
             $(e).addClass("active").siblings().removeClass("active")
             $('.'+$(e).data('div')+$(e).data('id')).addClass("d-none")
             $('#'+$(e).data('div')+$(e).data('color')).addClass('d-block').removeClass('d-none')
         },
         onAddProduct(product){
             let attribute = this.selectedAttribute[this.title + product.id];
+            console.log(attribute)
             if(attribute === undefined){
                 attribute = null
             }

@@ -4,16 +4,16 @@
             <div class="row">
                 <div class="col-md-12 text-center">
                     <div class="section-title">
-                        <h2 class="ec-bg-title">Verification</h2>
-                        <h2 class="ec-title">Verification</h2>
-                        <p class="sub-title mb-3">Best place to buy and sell digital products</p>
+                        <h2 class="ec-bg-title">{{$t("Verification")}}</h2>
+                        <h2 class="ec-title">{{$t("Verification")}}</h2>
+                        <p class="sub-title mb-3">{{$t("Best place to buy and sell digital products")}}</p>
                     </div>
                 </div>
                 <div class="col-lg-6 ec-register-wrapper">
                     <div class="ec-register-container">
                         <div class="ec-register-form">
                             <div class="text-center">
-                                <p class="text-dark">We have sent the OTP to <span class="fw-bold email-wrap">{{ otpEmail }}</span> please check your DM.</p>
+                                <p class="text-dark">{{$t("We have sent the OTP to")}} <span class="fw-bold email-wrap">{{ otpEmail }}</span> {{$t("please check your DM.")}}</p>
                                 <img src="@/assets/images/common/otp.gif" class="rounded-circle" width="350" alt="">
                             </div>
                                 <Form
@@ -23,7 +23,7 @@
                                     v-slot="{ errors }"
                                 >
                                 <span class="ec-register-wrap">
-                                    <label class="text-center">OTP*</label>
+                                    <label class="text-center">{{$t("OTP*")}}</label>
                                     <div class="row">
                                         <div class="col-lg-2 col-4" v-for="(digit, index) in otpDigits" :key="index">
                                         <input
@@ -45,17 +45,17 @@
                                         class="form-control mt-2 mb-0"
                                         v-model="otpDigits[index]"
                                     />
-                                    <p class="my-3 text-center">Didn't recieve the OTP? 
+                                    <p class="my-3 text-center">{{$t("Didn't receive the OTP?")}}
                                         <button @click="ResendOTP" type="button" :disabled="isLoading('RESEND_OTP')">
-                                            Resend 
+                                            {{$t("Resend")}}
                                         </button>
                                         <vue-countdown class="d-block" v-if="isLoading('RESEND_OTP')" :time="60000" v-slot="{ minutes, seconds }">
-                                        You Can send again in {{ minutes }} minutes, {{ seconds }} seconds.
+                                        {{$t("You Can send again in")}} {{ minutes }} {{$t("minutes,")}} {{ seconds }} {{$t("seconds.")}}
                                         </vue-countdown>
                                     </p>
                                 </span>
                                 <span class="ec-register-wrap ec-register-btn">
-                                    <s-button name='Verfiy email' action='SubmitOTP'/>
+                                    <s-button :name="$t('Verify email')" action='SubmitOTP'/>
                                 </span>
                             </Form>
                         </div>
