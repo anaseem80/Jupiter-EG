@@ -17,6 +17,7 @@ import Search from '@/components/Search/search'
 import Loader from '@/components/Main/loader'
 import VueCountdown from '@chenfengyuan/vue-countdown';
 import AddReview from '@/components/Main/add-review';
+import SettingsSide from '@/components/Main/settings-side';
 import MobileMenu from '@/components/Main/mobile-menu';
 import Language from '@/components/lang/language';
 import SocialLinks from '@/components/Main/social-links';
@@ -62,6 +63,7 @@ app.component('add-review',AddReview)
 app.component('loader',Loader)
 app.component('mobile-menu',MobileMenu)
 app.component('language-dropdown',Language)
+app.component('settings-side',SettingsSide)
 app.component('info-dialog',InfoDialog)
 app.component('password-dialog',PasswordDialog)
 app.component('user-settings',UserSettings)

@@ -850,6 +850,23 @@ const actions = {
         })
     },
 
+    FilterProducts({commit, state, getters}, {min_price, max_price, sizes, colors, sub_category_id}){
+        commit("LOADING_API",{name: 'GetProductsByCurrentCategory', status: true})
+        const locale = getters.CurrentLang;
+        var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
+        axios.get(state.api_route + `products/flitter?lang=${locale}&min_price=${min_price}&max_price=${max_price}&sizes=${sizes}&colors=${colors}&sort_type=1${sub_category_id != undefined ? `&sub_category_id=${sub_category_id}` : ''}`)
+        .then(response=>{
+            if(response.data.status_code == 200){
+                commit("CURRENT_PRODUCTS_CATEGORY_PRODUCTS_DATA",response.data.data)
+                commit("LOADING_API",{name: 'GetProductsByCurrentCategory', status: false})
+            }
+        })
+        .catch(error=>{
+          console.log(error)
+          commit("LOADING_API",{name: 'GetProductsByCurrentCategory', status: false})
+        })
+    },
+
 
     GetPopularKeywords({commit, state}){
         axios.get(state.api_route + "popular")
@@ -868,6 +885,28 @@ const actions = {
         .then(response=>{
             if(response.data.status_code == 200){
                 commit("GET_COUNTRIES",response.data.countries)
+            }
+        })
+        .catch(error=>{
+        })
+    },
+
+    GetColors({commit, state}){
+        axios.get(state.api_route + "colors")
+        .then(response=>{
+            if(response.data.status_code == 200){
+                commit("GET_COLORS",response.data.data.colors)
+            }
+        })
+        .catch(error=>{
+        })
+    },
+
+    GetSizes({commit, state}){
+        axios.get(state.api_route + "sizes")
+        .then(response=>{
+            if(response.data.status_code == 200){
+                commit("GET_SIZES",response.data.data.sizes)
             }
         })
         .catch(error=>{

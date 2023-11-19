@@ -49,9 +49,9 @@
                                         :class="{ 'is-invalid': errors.client_type }"
                                     >
                                         <option value="" selected disabled>{{$t("Select Type")}}</option>
-                                        <option value="user">{{$t("User")}}</option>
-                                        <option value="wholesale">{{$t("Wholesale")}}</option>
-                                        <option value="retail">{{$t("Retail")}}</option>
+                                        <option value="user">{{$t("user")}}</option>
+                                        <option value="wholesale">{{$t("wholesale")}}</option>
+                                        <option value="retail">{{$t("retail")}}</option>
                                     </Field>
                                     <div class="invalid-feedback text-danger mb-2">{{ errors.client_type }}</div>
                                 </span>

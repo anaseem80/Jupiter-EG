@@ -13,35 +13,35 @@
                     >
                         <div class="col-12">
                             <div class="form-group">
-                                <label for="old_password" class="mb-0">Current Password</label>
+                                <label for="old_password" class="mb-0">{{$t("Current Password")}}</label>
                                 <Field 
                                     type="password" 
                                     class="form-control"
                                     name="old_password"
                                     id="old_password"
-                                    placeholder="Enter your current password"
+                                    :placeholder="$t('Enter your current password')"
                                     :class="{ 'is-invalid': errors.old_password }"
                                 />
                             </div>
                             <div class="form-group mt-3">
-                                <label for="new_password" class="mb-0">New Password</label>
+                                <label for="new_password" class="mb-0">{{$t("New Password")}}</label>
                                 <Field 
                                     type="password" 
                                     class="form-control"
                                     name="new_password"
                                     id="new_password"
-                                    placeholder="Enter your new password"
+                                    :placeholder="$t('Enter your new password')"
                                     :class="{ 'is-invalid': errors.new_password }"
                                 />
                             </div>
                             <div class="form-group mt-3">
-                                <label for="new_password_confirmation" class="mb-0">New Password Confirmation</label>
+                                <label for="new_password_confirmation" class="mb-0">{{$t("New Password Confirmation")}}</label>
                                 <Field 
                                     type="password" 
                                     class="form-control"
                                     name="new_password_confirmation"
                                     id="new_password_confirmation"
-                                    placeholder="Enter your password confirmation"
+                                    :placeholder="$t('Enter your password confirmation')"
                                     :class="{ 'is-invalid': errors.new_password_confirmation }"
                                 />
                             </div>
@@ -51,7 +51,7 @@
             </div>
         </div>
         <button class="btn btn-primary w-100" type="submit" id="basic-addon3" :disabled="isLoading('UpdateUserPassword')">
-                Save Changes
+                {{$t("Save")}}
                 <loading-outlined class="ms-3" v-if="isLoading('UpdateUserPassword')"/>
         </button>
     </Form>

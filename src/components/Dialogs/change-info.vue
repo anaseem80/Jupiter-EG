@@ -12,26 +12,26 @@
                     >
                         <div class="col-12">
                             <div class="form-group">
-                                <label for="name" class="mb-0">Name</label>
+                                <label for="name" class="mb-0">{{$t("Name*")}}</label>
                                 <Field 
                                     type="text" 
                                     class="form-control"
                                     name="name"
                                     id="name"
                                     v-model="isAuthenticated.user.name"
-                                    placeholder="Enter your new name"
+                                    :placeholder="$t('Enter your name')"
                                     :class="{ 'is-invalid': errors.name }"
                                 />
                             </div>
                             <div class="form-group mt-3">
-                                <label for="email" class="mb-0">E-mail</label>
+                                <label for="email" class="mb-0">{{$t("Email Address*")}}</label>
                                 <Field 
                                     type="text" 
                                     class="form-control"
                                     name="email"
                                     id="email"
                                     v-model="isAuthenticated.user.email"
-                                    placeholder="Enter your new email"
+                                    :placeholder="$t('Enter your email address')"
                                     :class="{ 'is-invalid': errors.email }"
                                 />
                             </div>
@@ -41,7 +41,7 @@
             </div>
         </div>
         <button class="btn btn-primary w-100" type="submit" id="basic-addon2" :disabled="isLoading('UpdateUserInfo')">
-                Save Changes
+                {{$t("Save")}}
                 <loading-outlined class="ms-3" v-if="isLoading('UpdateUserInfo')"/>
         </button>
     </Form>

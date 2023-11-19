@@ -54,9 +54,13 @@ export default {
         $route (to, from){
             if(to.name !== from.name){
                 this.GetSidePageData(this.apiEndpoint);
+                window.scrollTo(0,0)
             }
         }
-    } 
+    },
+    created(){
+        window.scrollTo(0,0)
+    }
 }
 </script>
 <style lang="">

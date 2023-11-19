@@ -4,6 +4,7 @@
   <category-bar></category-bar>
   <mobile-menu></mobile-menu>
   <cart></cart>
+  <settings-side></settings-side>
   <router-view/>
   <Toasts/>
   <layout-footer></layout-footer>

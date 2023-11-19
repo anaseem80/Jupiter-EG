@@ -90,7 +90,7 @@
                     <div class="ec-sidebar-wrap">
                         <!-- Sidebar Summary Block -->
                         <div class="ec-sidebar-block">
-                            <div class="ec-sb-title">
+                            <div class="ec-sb-title mb-3 pb-2">
                                 <h3 class="ec-sidebar-title">{{$t("Summary")}}</h3>
                             </div>
                             <div class="ec-sb-block-content border-0">
@@ -129,6 +129,7 @@ export default {
         ...mapState(['cart','route']),
         ...mapGetters(['subtotal','totalDiscount','couponDiscount','totalAmount']),
         isAuthenticated() {
+            window.scrollTo(0,0)
             return this.$store.state.isAuthenticated;
         },
     },
@@ -156,7 +157,6 @@ export default {
             $("#ec-side-cart").removeClass("ec-open");
             $(".mobile-menu-toggle").find("a").removeClass("close");
 
-            $(window).scrollTop(0); 
             this.$store.dispatch('GetProductData',{id: id})
         },
         onClearCart(){

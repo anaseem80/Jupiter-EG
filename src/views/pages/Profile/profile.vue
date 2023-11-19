@@ -17,7 +17,7 @@
                                         data-bs-toggle="tab" 
                                         href="#tab-cat-profile"
                                         >
-                                            User Profile
+                                            {{$t("User Profile")}}
                                         </a>
                                         </li>
                                         <li class="cat-item">
@@ -26,7 +26,7 @@
                                         data-bs-toggle="tab" 
                                         href="#tab-cat-address"
                                         >
-                                            Address
+                                            {{$t("Address")}}
                                         </a>
                                         </li>
                                         <li class="cat-item">
@@ -35,7 +35,7 @@
                                         data-bs-toggle="tab" 
                                         href="#tab-cat-orders"
                                         >
-                                            Orders
+                                            {{$t("Orders")}}
                                         </a>
                                         </li>
                                     </ul>
@@ -82,6 +82,7 @@ export default {
     },
     computed: {
         isAuthenticated() {
+            window.scrollTo(0,0)
             return this.$store.state.isAuthenticated;
         },
     },

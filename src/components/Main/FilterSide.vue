@@ -2,43 +2,21 @@
  <div class="ec-shop-leftside col-lg-3 order-lg-first col-md-12 order-md-last">
                     <div id="shop_sidebar">
                         <div class="ec-sidebar-heading">
-                            <h1>Filter Products By</h1>
+                            <h1>{{$t("Filter Products By")}}</h1>
                         </div>
                         <div class="ec-sidebar-wrap">
                             <!-- Sidebar Size Block -->
                             <div class="ec-sidebar-block">
                                 <div class="ec-sb-title">
-                                    <h3 class="ec-sidebar-title">Size</h3>
+                                    <h3 class="ec-sidebar-title">{{$t("SIZE")}}</h3>
                                 </div>
                                 <div class="ec-sb-block-content">
                                     <ul>
-                                        <li>
+                                        <li
+                                            v-for="size in sizes"
+                                        >
                                             <div class="ec-sidebar-block-item">
-                                                <input type="checkbox" value="" checked /><a href="#">S</a><span
-                                                    class="checked"></span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="ec-sidebar-block-item">
-                                                <input type="checkbox" value="" /><a href="#">M</a><span
-                                                    class="checked"></span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="ec-sidebar-block-item">
-                                                <input type="checkbox" value="" /> <a href="#">L</a><span
-                                                    class="checked"></span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="ec-sidebar-block-item">
-                                                <input type="checkbox" value="" /><a href="#">XL</a><span
-                                                    class="checked"></span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="ec-sidebar-block-item">
-                                                <input type="checkbox" value="" /><a href="#">XXL</a><span
+                                                <input type="checkbox" @click="selectSize(size.name_en, $event)" /><a href="#">{{$i18n.locale == 'ar' ? size.name_ar : size.name_en}}</a><span
                                                     class="checked"></span>
                                             </div>
                                         </li>
@@ -48,49 +26,15 @@
                             <!-- Sidebar Color item -->
                             <div class="ec-sidebar-block ec-sidebar-block-clr">
                                 <div class="ec-sb-title">
-                                    <h3 class="ec-sidebar-title">Color</h3>
+                                    <h3 class="ec-sidebar-title">{{$t("Color")}}</h3>
                                 </div>
                                 <div class="ec-sb-block-content">
                                     <ul>
-                                        <li>
-                                            <div class="ec-sidebar-block-item"><span
-                                                    style="background-color:#c4d6f9;"></span></div>
-                                        </li>
-                                        <li>
-                                            <div class="ec-sidebar-block-item"><span
-                                                    style="background-color:#ff748b;"></span></div>
-                                        </li>
-                                        <li>
-                                            <div class="ec-sidebar-block-item"><span
-                                                    style="background-color:#000000;"></span></div>
-                                        </li>
-                                        <li class="active">
-                                            <div class="ec-sidebar-block-item"><span
-                                                    style="background-color:#2bff4a;"></span></div>
-                                        </li>
-                                        <li>
-                                            <div class="ec-sidebar-block-item"><span
-                                                    style="background-color:#ff7c5e;"></span></div>
-                                        </li>
-                                        <li>
-                                            <div class="ec-sidebar-block-item"><span
-                                                    style="background-color:#f155ff;"></span></div>
-                                        </li>
-                                        <li>
-                                            <div class="ec-sidebar-block-item"><span
-                                                    style="background-color:#ffef00;"></span></div>
-                                        </li>
-                                        <li>
-                                            <div class="ec-sidebar-block-item"><span
-                                                    style="background-color:#c89fff;"></span></div>
-                                        </li>
-                                        <li>
-                                            <div class="ec-sidebar-block-item"><span
-                                                    style="background-color:#7bfffa;"></span></div>
-                                        </li>
-                                        <li>
-                                            <div class="ec-sidebar-block-item"><span
-                                                    style="background-color:#56ffc1;"></span></div>
+                                        <li
+                                        v-for="color in colors"
+                                        >
+                                            <div class="ec-sidebar-block-item"><span class="shadow-sm border" @click="selectColor(color.name_en, $event)"
+                                                    :style="'background-color:'+color.color_code"></span></div>
                                         </li>
                                     </ul>
                                 </div>
@@ -98,20 +42,10 @@
                             <!-- Sidebar Price Block -->
                             <div class="ec-sidebar-block">
                                 <div class="ec-sb-title">
-                                    <h3 class="ec-sidebar-title">Price</h3>
+                                    <h3 class="ec-sidebar-title">{{$t("Price")}}</h3>
                                 </div>
-                                <div class="ec-sb-block-content es-price-slider">
-                                    <div class="ec-price-filter">
-                                        <div id="ec-sliderPrice" class="filter__slider-price" data-min="0"
-                                            data-max="250" data-step="10"></div>
-                                        <div class="ec-price-input">
-                                            <label class="filter__label"><input type="text"
-                                                    class="filter__input"></label>
-                                            <span class="ec-price-divider"></span>
-                                            <label class="filter__label"><input type="text"
-                                                    class="filter__input"></label>
-                                        </div>
-                                    </div>
+                                <div class="">
+                                    <a-slider v-model:value="price" max="10000" @afterChange="AfterSliderChange()" range :disabled="disabled" />
                                 </div>
                             </div>
                         </div>
@@ -119,8 +53,88 @@
                 </div>
 </template>
 <script>
+import { mapActions, mapState } from "vuex";
 export default {
-
+    data(){
+        return{
+            price:[0,10000],
+            sizes_filterd:[],
+            colors_filterd:[]
+        }
+    },
+    computed: {
+        ...mapState(['sizes','colors']),
+    },
+    methods:{
+        ...mapActions(['GetColors','GetSizes']),
+        async FetchColors() {
+            await this.GetColors();
+        },
+        async FetchSizes() {
+            await this.GetSizes();
+        },
+        AfterSliderChange(){
+            let id;
+            if(this.$route.name=="Sub category"){
+                id = this.$route.params.id
+            }
+            this.$store.dispatch("FilterProducts",{
+                min_price:this.price[0],
+                max_price:this.price[1], 
+                sizes: this.sizes_filterd.join(","), 
+                colors: this.colors_filterd.join(","),
+                sub_category_id: id
+            })    
+        },
+        selectSize(size, e){
+            let id;
+            if(this.$route.name=="Sub category"){
+                id = this.$route.params.id
+            }
+            const existedItem = this.sizes_filterd.find(sizeItem =>{
+                return sizeItem == size
+            })
+            if(!existedItem)
+                this.sizes_filterd.push(size)
+            if(!e.target.checked && existedItem){
+                this.sizes_filterd.splice(this.sizes_filterd.indexOf(existedItem),1)
+            }
+            this.$store.dispatch("FilterProducts",{
+                min_price:this.price[0],
+                max_price:this.price[1], 
+                sizes: this.sizes_filterd.join(","), 
+                colors: this.colors_filterd.join(","),
+                sub_category_id: id
+            })    
+        },
+        selectColor(color, e){
+            let id;
+            if(this.$route.name=="Sub category"){
+                id = this.$route.params.id
+            }
+            $(e.target).addClass("border-2")
+            const existedItem = this.colors_filterd.find(colorItem =>{
+                return colorItem == color
+            })
+            if(!existedItem)
+                this.colors_filterd.push(color)
+            if(!e.target.checked && existedItem){
+                $(e.target).removeClass("border-2")
+                this.colors_filterd.splice(this.colors_filterd.indexOf(existedItem),1)
+            }
+            this.$store.dispatch("FilterProducts",{
+                min_price:this.price[0],
+                max_price:this.price[1], 
+                sizes: this.sizes_filterd.join(","), 
+                colors: this.colors_filterd.join(","), 
+                sub_category_id: id
+            })
+        }
+    },
+    mounted(){
+        this.FetchSizes();
+        this.FetchColors();
+    }
 }
 </script>
 <style lang="">

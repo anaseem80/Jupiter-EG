@@ -34,6 +34,8 @@ export const state = {
     isAuthenticated: {},
     ResetPassword: null,
     Loading: {},
+    colors:null,
+    sizes:null,
 }
 
 export default state

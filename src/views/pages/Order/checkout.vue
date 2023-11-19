@@ -185,6 +185,7 @@ export default {
         ...mapState(['addresses','couponDetails','coupon_flag','coupon_flag_2','cart']),
         ...mapGetters(['subtotal','totalDiscount','couponDiscount','totalAmount','countryTax','shippingFee']),
         isAuthenticated() {
+            window.scrollTo(0,0)
             return this.$store.state.isAuthenticated;
         },
     },

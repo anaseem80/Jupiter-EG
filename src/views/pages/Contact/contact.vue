@@ -82,13 +82,6 @@
                         </div>
                     </div>
                     <div class="ec-contact-rightside">
-                        <div class="ec_contact_map">
-                            <div class="ec_map_canvas">
-                                <iframe id="ec_map_canvas"
-                                    src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d71263.65594328841!2d144.93151478652146!3d-37.8734290780509!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1615963387757!5m2!1sen!2sus"></iframe>
-                                <a href="https://sites.google.com/view/maps-api-v2/mapv2"></a>
-                            </div>
-                        </div>
                         <div class="ec_contact_info">
                             <h1 class="ec_contact_info_head">{{$t("Contact us")}}</h1>
                             <ul class="align-items-center">

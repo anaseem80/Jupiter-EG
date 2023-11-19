@@ -9,10 +9,10 @@
                 <div class="ec-trackorder-content col-md-12">
                     <div class="ec-trackorder-inner">
                         <div class="ec-trackorder-top">
-                            <h2 class="ec-order-id">order #{{order['id']}}</h2>
+                            <h2 class="ec-order-id">{{$t("Order")}} #{{order['id']}}</h2>
                             <div class="ec-order-detail">
-                                <div>Payment Status: <span>{{order['payment_status']}}</span></div>
-                                <div>Payment Method: <span>{{order['payment_method']}}</span></div>
+                                <div>{{$t("Payment Status")}}: <span>{{$t(order['payment_status'])}}</span></div>
+                                <div>{{$t("Payment Method")}}: <span>{{$t(order['payment_method'])}}</span></div>
                             </div>
                         </div>
                         <div class="ec-trackorder-bottom">
@@ -23,28 +23,28 @@
                                     class="step0"
                                     ><span class="ec-track-icon"> <img
                                                 src="@/assets/images/icons/track_1.png" alt="track_order"></span><span
-                                            class="ec-progressbar-track"></span><span class="ec-track-title">order
-                                            <br>Pending</span></li>
+                                            class="ec-progressbar-track"></span><span class="ec-track-title">
+                                            <br>{{$t("pending")}}</span></li>
                                     <li 
                                     :class="{'active' : order['status'] == 'processing' || order['status'] == 'delivering' || order['status'] == 'completed' }"
                                     class="step0"
                                     ><span class="ec-track-icon"> <img
                                                 src="@/assets/images/icons/track_2.png" alt="track_order"></span><span
-                                            class="ec-progressbar-track"></span><span class="ec-track-title">order
-                                                <br>Processing</span></li>
+                                            class="ec-progressbar-track"></span><span class="ec-track-title">
+                                                <br>{{$t("processing")}}</span></li>
                                     <li 
                                     :class="{'active' : order['status'] == 'delivering' || order['status'] == 'completed' }"
                                     class="step0"
                                     ><span class="ec-track-icon"> <img
                                                 src="@/assets/images/icons/track_3.png" alt="track_order"></span><span
-                                            class="ec-progressbar-track"></span><span class="ec-track-title">order
-                                                <br>Delivering</span></li>
+                                            class="ec-progressbar-track"></span><span class="ec-track-title">
+                                                <br>{{$t("delivering")}}</span></li>
                                     <li 
                                     :class="{'active' : order['status'] == 'completed'}"
                                     class="step0"
                                     ><span class="ec-track-icon"> <img
                                                 src="@/assets/images/icons/track_4.png" alt="track_order"></span><span
-                                            class="ec-progressbar-track"></span><span class="ec-track-title">order <br>Completed</span></li>
+                                            class="ec-progressbar-track"></span><span class="ec-track-title"><br>{{$t("completed")}}</span></li>
 
                                 </ul>
                                 <ul id="ec-progressbar" v-if=" order['status'] == 'cancelled' || order['status'] == 'refunded'">
@@ -52,15 +52,15 @@
                                     class="step0 active w-50"
                                     ><span class="ec-track-icon"> <img
                                                 src="@/assets/images/icons/track_1.png" alt="track_order"></span><span
-                                            class="ec-progressbar-track"></span><span class="ec-track-title">order
-                                            <br>Pending</span></li>
+                                            class="ec-progressbar-track"></span><span class="ec-track-title">
+                                            <br>{{$t("Order")}}{{$t("pending")}}</span></li>
 
                                     <li 
                                     :class="{'active' : order['status'] == 'cancelled' || order['status'] == 'refunded'}"
                                     class="step0 w-50"
                                     ><span class="ec-track-icon"> <img
                                                 src="@/assets/images/icons/track_6.png" width="65" alt="track_order"></span><span
-                                            class="ec-progressbar-track"></span><span class="ec-track-title">order <br>{{order['status'] == 'cancelled' ? 'Cancelled' : 'Refunded'}}</span></li>
+                                            class="ec-progressbar-track"></span><span class="ec-track-title">{{$t("order")}} <br>{{order['status'] == 'cancelled' ? $t('cancelled') : $t('refunded')}}</span></li>
 
                                 </ul>
                             </div>
@@ -74,7 +74,7 @@
                 <div class="ec-shop-rightside col-lg-9 m-auto">
                     <div class="ec-vendor-dashboard-card">
                         <div class="ec-vendor-card-header">
-                            <h5>Invoice</h5>
+                            <h5>{{$t("Invoice")}}</h5>
                         </div>
                         <div class="ec-vendor-card-body padding-b-0">
                             <div class="page-content">
@@ -96,11 +96,11 @@
                                                             <thead>
                                                                 <tr>
                                                                     <th scope="col">#</th>
-                                                                    <th scope="col">Name</th>
-                                                                    <th scope="col">Qty</th>
-                                                                    <th scope="col">Discount</th>
-                                                                    <th scope="col">Price</th>
-                                                                    <th scope="col">Amount</th>
+                                                                    <th scope="col">{{$t("Name")}}</th>
+                                                                    <th scope="col">{{$t("Quantity")}}</th>
+                                                                    <th scope="col">{{$t("discount")}}</th>
+                                                                    <th scope="col">{{$t("Price")}}</th>
+                                                                    <th scope="col">{{$t("Total")}}</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -125,7 +125,7 @@
                                                                     <td class="border-none" colspan="3">
                                                                         <span></span></td>
                                                                     <td class="border-color" colspan="1">
-                                                                        <span><strong>Sub Total</strong></span></td>
+                                                                        <span><strong>{{$t("Sub Total")}}</strong></span></td>
                                                                     <td class="border-color">
                                                                         <span>{{order['subtotal']}}</span></td>
                                                                 </tr>
@@ -133,17 +133,15 @@
                                                                     <td class="border-none" colspan="3">
                                                                         <span></span></td>
                                                                     <td class="border-color" colspan="1">
-                                                                        <span><strong>Shipping</strong></span></td>
+                                                                        <span><strong>{{$t("Shipping fee")}}</strong></span></td>
                                                                     <td class="border-color">
                                                                         <span>{{order['shipping']}}</span></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class="border-none m-m15"
-                                                                        colspan="3"><span class="note-text-color">Extra
-                                                                            note such as company or payment
-                                                                            information...</span></td>
+                                                                    <td class="border-none" colspan="3">
+                                                                        <span></span></td>
                                                                     <td class="border-color m-m15"
-                                                                        colspan="1"><span><strong>Total</strong></span>
+                                                                        colspan="1"><span><strong>{{$t("Total")}}</strong></span>
                                                                     </td>
                                                                     <td class="border-color m-m15">
                                                                         <span>{{order['total']}}</span></td>
@@ -181,6 +179,7 @@ export default {
     },
     mounted() {
         this.fetchUserOrder();
+        window.scrollTo(0,0)
     },
 }
 </script>

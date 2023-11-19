@@ -1,9 +1,9 @@
 <template lang="">
 <div class="col-md-12 tab-pane fade" id="tab-cat-address" v-if="addresses">
     <div class="ec-vendor-card-header p-0 pb-4">
-        <h5>Addresses</h5>
+        <h5>{{$t("Addresses")}}</h5>
         <div class="ec-header-btn">
-            <a class="btn btn-lg btn-primary" @click="prepareAddress('add')" data-bs-toggle="modal" data-bs-target="#address" href="javascript:void(0)">Add Address</a>
+            <a class="btn btn-lg btn-primary" @click="prepareAddress('add')" data-bs-toggle="modal" data-bs-target="#address" href="javascript:void(0)">{{$t("Add Address")}}</a>
         </div>
     </div>
     <div class="">
@@ -12,12 +12,12 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Country</th>
-                        <th scope="col">Address</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Phone</th>
-                        <th scope="col">Actions</th>
+                        <th scope="col">{{$t("Country")}}</th>
+                        <th scope="col">{{$t("Address")}}</th>
+                        <th scope="col">{{$t("Name")}}</th>
+                        <th scope="col">{{$t("Email Address")}}</th>
+                        <th scope="col">{{$t("Phone")}}</th>
+                        <th scope="col">{{$t("Action")}}</th>
                     </tr>
                 </thead>
                 <tbody>

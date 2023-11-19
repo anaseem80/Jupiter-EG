@@ -104,6 +104,12 @@ const mutations = {
     GET_HOME_PRODUCTS(state, home_products){
       state.home_products = home_products;
     },
+    GET_COLORS(state, colors){
+      state.colors = colors;
+    },
+    GET_SIZES(state, sizes){
+      state.sizes = sizes;
+    },
 }
 
 export default mutations

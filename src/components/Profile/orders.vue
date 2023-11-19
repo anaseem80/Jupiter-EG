@@ -1,7 +1,7 @@
 <template lang="">
 <div class="col-md-12 tab-pane fade" id="tab-cat-orders" v-if="orders">
     <div class="ec-vendor-card-header p-0 pb-4">
-        <h5>Orders</h5>
+        <h5>{{$t("Orders")}}</h5>
     </div>
     <div class="">
         <div class="ec-vendor-card-table">
@@ -9,12 +9,12 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Payment Status</th>
-                        <th scope="col">Payment Method</th>
-                        <th scope="col">Currency</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Actions</th>
+                        <th scope="col">{{$t("Status")}}</th>
+                        <th scope="col">{{$t("Payment Status")}}</th>
+                        <th scope="col">{{$t("Payment Method")}}</th>
+                        <th scope="col">{{$t("Currency")}}</th>
+                        <th scope="col">{{$t("Total")}}</th>
+                        <th scope="col">{{$t("Action")}}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -26,7 +26,11 @@
                             <span>{{index+1}}</span>
                         </th>
                         <td><span>{{order['status']}}</span></td>
-                        <td><span>{{order['payment_status']}}</span></td>
+                        <td>
+                            <span>
+                                {{order['payment_status']}}
+                            </span>
+                        </td>
                         <td><span>{{order['payment_method']}}</span></td>
                         <td><span>{{order['currency']}}</span></td>
                         <td><span>{{order['total']}}</span></td>

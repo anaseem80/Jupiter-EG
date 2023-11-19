@@ -17,18 +17,18 @@
                             </div>
                         </div>
                         <div class="col-md-6 ec-sort-select" v-if="$route.name == 'Sub category'">
-                            <span class="sort-by">Sort by</span>
+                            <span class="sort-by">{{$t("Sort by")}}</span>
                             <div class="ec-select-inner">
                                 <select 
                                 @change="SortedProducts($event.target.value)"
                                 name="ec-select" id="ec-select"
                                 >
-                                    <option selected disabled>Position</option>
-                                    <option value="1">Highest in demand</option>
-                                    <option value="2">Price, low to high</option>
-                                    <option value="3">Price, high to low</option>
-                                    <option value="4">Newtest</option>
-                                    <option value="5">Discount</option>
+                                    <option selected disabled>{{$t("Position")}}</option>
+                                    <option value="1">{{$t("Highest in demand")}}</option>
+                                    <option value="2">{{$t("Price, low to high")}}</option>
+                                    <option value="3">{{$t("Price, high to low")}}</option>
+                                    <option value="4">{{$t("Newest")}}</option>
+                                    <option value="5">{{$t("discount")}}</option>
                                 </select>
                             </div>
                         </div>
@@ -44,7 +44,10 @@
                                 </div>
                             </transition>
                             <div class="row">
-                                <h4 v-if="ProductsCategoryProducts.products.data.length == 0" class="text-center mb-3">No Products</h4>
+                                <h4 v-if="ProductsCategoryProducts.products.data.length == 0" class="text-center mb-3">
+                                    {{$t("No products here!")}} 😓 <br>
+                                    <img src="@/assets/images/common/no-products.gif" width="150" class="img-fluid"/>
+                                </h4>
                                 <products-component 
                                     :productObject="ProductsCategoryProducts.products.data" 
                                     :title="'sub-category'"
@@ -55,7 +58,7 @@
                         </div>
                         <!-- Ec Pagination Start -->
                         <div class="ec-pro-pagination">
-                            <span>Showing 1-{{ProductsCategoryProducts.products.data.length}}</span>
+                            <span>{{$t("Showing")}} 1-{{ProductsCategoryProducts.products.data.length}}</span>
                             <ul class="ec-pro-pagination-inner">
                                 <a-pagination 
                                     v-model:current="current" 
