@@ -45,7 +45,7 @@
                         <div class="ec-header-bottons">
                             <a-tooltip v-if="isAuthenticated.bool" placement="bottom">
                                 <template #title>You can replace these points!</template>
-                                <a href="wishlist.html" class="ec-header-btn ec-header-wishlist">
+                                <a href="javascript:void(0)" class="ec-header-btn ec-header-wishlist">
                                     <div class="header-icon"><img src="@/assets/images/icons/icon.gif"
                                             class="svg_img header_svg icon-gif" alt="" /></div>
                                             <span class="ec-header-count" v-if="userData">{{userData.points}}</span>
@@ -57,7 +57,7 @@
                                         src="@/assets/images/icons/user.svg" class="svg_img header_svg" alt="" /></button>
                                 <ul class="dropdown-menu dropdown-menu-right">
                                     <li v-if="isAuthenticated.bool"><router-link class="dropdown-item" to="/profile">{{$t('Profile')}}</router-link></li>
-                                    <li v-if="!isAuthenticated.bool"><router-link class="dropdown-item" to="/login">{{$t('Login')}}</router-link></li>
+                                    <li v-if="!isAuthenticated.bool"><router-link class="dropdown-item" @click="checkLogin()" to="/login">{{$t('Login')}}</router-link></li>
                                         <li v-if="isAuthenticated.bool">
                                             <button class="dropdown-item" @click="Logout" :disabled="isLoading('Logout')">
                                                 {{$t('Logout')}}
@@ -68,11 +68,11 @@
                             </div>
                             <!-- Header User End -->
                             <!-- Header Cart Start -->
-                            <a href="wishlist.html" class="ec-header-btn ec-header-wishlist">
+                            <router-link to="/wishlist" class="ec-header-btn ec-header-wishlist">
                                 <div class="header-icon"><img src="@/assets/images/icons/wishlist.svg"
                                         class="svg_img header_svg" alt="" /></div>
-                                <span class="ec-header-count">4</span>
-                            </a>
+                                <span class="ec-header-count">{{wishlist.length}}</span>
+                            </router-link>
                             <!-- Header Cart End -->
                             <!-- Header Cart Start -->
                             <a v-if="isAuthenticated.token" href="#ec-side-cart" class="ec-header-btn ec-side-toggle" @click="CartMenuOpen($event.target)">
@@ -124,7 +124,7 @@
                             <div class="ec-header-bottons">
                                 <a-tooltip v-if="isAuthenticated.bool" placement="bottom">
                                 <template #title>You can replace these points!</template>
-                                <a href="wishlist.html" class="ec-header-btn ec-header-wishlist">
+                                <a href="javascript:void(0);" class="ec-header-btn ec-header-wishlist">
                                     <div class="header-icon"><img src="@/assets/images/icons/icon.gif"
                                             class="svg_img header_svg icon-gif" alt="" /></div>
                                     <span class="ec-header-count" v-if="userData">{{userData.points}}</span>
@@ -136,7 +136,7 @@
                                             src="@/assets/images/icons/user.svg" class="svg_img header_svg" alt="" /></button>
                                     <ul class="dropdown-menu dropdown-menu-right">
                                         <li v-if="isAuthenticated.bool"><router-link class="dropdown-item" to="/profile">{{$t('Profile')}}</router-link></li>
-                                        <li v-if="!isAuthenticated.bool"><router-link class="dropdown-item" to="/login">{{$t('Login')}}</router-link></li>
+                                        <li v-if="!isAuthenticated.bool"><router-link class="dropdown-item" to="/login" @click="checkLogin()">{{$t('Login')}}</router-link></li>
                                         <li v-if="isAuthenticated.bool">
                                             <button class="dropdown-item" @click="Logout" :disabled="isLoading('Logout')">
                                                 {{$t('Logout')}}
@@ -147,11 +147,11 @@
                                 </div>
                                 <!-- Header User End -->
                                 <!-- Header User Start -->
-                                <a href="wishlist.html" class="ec-header-btn ec-header-wishlist">
+                                <router-link to="/wishlist" class="ec-header-btn ec-header-wishlist">
                                     <div class="header-icon"><img src="@/assets/images/icons/wishlist.svg"
                                             class="svg_img header_svg" alt="" /></div>
-                                    <span class="ec-header-count">4</span>
-                                </a>
+                                    <span class="ec-header-count">{{wishlist.length}}</span>
+                                </router-link>
                                 <!-- Header User End -->
                                 <!-- Header Points Start -->       
                                                  
@@ -290,6 +290,17 @@ export default {
         async fetchGetSiteSettings() {
             await this.GetSiteSettings();
         },
+        checkLogin(){
+            if(this.UserIDToken!=null){
+                VueCookies.remove('UserIDToken')
+                VueCookies.remove('UserToken')
+                VueCookies.remove('UserData')
+                this.$store.commit("CART_DATA",null)
+                this.$store.commit("SET_AUTHENTICATED", {bool: false, token: null, user: null});
+                this.$store.commit("USER_DATA", null)
+                this.$store.commit("WHEEL_POINTS",null)
+            }
+        },
         Logout(){
             this.$store.dispatch("Logout", { token: this.UserIDToken, toast: this.$toast })
         },
@@ -360,7 +371,7 @@ export default {
         }
     },
     computed: {
-        ...mapState([`home_products`,'route','cart','userData','settings']),
+        ...mapState([`home_products`,'route','cart','userData','settings','wishlist']),
         isAuthenticated() {
             return this.$store.state.isAuthenticated;
         },

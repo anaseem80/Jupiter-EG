@@ -47,9 +47,13 @@
                             alt="" /> 
                             <loading-outlined class="fs-4 loader-small-button" v-if="isLoading('Add_Product_To_Cart'+productsSortedAdmin.id)"/>
                         </button>
-                        <a class="ec-btn-group wishlist" title="Wishlist"><img
-                                src="@/assets/images/icons/wishlist.svg"
-                                class="svg_img pro_svg" alt="" /></a>
+                        <a 
+                            class="ec-btn-group wishlist" 
+                            @click="onAddProductWishList(productsSortedAdmin)" 
+                            title="Wishlist"
+                        >
+                            <wishlist-icon :product="productsSortedAdmin"/>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -94,6 +98,7 @@
                         </ul>
                     </div>
                     </div>
+                    <!-- :class="{ 'active': index === 0 }" -->
                     <div class="ec-pro-size">
                         <span class="ec-pro-opt-label">Size</span>
                         <ul class="ec-opt-size">
@@ -103,7 +108,7 @@
                             :data-color="title+ size.size_name_en == null ? size.size.name_en : size.size_name_en +productsSortedAdmin.id"
                             :data-div="title"
                             :data-id="productsSortedAdmin.id"
-                            :class="{ 'active': index === 0 }"
+                            
                             >
                             <a 
                               :href="'#tab-color-'+size.size_name_en+productsSortedAdmin.id"
@@ -128,7 +133,6 @@
                             :data-color="title+ size.size.size_name_en == null ? size.size.name_en : size.size.size_name_en +productsSortedAdmin.id"
                             :data-div="title"
                             :data-id="productsSortedAdmin.id"
-                            :class="{ 'active': index === 0 }"
                             >
                             <a 
                               :href="'#tab-color-'+size.size.size_name_en+productsSortedAdmin.id"
@@ -186,7 +190,6 @@ export default {
     computed: {
         ...mapState(['route','userData']),
         ...mapGetters(['filterAttribute']),
-        
     },
     data(){
         return{
@@ -198,6 +201,11 @@ export default {
         LoadingOutlined
     },
     methods:{
+        isProductInWishlist(product) {
+            const productId = product.id;
+
+            return this.$store.state.wishlist.find(item => item.id === productId);
+        },
         sizeColorChange(e, type, size, title, id){
             if(type!=undefined){
                 this.selectedAttribute[title + id] = size.attribute_id;
@@ -220,6 +228,16 @@ export default {
         },
         isLoading(actionName) {
             return this.$store.state.Loading[actionName] || false;
+        },
+        onAddProductWishList(product){
+            const existedItem = this.$store.state.wishlist.find(item =>{
+                return item.id == product.id
+            })
+            if(existedItem){
+                this.$store.dispatch("Remove_Product_From_Wishlist",product)
+            }else{
+                this.$store.dispatch("Add_Product_To_Wishlist",product)
+            }
         },
         onColorChange(element,color,id,title, object){
             console.log(color)

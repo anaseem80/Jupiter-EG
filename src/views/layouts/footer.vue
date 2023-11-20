@@ -50,7 +50,7 @@
                                     <ul class="align-items-center">
                                         <li class="ec-footer-link"><router-link to="/profile">{{$t("My Account")}}</router-link></li>
                                         <li class="ec-footer-link"><router-link to="/profile">{{$t("Order History")}}</router-link></li>
-                                        <li class="ec-footer-link"><router-link to="/whishlist">{{$t("Wishlist")}}</router-link></li>
+                                        <li class="ec-footer-link"><router-link to="/wishlist">{{$t("Wishlist")}}</router-link></li>
                                     </ul>
                                 </div>
                             </div>

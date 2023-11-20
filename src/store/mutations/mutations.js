@@ -65,6 +65,9 @@ const mutations = {
     CART_DATA(state, cart){
       state.cart = cart
     },
+    WISHLIST_DATA(state, wishlist){
+      state.wishlist = wishlist
+    },
     PRODUCT_DATA(state, product){
       state.product = product
     },

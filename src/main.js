@@ -14,6 +14,7 @@ import FilterSide from '@/components/Main/FilterSide'
 import Cart from '@/components/Main/cart'
 import RelatedProducts from '@/components/Main/related-products'
 import Search from '@/components/Search/search'
+import WishListIcon from '@/components/Main/wishlist'
 import Loader from '@/components/Main/loader'
 import VueCountdown from '@chenfengyuan/vue-countdown';
 import AddReview from '@/components/Main/add-review';
@@ -64,6 +65,7 @@ app.component('loader',Loader)
 app.component('mobile-menu',MobileMenu)
 app.component('language-dropdown',Language)
 app.component('settings-side',SettingsSide)
+app.component('wishlist-icon',WishListIcon)
 app.component('info-dialog',InfoDialog)
 app.component('password-dialog',PasswordDialog)
 app.component('user-settings',UserSettings)

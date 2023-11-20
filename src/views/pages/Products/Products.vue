@@ -14,6 +14,7 @@
                                         class="svg_img gl_svg" alt="" /></button>
                                 <button class="btn btn-list" @click="showList()"><img src="@/assets/images/icons/list.svg"
                                         class="svg_img gl_svg" alt="" /></button>
+                                <button class="btn btn-grid filter-menu-button d-none" @click="OpenFilterMenu()"><img src="@/assets/images/common/settings.png" class="mix-blend"></button>
                             </div>
                         </div>
                         <div class="col-md-6 ec-sort-select" v-if="$route.name == 'Sub category'">
@@ -127,6 +128,26 @@ export default {
             var $listView = $('.pro-gl-content');
             $gridCont.addClass('list-view');
             $listView.addClass('width-100');
+        },
+        OpenFilterMenu(){
+            $(".ec-side-filter-overlay").fadeIn();
+            $(".filter").css('opacity','1');
+            $(".filter").css('overflow','visible');
+            $(".filter").addClass("ec-open");
+            
+            $(".ec-side-filter-overlay").on("click", function(e) {
+                $(".ec-side-filter-overlay").fadeOut();
+                $(".filter").removeClass("ec-open");
+                $(".filter").css('overflow','hidden');
+                $(".filter").css('opacity','0');
+            });
+
+            $(".ec-close-filter").on("click", function(e) {
+                e.preventDefault();
+                $(".ec-side-filter-overlay").fadeOut();
+                $(".filter").removeClass("ec-open");
+                $(".mobile-menu-toggle").find("a").removeClass("close");
+            });   
         },
         onPageChange(newPage) {
             $(window).scrollTop(0); 

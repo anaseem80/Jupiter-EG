@@ -20358,7 +20358,7 @@ button.btn-close.qty_close {
 .ec-product-inner .ec-pro-image .ec-pro-actions .wishlist {
   position: absolute;
   right: 15px;
-  bottom: 32px;
+  bottom: -7px;
   border: 1px solid #eeeeee;
 }
 .ec-product-inner .ec-pro-image .ec-pro-actions .wishlist:hover {
@@ -20385,7 +20385,7 @@ button.btn-close.qty_close {
   height: 35px;
   width: 35px;
   right: 15px;
-  bottom: 74px;
+  bottom: 35px;
   margin: 0;
   padding: 0;
   font-size: 0;
@@ -20789,6 +20789,9 @@ i.ecicon.eci-star.fill {
     font-size: 14px;
   }
 }
+.mix-blend{
+  mix-blend-mode: difference;
+}
 @media only screen and (max-width: 991px) {
   .ec-product-inner:hover a.quickview {
     -webkit-transform: translateY(50px);
@@ -20812,11 +20815,46 @@ i.ecicon.eci-star.fill {
     width: 35px;
     position: absolute;
     right: 15px;
-    bottom: 74px;
+    bottom: 35px;
     margin: 0;
     padding: 0;
     font-size: 0;
     border-radius: 10px 10px 0 0;
+  }
+  @media(max-width:992px){
+    .filter{
+      display: block;
+      position: fixed;
+      transition: all 0.3s ease 0s;
+      z-index: 51;
+      height: 100%;
+      width: 350px;
+      inset: 0;
+      right: -100%;
+      padding: 0;
+      background-color: #fff;
+    }
+    .filter-menu-button{
+      display: block !important;
+    }
+    .filter.ec-open{
+      right: 0;
+    }
+    .filter .ec-sidebar-heading{
+      display: flex;
+      justify-content: space-between;
+    }
+    .ec-sidebar-wrap{
+      border: 0;
+      border-top: 1px solid #eeeeee;
+    }
+    .filter .ec-sidebar-heading h1{
+      background-color: unset;
+      margin: 0;
+    }
+    .filter .ec-sidebar-heading button{
+      display: block !important;
+    }
   }
   .ec-product-inner .ec-pro-image .ec-pro-actions .add-to-cart .svg_img.pro_svg {
     margin: 8px;
@@ -20824,7 +20862,7 @@ i.ecicon.eci-star.fill {
   .ec-product-inner .ec-pro-image .ec-pro-actions .wishlist {
     position: absolute;
     right: 15px;
-    bottom: 32px;
+    bottom: -7px;
   }
   .ec-product-inner .ec-pro-image .ec-pro-actions .compare {
     position: absolute;
@@ -22621,7 +22659,7 @@ div#ec_news_signup {
   font-size: 14px;
 }
 
-.ec-side-cat-overlay {
+.ec-side-cat-overlay, .ec-side-filter-overlay {
   display: none;
   width: 100%;
   height: 100vh;

@@ -244,9 +244,13 @@
                                                 <img src="@/assets/images/common/Sold-Out-Transparent.png"/>
                                             </div>
                                             <div class="ec-single-wishlist">
-                                                <a class="ec-btn-group wishlist" title="Wishlist"><img
-                                                        src="@/assets/images/icons/wishlist.svg" class="svg_img pro_svg"
-                                                        alt="" /></a>
+                                                <a 
+                                                    class="ec-btn-group wishlist"
+                                                    title="Wishlist"
+                                                    @click="onAddProductWishList(product.product)" 
+                                                >
+                                                    <wishlist-icon :product="product.product"/>
+                                                    </a>
                                             </div>
                                             <div class="ec-single-quickview">
                                                 <a href="#" class="ec-btn-group quickview" data-link-action="quickview"
@@ -409,6 +413,16 @@ export default {
         },
         async fetchProduct() {
             await this.GetProductData({id: this.$route.params.id});
+        },
+        onAddProductWishList(product){
+            const existedItem = this.$store.state.wishlist.find(item =>{
+                return item.id == product.id
+            })
+            if(existedItem){
+                this.$store.dispatch("Remove_Product_From_Wishlist",product)
+            }else{
+                this.$store.dispatch("Add_Product_To_Wishlist",product)
+            }
         },
         zoomImage(e){
             $('.zoom-image-hover').zoom();

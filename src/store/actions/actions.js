@@ -399,6 +399,38 @@ const actions = {
         })
     },
 
+    Add_Product_To_Wishlist({commit, state, getters}, product){
+        const locale = getters.CurrentLang;
+        const existingItem = state.wishlist.find(item => 
+            item.id == product.id
+        );
+        if (!existingItem) {
+            state.wishlist.push(product);
+        }
+        commit("WISHLIST_DATA",state.wishlist)
+        notification['success']({
+            message: "Success",
+            description: locale == "en" ? "Product added successfully to wishlist 🥳" : "🥳 تمت إضافة المنتج بنجاح إلي المفضلة",
+        });
+    },
+
+    Remove_Product_From_Wishlist({commit, state, getters}, product){
+        commit("LOADING_API",{name: 'Remove_Product_From_Wishlist'+product.id, status: true})
+        const locale = getters.CurrentLang;
+        const existingItem = state.wishlist.findIndex(item => item.id === product.id);
+        if (existingItem > -1) {
+          state.wishlist.splice(existingItem, 1);
+        }
+        console.log(existingItem);
+        console.log(state.wishlist);
+        commit("WISHLIST_DATA", state.wishlist);
+        commit("LOADING_API",{name: 'Remove_Product_From_Wishlist'+product.id, status: false})
+        notification['success']({
+            message: "Success",
+            description: locale == "en" ? "Product has removed successfully to wishlist 🥳" : "🥳 تم حذف المنتج بنجاح من المفضلة",
+        });
+    },
+
 
     AddReview({commit, state}, {data, toast}){
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
@@ -997,6 +1029,15 @@ const actions = {
         })
         .catch(error=>{
           console.log(error)
+          if(error && actualToken != null){
+            VueCookies.remove('UserIDToken')
+            VueCookies.remove('UserToken')
+            VueCookies.remove('UserData')
+            commit("CART_DATA",null)
+            commit("SET_AUTHENTICATED", {bool: false, token: null, user: null});
+            commit("USER_DATA", null)
+            commit("WHEEL_POINTS",null)
+          }
         })
     },
 

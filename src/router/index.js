@@ -5,6 +5,7 @@ import Products from '@/views/pages/Products/Products'
 import OrderDetails from '@/views/pages/Order/order-details'
 import CheckOut from '@/views/pages/Order/checkout'
 import Cart from '@/views/pages/Cart/cart'
+import Wishlist from '@/views/pages/wishlist/wishlist'
 import Product from '@/views/pages/Product/product'
 import SidePage from '@/views/pages/SidePages/side-pages'
 import Games from '@/views/pages/Games/games'
@@ -61,6 +62,11 @@ const routes = [
     path: '/cart',
     name: 'Cart',
     component: Cart
+  },
+  {
+    path: '/wishlist',
+    name: 'wishlist',
+    component: Wishlist
   },
   {
     path: '/profile',
