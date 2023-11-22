@@ -25,8 +25,7 @@ export default {
         changeLanguage(lang){
             if(lang !== this.$i18n.locale){
                 window.location.reload()
-            }
-            localStorage.setItem("lang", lang)
+            }            this.$store.commit("CHANGE_LANG",lang)
             this.$i18n.locale = lang;
             lang == 'ar' ? this.flag = arabic : this.flag = english
 
@@ -34,14 +33,14 @@ export default {
     },
     created(){
     $("body").addClass("CairoFont rtl")
-    if(localStorage.getItem("lang")=="ar"){
+    if(this.$store.state.lang=="ar"){
         this.$i18n.locale = 'ar';
         this.flag = arabic
-      }
-      if(localStorage.getItem("lang")=="en"){
+    }
+    if(this.$store.state.lang=="en"){
         this.$i18n.locale = 'en';
         this.flag = english
-      }
+    }
   }
 }
 </script>

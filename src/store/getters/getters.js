@@ -47,7 +47,6 @@ const getters = {
     },
     totalDiscount: (state, getters) => {
       const couponDiscount = parseFloat(getters.couponDiscount);
-      console.log()
       if(state.cart != null){
           return (state.cart.cart_prices['total_discount'] + couponDiscount).toFixed(2);
       }else{

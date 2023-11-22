@@ -114,14 +114,14 @@ export default {
             if(this.$route.name=="Sub category"){
                 id = this.$route.params.id
             }
-            $(e.target).addClass("border-2")
+            $(e.target).addClass("border-4")
             const existedItem = this.colors_filterd.find(colorItem =>{
                 return colorItem == color
             })
             if(!existedItem)
                 this.colors_filterd.push(color)
             if(!e.target.checked && existedItem){
-                $(e.target).removeClass("border-2")
+                $(e.target).removeClass("border-4")
                 this.colors_filterd.splice(this.colors_filterd.indexOf(existedItem),1)
             }
             this.$store.dispatch("FilterProducts",{

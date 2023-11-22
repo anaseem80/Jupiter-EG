@@ -24,14 +24,7 @@
                     <div class="col header-top-right d-none d-lg-block">
                         <div class="header-top-lan-curr d-flex justify-content-end">
                             <!-- Currency Start -->
-                            <div class="header-top-curr dropdown">
-                                <button class="dropdown-toggle text-upper" data-bs-toggle="dropdown">{{$t("Currency")}} <i
-                                        class="ecicon eci-caret-down" aria-hidden="true"></i></button>
-                                <ul class="dropdown-menu">
-                                    <li class="active"><a class="dropdown-item" href="#">USD $</a></li>
-                                    <li><a class="dropdown-item" href="#">EUR €</a></li>
-                                </ul>
-                            </div>
+                            <currency />
                             <!-- Currency End -->
                             <!-- Language Start -->
                             <language-dropdown />

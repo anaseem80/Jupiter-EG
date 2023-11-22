@@ -65,6 +65,15 @@ const mutations = {
     CART_DATA(state, cart){
       state.cart = cart
     },
+    CURRENCIES(state, currencies){
+      state.currencies = currencies
+    },
+    CHANGE_CURRENY(state, currency){
+      state.currency = currency
+    },
+    CHANGE_LANG(state, lang){
+      state.lang = lang
+    },
     WISHLIST_DATA(state, wishlist){
       state.wishlist = wishlist
     },

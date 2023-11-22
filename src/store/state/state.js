@@ -11,6 +11,8 @@ export const state = {
     orders:null,
     order:null,
     tax:null,
+    currencies:[],
+    currency:"EGP",
     settings:null,
     RemovedProduct: null,
     couponDetails:null,

@@ -75,7 +75,6 @@ export default {
     },
     methods:{
         onSubmit(User){
-            console.log(this.$toast)
             this.$store.dispatch("ResetPassword", { User: User,token: this.token, toast: this.$toast })
         },
         isLoading(actionName) {

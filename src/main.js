@@ -18,9 +18,11 @@ import WishListIcon from '@/components/Main/wishlist'
 import Loader from '@/components/Main/loader'
 import VueCountdown from '@chenfengyuan/vue-countdown';
 import AddReview from '@/components/Main/add-review';
+import Whatsapp from '@/components/Main/whatsapp';
 import SettingsSide from '@/components/Main/settings-side';
 import MobileMenu from '@/components/Main/mobile-menu';
 import Language from '@/components/lang/language';
+import Currency from '@/components/currencies/currencies';
 import SocialLinks from '@/components/Main/social-links';
 import UserSettings from '@/components/Profile/settings';
 import Orders from '@/components/Profile/orders';
@@ -67,6 +69,8 @@ app.component('language-dropdown',Language)
 app.component('settings-side',SettingsSide)
 app.component('wishlist-icon',WishListIcon)
 app.component('info-dialog',InfoDialog)
+app.component('currency',Currency)
+app.component('whatsapp',Whatsapp)
 app.component('password-dialog',PasswordDialog)
 app.component('user-settings',UserSettings)
 app.component('user-address',UserAddress)
@@ -88,14 +92,9 @@ import '@/assets/css/plugins/animate.css'
 import '@/assets/css/plugins/countdownTimer.css'
 import '@/assets/css/plugins/slick.min.css'
 import '@/assets/css/plugins/bootstrap.css'
-
-if(i18n.global.locale == 'ar'){
-    alert("arabic")
-}
-
-import '@/assets/css/demo1.css'
 import '@/assets/css/responsive.css'
 import '@/assets/css/backgrounds/bg-4.css'
+import '@/assets/css/demo1.css'
 
 
 /* Stylesheet */

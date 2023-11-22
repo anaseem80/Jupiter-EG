@@ -20,33 +20,33 @@
                                             <thead>
                                                 <tr>
                                                     <th>{{$t("Product")}}</th>
-                                                    <th>{{$t("Price")}}</th>
-                                                    <th>{{$t("Action")}}</th>
+                                                    <!-- <th>{{$t("Price")}}</th> -->
+                                                    <th class="text-center">{{$t("Action")}}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr v-for="item in wishlist" class="position-relative">
-                                                    <td data-label="Product" class="ec-cart-pro-name">
+                                                    <td :data-label="$t('Product')" class="ec-cart-pro-name">
                                                         <transition name="fade" mode="out-in">
                                                             <div v-if="isLoading('Remove_Product_From_Wishlist'+item.id)" class="loader position-absolute top-0 w-100 h-100 d-flex justify-content-center align-items-center">
                                                                 <loading-outlined class="fs-3"/>
                                                             </div>
                                                         </transition>
-                                                        <h6 @click="fetchProductData(item.product_id)">
+                                                        <h6 @click="this.$store.dispatch('GetProductData',{id: product_id})">
                                                             <router-link
                                                         :to="'/product/'+item['id']"><img class="ec-cart-pro-img mr-4"
                                                                 :src="route + item['image']"
                                                                 alt="" />{{item['name']}}</router-link>
                                                         </h6>
                                                        </td>
-                                                    <td data-label="Price" class="ec-cart-pro-price">
-                                                        <span class="amount">{{item['price']}}</span>
+                                                    <!-- <td :data-label="$t('Price')" class="ec-cart-pro-price">
+                                                        <span class="amount">{{item['final_price']}} {{currency}}</span>
                                                         <div v-if="item.attribute">
                                                             <p class="mb-0">{{item.attribute.color != null ? ($i18n.locale == 'en' ? item.attribute.color.name_en : item.attribute.color.name_ar) : ""}}</p>
                                                             <p class="mb-0">{{item.attribute.size != null ? ($i18n.locale == 'en' ? item.attribute.size.name_en : item.attribute.size.name_ar) : ""}}</p>
                                                         </div>
-                                                    </td>
-                                                    <td data-label="Remove" class="ec-cart-pro-remove text-center">
+                                                    </td> -->
+                                                    <td :data-label="$t('Action')" class="ec-cart-pro-remove text-center">
                                                         <a href="#" @click="onRemoveProduct(item)"><i class="ecicon eci-trash-o text-danger"></i></a>
                                                     </td>
                                                 </tr>
@@ -69,7 +69,7 @@ import {LoadingOutlined} from '@ant-design/icons-vue';
 import { router } from "@/router";
 export default {
     computed: {
-        ...mapState(['wishlist','route']),
+        ...mapState(['wishlist','route','currency']),
     },
     methods:{
         onRemoveProduct(product){

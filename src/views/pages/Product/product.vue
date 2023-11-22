@@ -15,12 +15,15 @@
                                         <swiper
                                             :slides-per-view="1"
                                             :space-between="0"
+                                            :zoom="true"
                                             class="single-product-cover"
                                             :autoplay="true"
+                                            :modules="modules"
                                         >
-                                        <swiper-slide class="single-slide zoom-image-hover">
-                                                <img class="img-responsive image-product w-100" @mouseenter="zoomImage()" :src="route + product.product.images[0]['image']"
-                                                    alt="">
+                                        <swiper-slide class="single-slide">
+                                            <div class="swiper-zoom-container">
+                                                <img class="img-responsive image-product w-100" :src="route + product.product.images[0]['image']" alt="">
+                                            </div>
                                         </swiper-slide>
                                         </swiper>
                                         <swiper
@@ -100,7 +103,8 @@
                                         <div class="ec-single-price-stoke">
                                             <div class="ec-single-price">
                                                 <span class="ec-single-ps-title">{{$t("As low as")}}</span>
-                                                <span class="new-price">{{product.product['final_price']}}</span>
+                                                <span class="new-price">{{product.product['final_price']}}</span> 
+                                                <span class="fw-bold text-dark"> {{currency}}</span>
                                             </div>
                                             <div class="ec-single-stoke">
                                                 <span class="ec-single-ps-title">{{product.product['quantity']}} {{$t("IN STOCK")}}</span>
@@ -118,7 +122,6 @@
                                                             class="size"
                                                             :data-color="size.size_name_en == null ? size.size.name_en : size.size_name_en +product.product.id"
                                                             :data-id="product.product.id"
-                                                            :class="{ 'active': index === 0 }"
                                                             >
                                                             <a 
                                                             class="ec-opt-sz"
@@ -149,7 +152,6 @@
                                                             :data-tooltip="color.colorName"
                                                             v-for="(color, index) in colorAttr.colors"
                                                             class="color"
-                                                            :class="{ 'active': index === 0 }"
                                                             >
                                                             <span 
                                                             :style="{ backgroundColor: color.color_code, }"
@@ -179,7 +181,6 @@
                                                             :data-new="color.price"
                                                             :data-tooltip="color.colorName"
                                                             class="color"
-                                                            :class="{ 'active': index === 0 }"
                                                             >
                                                             <span 
                                                             :style="{ backgroundColor: color.color.color_code, }"
@@ -201,7 +202,6 @@
                                                             @click="sizeColorChange($event.target, size.size, product.product)"
                                                             :data-color="size.size.size_name_en == null ? size.size.size_name_en : size.size.size_name_en +product.product.id"
                                                             :data-id="product.product.id"
-                                                            :class="{ 'active': index === 0 }"
                                                             >
                                                             <!-- {{size.size}} -->
                                                             <a 
@@ -216,11 +216,27 @@
                                         </div>
                                         <div class="ec-single-qty">
                                             <div class="qty-plus-minus">
-                                                <div class="dec ec_qtybtn" @click="increaseDecreaseQuantity('-')">-</div>
-                                                <input class="qty-input" type="text" name="ec_qtybtn" v-model="quantity" disabled/>
-                                                <div class="inc ec_qtybtn" @click="increaseDecreaseQuantity('+')">+</div>
+                                                <div class="dec ec_qtybtn"></div>
+                                                <!-- <input class="qty-input" type="text" name="ec_qtybtn" v-model="quantity" disabled/> -->
+                                                <swiper
+                                                    :slides-per-view="1"
+                                                    :direction="'vertical'"
+                                                    class="swiper-qunatity"
+                                                    :space-between="0"
+                                                    :navigation="true"
+                                                    :modules="modules"
+                                                    @swiper="onSwiper"
+                                                    :autoplay="true"
+                                                    @slideChange="onSlideChange"
+                                                >
+                                                <swiper-slide
+                                                v-for="(stock, index) in visibleStocks"
+                                                :key="index"
+                                                >{{stock}}
+                                                </swiper-slide>
+                                                </swiper>
+                                                <div class="inc ec_qtybtn"></div>
                                             </div>
-                                            <!-- product.product.quantity != 0 -->
                                             <div class="ec-single-cart" v-if="userData && userData.client_type !== 'wholesale'">
                                                 <button class="btn btn-primary" @click="onAddProduct(product.product)" :disabled="isLoading('Add_Product_To_Cart'+product.product.id)">
                                                     {{$t("Add To Cart")}}
@@ -234,11 +250,9 @@
                                                 </button>
                                             </div>
                                             <div class="ec-single-cart" v-if="userData && userData.client_type == 'wholesale'">
-                                                <button class="btn btn-success">
-                                                    <a :href="whatsappLink" @click="whatsappLinkA(product.product)" class="text-light" target="_blank">
-                                                        <i class="ecicon eci-whatsapp me-2 fs-6"></i> {{$t("Price Preview")}}
-                                                    </a>
-                                                </button>
+                                                <a :href="whatsappLink" @click="whatsappLinkA(product.product)" class="text-light btn btn-success" target="_blank">
+                                                    <i class="ecicon eci-whatsapp mr-2 fs-6"></i> {{$t("Price Preview")}}
+                                                </a>
                                             </div>
                                             <div class="sold-out position-absolute z-2 w-100" v-if="product.product.quantity == 0">
                                                 <img src="@/assets/images/common/Sold-Out-Transparent.png"/>
@@ -251,13 +265,6 @@
                                                 >
                                                     <wishlist-icon :product="product.product"/>
                                                     </a>
-                                            </div>
-                                            <div class="ec-single-quickview">
-                                                <a href="#" class="ec-btn-group quickview" data-link-action="quickview"
-                                                    title="Quick view" data-bs-toggle="modal"
-                                                    data-bs-target="#ec_quickview_modal"><img
-                                                        src="@/assets/images/icons/quickview.svg" class="svg_img pro_svg"
-                                                        alt="" /></a>
                                             </div>
                                         </div>
                                         <div class="ec-single-social">
@@ -353,15 +360,18 @@
         </div>
     </section>
     <!-- End Single product -->
-
+    <div v-if="product">
+        <related-products v-if="product.products.length > 0" :product="product"/>
+    </div>
     <!-- Related Product Start -->
-    <related-products :product="product"/>
+    
     <!-- Related Product end -->
 </template>
 <script>
+import 'swiper/css/zoom';
 import VueCookies from 'vue-cookies'
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Navigation } from 'swiper/modules';
+import { Navigation, Zoom } from 'swiper/modules';
 import { mapActions, mapState } from "vuex";
 import { notification } from "ant-design-vue";
 
@@ -382,7 +392,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(['product','route','userData']),
+        ...mapState(['product','route','userData','currency']),
         isAuthenticated() {
             return this.$store.state.isAuthenticated;
         },
@@ -401,15 +411,17 @@ export default {
 
             return `https://wa.me/+201069000501?text=${message}`;        
         },
+        visibleStocks() {
+            const startIndex = this.isAuthenticated.user && this.isAuthenticated.user.client_type === 'wholesale' ? this.product.product.minimum_order : 1;
+            const endIndex = this.product.product.quantity;
+
+            return Array.from({ length: parseInt(endIndex) - parseInt(startIndex) + 1 }, (_, index) => index + parseInt(startIndex));
+        },
     },
     methods:{
         ...mapActions(['GetProductData']),
-        setQuantityForUser() {
-            if (this.isAuthenticated.user && this.isAuthenticated.user.client_type === 'wholesale') {
-                this.quantity = this.product.product.minimum_order || 1;
-            } else {
-                // set to default or other logic for non-wholesale users
-            }
+        onSlideChange(num){
+            this.quantity = num.activeIndex +1
         },
         async fetchProduct() {
             await this.GetProductData({id: this.$route.params.id});
@@ -450,11 +462,10 @@ export default {
             }
         },
         onColorChange(thisObj,color,id, product){
-            console.log(color.attribute_id)
-            if(product.type_attribute == 'colors'){
-                this.color = color.color.name_en
+            if(product.product.type_attribute == 'colors'){
+                this.color = color.colorName
             }
-            if(product.type_attribute == 'both'){
+            if(product.product.type_attribute == 'both'){
                 this.color = color.colorName
             }
             this.selectedAttributeId['Product'+id] = color.attribute_id;
@@ -495,11 +506,10 @@ export default {
             return timeRemaining;
         },
         loadProduct(minimum_order) {
-            // console.log(parseInt(minimum_order))
             // this.quantity = null
             // if (this.isAuthenticated.user && this.isAuthenticated.user.client_type === 'wholesale') {
             //     if(this.product){
-            //         console.log(this.product)
+            //         
             //         this.quantity = this.product.product.minimum_order;
             //     }
             // }
@@ -560,15 +570,15 @@ export default {
         this.fetchProduct();
     },
     created() {
-        this.setQuantityForUser();
+       this.visibleStocks
     },
     setup() {
       return {
-        modules: [Navigation],
+        modules: [Zoom, Navigation],
       };
     },
     watch: {
-        '$route': 'setQuantityForUser',
+        '$route': 'visibleStocks',
         'product.product.minimum_order': function(newVal, oldVal) {
             if (this.isAuthenticated.user && this.isAuthenticated.user.client_type === 'wholesale') {
                 this.quantity = newVal || 1;

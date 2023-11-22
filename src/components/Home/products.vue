@@ -62,7 +62,7 @@
                 <a-rate v-model:value="productsSortedAdmin.average_rating" disabled />
                 <h5 class="ec-pro-title" @click="fetchProductData(productsSortedAdmin.id)"><router-link :to="'/product/'+productsSortedAdmin['id']">{{productsSortedAdmin['name']}}</router-link></h5>
                 <span class="ec-price">
-                    <span class="new-price">{{productsSortedAdmin['final_price']}}</span>
+                    <span class="new-price">{{productsSortedAdmin['final_price']}}</span> <span class="fw-bold text-dark currency"> {{currency}}</span>
                 </span>
                 <div class="ec-pro-option" v-if="productsSortedAdmin.type_attribute == 'both'">
                     <div>
@@ -188,7 +188,7 @@ import {LoadingOutlined} from '@ant-design/icons-vue';
 export default {
     props:['productObject','title','class'],
     computed: {
-        ...mapState(['route','userData']),
+        ...mapState(['route','userData','currency']),
         ...mapGetters(['filterAttribute']),
     },
     data(){
@@ -216,7 +216,6 @@ export default {
         },
         onAddProduct(product){
             let attribute = this.selectedAttribute[this.title + product.id];
-            console.log(attribute)
             if(attribute === undefined){
                 attribute = null
             }
@@ -240,14 +239,10 @@ export default {
             }
         },
         onColorChange(element,color,id,title, object){
-            console.log(color)
             this.selectedAttribute[title + id] = color.attribute_id;
-            console.log(this.selectedAttribute[title + id] )
             $('#img-'+title+id).attr('src',this.route+'imagesfp/product/'+color.image)
             var $this = $(element);
             var $new_price = $this.closest('.ec-pro-content').find('.new-price');
-
-            console.log($this.closest('.ec-pro-image'))
             $new_price.text(color.price); 
 
             $this.addClass('active').siblings().removeClass('active');

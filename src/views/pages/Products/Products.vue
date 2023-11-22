@@ -26,8 +26,8 @@
                                 >
                                     <option selected disabled>{{$t("Position")}}</option>
                                     <option value="1">{{$t("Highest in demand")}}</option>
-                                    <option value="2">{{$t("Price, low to high")}}</option>
-                                    <option value="3">{{$t("Price, high to low")}}</option>
+                                    <option value="3">{{$t("Price, low to high")}}</option>
+                                    <option value="2">{{$t("Price, high to low")}}</option>
                                     <option value="4">{{$t("Newest")}}</option>
                                     <option value="5">{{$t("discount")}}</option>
                                 </select>
@@ -111,7 +111,6 @@ export default {
         },
         Next(url){
             if(url!==null){
-                console.log(url.split("/").reverse()[0].split("?").reverse()[0])
                 this.FetchProductsByCurrentCategory(url.split("/").reverse()[0].split("?").reverse()[0],this.$route.params.id)
             }
         },

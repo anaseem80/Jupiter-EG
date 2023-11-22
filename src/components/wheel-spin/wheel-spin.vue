@@ -122,7 +122,6 @@ export default {
       prizeActive(index) {
         let vm = this;
         setTimeout(() => {
-            console.log(vm.itemClass)
             index.classList.value = `${vm.itemClass} active`;
         }, vm.duration);
       },
@@ -215,7 +214,6 @@ export default {
 
         // 取出 0-5之間隨機整數
         vm.index = vm.numbers[Math.floor(Math.random() * vm.numbers.length)];
-        console.log("1.剩餘牌號", vm.numbers);
 
         // 預先旋轉四圈
         let circle = 4;
@@ -252,7 +250,6 @@ export default {
             ? (vm.current_deg = remainder)
             : (vm.current_deg = remainder - vm.each_deg / 2);
         }
-        console.log("2.執行旋轉", degree, "index", vm.index);
         // 將vm.index設為抽中獎品索引數，獎品抽完的索引數將不再出現，直到獎品全數抽完，重新 RESET
         let prize = vm.prizes[vm.index];
         vm.prize_name = prize.points;
@@ -266,16 +263,6 @@ export default {
   
         setTimeout(() => {
           prize.count--;
-          console.log(
-            "3.旋轉角度:",
-            vm.current_deg,
-            "獎品:",
-            prize.name,
-            "剩餘數量:",
-            prize.count,
-            " index",
-            vm.index
-          );
         }, vm.duration);
 
         // 點選動畫結束後，將"已點選"改回"未點選"

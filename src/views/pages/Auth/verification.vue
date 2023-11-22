@@ -85,7 +85,6 @@ export default {
     },
     created(){
         if(this.otpEmail === null){
-            console.log("asd")
            router.push("/");
         }
     },
@@ -113,7 +112,6 @@ export default {
             if($(e).parent().next().find("input").length == 1){
                 $(e).parent().next().find("input")[0].focus()
             }
-            console.log()
         },
         handleBackspace(event, index) {
             if (event.key === 'Backspace' && index > 0 && this.otpDigits[index] === '') {

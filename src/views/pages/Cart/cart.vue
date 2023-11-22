@@ -19,15 +19,15 @@
                                         <table>
                                             <thead>
                                                 <tr>
-                                                    <th>{{$t("Product")}}</th>
-                                                    <th>{{$t("Price")}}</th>
-                                                    <th style="text-align: center;">{{$t("Quantity")}}</th>
-                                                    <th>{{$t("Action")}}</th>
+                                                    <th>{{$t('Product')}}</th>
+                                                    <th>{{$t('Price')}}</th>
+                                                    <th style="text-align: center;">{{$t('Quantity')}}</th>
+                                                    <th>{{$t('Action')}}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr v-for="item in cart.cart_items" class="position-relative">
-                                                    <td data-label="Product" class="ec-cart-pro-name">
+                                                    <td :data-label="$t('Product')" class="ec-cart-pro-name">
                                                         <transition name="fade" mode="out-in">
                                                             <div v-if="isLoading('Remove_Product_From_Cart'+item.id) || isLoading('Product_Increase_Decrease_From_Cart'+item.id)" class="loader position-absolute top-0 w-100 h-100 d-flex justify-content-center align-items-center">
                                                                 <loading-outlined class="fs-3"/>
@@ -40,14 +40,14 @@
                                                                 alt="" />{{item['name']}}</router-link>
                                                         </h6>
                                                        </td>
-                                                    <td data-label="Price" class="ec-cart-pro-price">
+                                                    <td :data-label="$t('Price')" class="ec-cart-pro-price">
                                                         <span class="amount">{{item['price']}}</span>
                                                         <div v-if="item.attribute">
                                                             <p class="mb-0">{{item.attribute.color != null ? ($i18n.locale == 'en' ? item.attribute.color.name_en : item.attribute.color.name_ar) : ""}}</p>
                                                             <p class="mb-0">{{item.attribute.size != null ? ($i18n.locale == 'en' ? item.attribute.size.name_en : item.attribute.size.name_ar) : ""}}</p>
                                                         </div>
                                                     </td>
-                                                    <td data-label="Quantity" class="ec-cart-pro-qty"
+                                                    <td :data-label="$t('Quantity')" class="ec-cart-pro-qty"
                                                         style="text-align: center;">
                                                         <div class="cart-qty-plus-minus">
                                                             <input class="cart-plus-minus" type="text"
@@ -58,7 +58,7 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td data-label="Remove" class="ec-cart-pro-remove text-center">
+                                                    <td :data-label="$t('Action')" class="ec-cart-pro-remove text-center">
                                                         <a href="#" @click="onRemoveProduct(item)"><i class="ecicon eci-trash-o text-danger"></i></a>
                                                     </td>
                                                 </tr>

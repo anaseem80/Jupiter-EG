@@ -13,7 +13,7 @@
             <div class="row margin-minus-b-30">
                 <!-- Related Product Content -->
                 <products-component 
-                :productObject="product.related_products" 
+                :productObject="product.products" 
                 :title="'related-products'" 
                 :class="'col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6 ec-product-content'">
                 </products-component>

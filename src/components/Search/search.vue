@@ -111,7 +111,6 @@ export default {
             this.searchbool = false
         },
         SearchDropdownBlur(){
-            console.log("clicked")
             // this.searchbool = false
         },
         emptyRecentSearch(){

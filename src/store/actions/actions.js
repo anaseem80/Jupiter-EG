@@ -89,7 +89,6 @@ const actions = {
 
     SubmitOTP({commit, state}, {OTP, toast}){
         commit("LOADING_API",{name: 'SubmitOTP', status: true})
-        console.log(OTP)
         axios.post(state.api_route + "verify-email", {
             otp:OTP,
             email:VueCookies.get("emailOTP"),
@@ -101,7 +100,6 @@ const actions = {
             commit("LOADING_API",{name: 'SubmitOTP', status: true})
             setTimeout(() => {
                 commit("LOADING_API",{name: 'SubmitOTP', status: false})
-                console.log(response.data)
                 if(response.data.token){
                     VueCookies.remove("emailOTP")
                     notification['success']({
@@ -140,7 +138,6 @@ const actions = {
         .then((response) => {
         if(response.data.status_code == 200){
             commit("LOADING_API",{name: 'UpdateUserInfo', status: false})
-            console.log(response.data)
             if(response.data.status_code == 200){
                 commit("SET_AUTHENTICATED", {bool: state.isAuthenticated.bool, token: state.isAuthenticated.token, user: response.data.data});
                 notification['success']({
@@ -175,7 +172,6 @@ const actions = {
         .then((response) => {
         if(response.data.status_code == 200){
             commit("LOADING_API",{name: 'UpdateUserPassword', status: false})
-            console.log(response.data)
             if(response.data.status_code == 200){
                 notification['success']({
                     message: "Success",
@@ -226,7 +222,6 @@ const actions = {
     },
 
     ForgetPassword({commit, state}, {User, toast}){
-        console.log(User)
         commit("LOADING_API",{name: 'ForgetPassword', status: true})
         axios.post(state.api_route + "forgot-password", User)
         .then((response) => {
@@ -255,7 +250,6 @@ const actions = {
     },
 
     ResetPassword({commit, state}, {User, token, toast}){
-        console.log(token)
         commit("LOADING_API",{name: 'ResetPassword', status: true})
         axios.post(state.api_route + "reset-password", User, {
             headers:{
@@ -353,24 +347,20 @@ const actions = {
 
 
     Add_Product_To_Cart({commit, state, getters}, {product, quantity, attribute, token, toast}){
-        console.log(attribute)
         const locale = getters.CurrentLang;
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
         commit("LOADING_API",{name: 'Add_Product_To_Cart'+product.id, status: true})
-        axios.post(state.api_route + `cart/add?lang=${locale}&quantity=${quantity}&product_id=${product.id}${attribute != null ? `&attribute_id=${attribute}` : ''}`, null,{
+        axios.post(state.api_route + `cart/add?currency=${state.currency}&lang=${locale}&quantity=${quantity}&product_id=${product.id}${attribute != null ? `&attribute_id=${attribute}` : ''}`, null,{
             headers:{
                 Authorization: 'Bearer ' + actualToken
             }
         })
         .then((response) => {
             if(response.data.status_code === 200){
-                console.log(response.data.product)
-                console.log(state.cart.cart_items)
                 const existingItem = state.cart.cart_items.find(item => 
                     item.product_id == response.data.product.product_id.toString() && 
                     item.attribute_id == (attribute != null ? attribute : null)
                 );
-                console.log(existingItem)
                 if (existingItem) {
                     existingItem.quantity = parseInt(existingItem.quantity) + quantity;
                 } else {
@@ -421,8 +411,6 @@ const actions = {
         if (existingItem > -1) {
           state.wishlist.splice(existingItem, 1);
         }
-        console.log(existingItem);
-        console.log(state.wishlist);
         commit("WISHLIST_DATA", state.wishlist);
         commit("LOADING_API",{name: 'Remove_Product_From_Wishlist'+product.id, status: false})
         notification['success']({
@@ -484,7 +472,7 @@ const actions = {
     ApplyCoupon({commit, state}, coupon){
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
         commit("LOADING_API",{name: 'ApplyCoupon', status: true})
-        axios.post(state.api_route + `cart/applycoupon?coupon_code=${coupon}`,null,{
+        axios.post(state.api_route + `cart/applycoupon?currency=${state.currency}&coupon_code=${coupon}`,null,{
             headers:{
                 Authorization: 'Bearer ' + actualToken
             },
@@ -513,7 +501,7 @@ const actions = {
     ApplyTax({commit, state}, {coupon, address_id}){
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
         commit("LOADING_API",{name: 'ApplyTax', status: true})
-        axios.get(state.api_route + `cart/checkout?${coupon != null ? `coupon_code=${coupon}&` : ''}user_address_id=${address_id}`,{
+        axios.get(state.api_route + `cart/checkout?${coupon != null ? `coupon_code=${coupon}&` : ''}user_address_id=${address_id}&currency=${state.currency}`,{
             headers:{
                 Authorization: 'Bearer ' + actualToken
             },
@@ -541,7 +529,7 @@ const actions = {
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
         commit("LOADING_API",{name: 'OrderCreate', status: true})
         if(payment_method=='paymob'){
-            window.location.replace(state.api_route + `orders/create?${coupon != null ? `coupon_code=${coupon}&` : ''}${description != "" ? `description=${description}&` : ''}user_address_id=${user_address_id}&payment_method=${payment_method}&token=${actualToken}`)
+            window.location.replace(state.api_route + `orders/create?${coupon != null ? `coupon_code=${coupon}&` : ''}${description != "" ? `description=${description}&` : ''}user_address_id=${user_address_id}&payment_method=${payment_method}&token=${actualToken}&currency=${state.currency}`)
         }
         axios.get(state.api_route + `orders/create?${coupon != null ? `coupon_code=${coupon}&` : ''}${description != "" ? `description=${description}&` : ''}user_address_id=${user_address_id}&payment_method=${payment_method}&token=${actualToken}`,{
             headers:{
@@ -569,7 +557,6 @@ const actions = {
     },
 
     Remove_Product_From_Cart({commit, state}, {product, toast}){
-        console.log(product)
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
         commit("LOADING_API",{name: 'Remove_Product_From_Cart'+product.id, status: true})
         axios.delete(state.api_route + `cart/remove?cart_id=${product.id}`,{
@@ -582,7 +569,6 @@ const actions = {
         if(response.data.status_code == 200){
             const productIndex = state.cart.cart_items.findIndex(item => item.id === product.id);
 
-            console.log(product)
             if (productIndex > -1) {
                 state.cart.cart_items.splice(productIndex, 1);
                 commit("REMOVED_PRODUCT_CART", { product });
@@ -640,7 +626,7 @@ const actions = {
         var sign = type === '+' ? 'increase' : 'reduce'
         commit("LOADING_API",{name: 'Product_Increase_Decrease_From_Cart' + id, status: true})
     
-        axios.post(state.api_route + `cart/${sign}?cart_id=${id}`, null, {
+        axios.post(state.api_route + `cart/currency=${state.currency}&${sign}?cart_id=${id}`, null, {
             headers:{
                 Authorization: 'Bearer ' + actualToken
             }
@@ -707,7 +693,7 @@ const actions = {
         const locale = getters.CurrentLang;
         commit("LOADING_API",{name: 'GetProductsByCurrentCategory', status: true})
         const method = keyword != undefined ? 'post' : 'get'
-        axios[method](state.api_route + `${route}?lang=${locale}&${page}${keyword != undefined ? `&keyword=${keyword}` : ''}`)
+        axios[method](state.api_route + `${route}?currency=${state.currency}&lang=${locale}&${page}${keyword != undefined ? `&keyword=${keyword}` : ''}`)
         .then(response=>{
             if(response.data.status_code == 200){
                 commit("LOADING_API",{name: 'GetProductsByCurrentCategory', status: false})
@@ -716,7 +702,6 @@ const actions = {
             }
         })
         .catch(error=>{
-          console.log(error)
           commit("LOADING_API",{name: 'GetProductsByCurrentCategory', status: false})
           fadeLoader()
         })
@@ -819,7 +804,6 @@ const actions = {
                 var index = state.addresses.findIndex(item => item.id == response.data.userAddress.id);
                 if (index !== -1) {
                     state.addresses[index] = response.data.userAddress;
-                    console.log("Updated Address:", state.addresses[index]);
                 } else {
                     state.addresses.push(response.data.userAddress);
                 }            
@@ -867,7 +851,7 @@ const actions = {
     GetCartData({commit, state, getters}){
         const locale = getters.CurrentLang;
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
-        axios.get(state.api_route + `cart/items?lang=${locale}`, {
+        axios.get(state.api_route + `cart/items?currency=${state.currency}&lang=${locale}`, {
             headers:{
                 Authorization: 'Bearer ' + actualToken
             }
@@ -878,7 +862,6 @@ const actions = {
             }
         })
         .catch(error=>{
-          console.log(error)
         })
     },
 
@@ -886,7 +869,7 @@ const actions = {
         commit("LOADING_API",{name: 'GetProductsByCurrentCategory', status: true})
         const locale = getters.CurrentLang;
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
-        axios.get(state.api_route + `products/flitter?lang=${locale}&min_price=${min_price}&max_price=${max_price}&sizes=${sizes}&colors=${colors}&sort_type=1${sub_category_id != undefined ? `&sub_category_id=${sub_category_id}` : ''}`)
+        axios.get(state.api_route + `products/flitter?currency=${state.currency}&lang=${locale}&min_price=${min_price}&max_price=${max_price}&sizes=${sizes}&colors=${colors}&sort_type=1${sub_category_id != undefined ? `&sub_category_id=${sub_category_id}` : ''}`)
         .then(response=>{
             if(response.data.status_code == 200){
                 commit("CURRENT_PRODUCTS_CATEGORY_PRODUCTS_DATA",response.data.data)
@@ -894,7 +877,6 @@ const actions = {
             }
         })
         .catch(error=>{
-          console.log(error)
           commit("LOADING_API",{name: 'GetProductsByCurrentCategory', status: false})
         })
     },
@@ -908,7 +890,6 @@ const actions = {
             }
         })
         .catch(error=>{
-          console.log(error)
         })
     },
 
@@ -963,11 +944,11 @@ const actions = {
     //     axios.get(state.api_route + `popular/view/${keyword}`)
     //     .then(response=>{
     //         if(response.data.status_code == 200){
-    //             console.log(response)
+    //            
     //         }
     //     })
     //     .catch(error=>{
-    //       console.log(error)
+    //       
     //     })
     // },
 
@@ -984,7 +965,7 @@ const actions = {
             }
         })
         .catch(error=>{
-          console.log(error)
+      
         })
     },
 
@@ -1028,7 +1009,6 @@ const actions = {
             }
         })
         .catch(error=>{
-          console.log(error)
           if(error && actualToken != null){
             VueCookies.remove('UserIDToken')
             VueCookies.remove('UserToken')
@@ -1045,7 +1025,7 @@ const actions = {
         const locale = getters.CurrentLang;
         commit("LOADING_API",{name: 'GetProductsByCurrentCategory', status: true})
         var actualToken = state.isAuthenticated.token != null ? state.isAuthenticated.token : VueCookies.get("UserToken");
-        axios.get(state.api_route + `sorted-products?lang=${locale}`,{
+        axios.get(state.api_route + `sorted-products?currency=${state.currency}&lang=${locale}`,{
             headers:{
                 Authorization: 'Bearer ' + actualToken
             },
@@ -1066,23 +1046,34 @@ const actions = {
         const locale = getters.CurrentLang;
         commit("PRODUCT_DATA",null)
         commit("LOADING_API",{name: 'GetProductData'+id, status: true})
-        axios.get(state.api_route + `product/${id}?lang=${locale}`)
+        axios.get(state.api_route + `product/${id}?currency=${state.currency}&lang=${locale}`)
         .then(response=>{
             if(response.data.status_code == 200){
-                commit("PRODUCT_DATA",response.data)
+                commit("PRODUCT_DATA",response.data.data)
                 commit("LOADING_API",{name: 'GetProductData'+id, status: false})
             }
         })
         .catch(error=>{
-          console.log(error)
           commit("LOADING_API",{name: 'GetProductData'+id, status: false})
+        })
+    },
+
+    GetCurrencies({commit, state, getters}){
+        const locale = getters.CurrentLang;
+        axios.get(state.api_route + `currency?lang=${locale}`)
+        .then(response=>{
+            if(response.data.status_code == 200){
+                commit("CURRENCIES",response.data.data.currency)
+            }
+        })
+        .catch(error=>{
         })
     },
 
     GetHomeProducts({commit, state, getters}){
         const locale = getters.CurrentLang;
         commit("LOADING_API",{name: 'GetHomeProducts', status: true})
-        axios.get(state.api_route + `products?lang=${locale}`)
+        axios.get(state.api_route + `products?currency=${state.currency}&lang=${locale}`)
         .then(response=>{
             if(response.data.status_code == 200){
                 commit("GET_HOME_PRODUCTS",response.data.data.HomeData)
@@ -1091,7 +1082,6 @@ const actions = {
             }
         })
         .catch(error=>{
-          console.log(error)
           commit("LOADING_API",{name: 'GetHomeProducts', status: false})
           fadeLoader()
         })
@@ -1114,7 +1104,6 @@ const actions = {
             }
         })
         .catch(error=>{
-          console.log(error)
           commit("LOADING_API",{name: 'GetSiteSettings', status: false})
           fadeLoader()
         })

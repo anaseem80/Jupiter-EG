@@ -78,7 +78,6 @@ export default {
             });
         },
         changeSiteColor(e, colorCode){
-            console.log(e.parentElement)
             $('link[href^="assets/css/skin-"]').remove();
             $('link.dark').remove();
             $('.ec-change-mode').removeClass("active");

@@ -366,7 +366,6 @@ export default {
         },
         goToNextSlide() {
             if (this.$refs.swiperRef) {
-                console.log(this.$refs)
                 // this.$refs.swiperRef.swiperRef.swiperNext;
             }
         },

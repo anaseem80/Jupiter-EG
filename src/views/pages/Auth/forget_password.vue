@@ -53,7 +53,6 @@ export default {
     },
     methods:{
         onSubmit(User){
-            console.log(User)
             this.$store.dispatch("ForgetPassword", { User: User, toast: this.$toast })
         },
         isLoading(actionName) {

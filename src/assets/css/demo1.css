@@ -1045,7 +1045,6 @@ img {
   vertical-align: middle;
   max-width: 100%;
 }
-
 svg {
   vertical-align: middle;
 }
@@ -19641,6 +19640,62 @@ body.ec-open:before {
     font-size: 20px;
   }
 }
+.single-product-cover .swiper-slide{
+  height: 600px;
+}
+.single-product-cover .swiper-slide img{
+  object-fit: cover;
+  height: 100%;
+}
+.swiper-qunatity{
+  height: 40px;
+  width: 37px;
+  text-align: center;
+  line-height: 40px;
+}
+.swiper-qunatity{
+  overflow: visible;
+}
+.swiper-qunatity .swiper-button-prev{
+  left: -36px;
+  top: 18px;
+}
+.swiper-qunatity .swiper-button-next{
+  right: -34px;
+  top: 20px;
+}
+.swiper-qunatity .swiper-button-next:after{
+  color: #000;
+  font-size: 22px;
+  color: #000;
+  opacity: 1;
+  content: "+";
+}
+.swiper-qunatity .swiper-button-prev:after{
+  color: #000;
+  font-size: 22px;
+  color: #000;
+  opacity: 1;
+  content: "-";
+}
+.currency{
+  font-size: 12px;
+  margin:0 5px;
+}
+@media(max-width:776px){
+  .swiper-qunatity .swiper-button-prev{
+    left: -27px;
+  }
+  .swiper-qunatity .swiper-button-next{
+    right: -28px;
+  }
+}
+.swiper-qunatity .swiper-slide{
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+}
+
 /*-------------------------------------------------
   Site Main Slider CSS
 ---------------------------------------------------*/
@@ -19650,9 +19705,9 @@ body.ec-open:before {
   position: relative;
 }
 
-.swiper-slide {
+/* .swiper-slide {
   overflow: auto;
-}
+} */
 
 .ec-slide-1 {
   width: 100%;

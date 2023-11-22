@@ -4,9 +4,10 @@
   <category-bar></category-bar>
   <mobile-menu></mobile-menu>
   <cart></cart>
-  <settings-side></settings-side>
+  <!-- <settings-side></settings-side> -->
   <router-view/>
   <Toasts/>
+  <whatsapp/>
   <layout-footer></layout-footer>
 </template>
 
@@ -17,9 +18,6 @@ export default {
     
   },
   methods:{
-    onClickPage(){
-      console.log("clicked")
-    },
     loadCSS(id, path) {
       let existingLink = document.getElementById(id);
       if (!existingLink) {

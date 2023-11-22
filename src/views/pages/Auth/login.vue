@@ -24,7 +24,7 @@
                                         name="email"
                                         type="text"
                                         class="form-control mt-2 mb-0"
-                                        placeholder="Enter your email add..."
+                                        :placeholder="$t('Enter your email add...')"
                                         :class="{ 'is-invalid': errors.email }"
                                     />
                                     <div class="invalid-feedback text-danger mb-2">{{ errors.email }}</div>
@@ -35,7 +35,7 @@
                                         name="password"
                                         type="password"
                                         class="form-control mt-2 mb-0"
-                                        placeholder="Enter your password"
+                                        :placeholder="$t('Enter your password')"
                                         :class="{ 'is-invalid': errors.password }"
                                     />
                                     <div class="invalid-feedback text-danger mb-2">{{ errors.password }}</div>
@@ -82,7 +82,6 @@ export default {
     },
     methods:{
         onSubmit(User){
-            console.log(this.$toast)
             this.$store.dispatch("UserLogin", { User: User, toast: this.$toast })
         },
         isLoading(actionName) {
