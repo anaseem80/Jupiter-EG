@@ -92,9 +92,9 @@ import '@/assets/css/plugins/animate.css'
 import '@/assets/css/plugins/countdownTimer.css'
 import '@/assets/css/plugins/slick.min.css'
 import '@/assets/css/plugins/bootstrap.css'
+import '@/assets/css/demo1.css'
 import '@/assets/css/responsive.css'
 import '@/assets/css/backgrounds/bg-4.css'
-import '@/assets/css/demo1.css'
 
 
 /* Stylesheet */

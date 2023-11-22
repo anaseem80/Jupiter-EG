@@ -19234,7 +19234,7 @@ body.ec-open:before {
   left: 0;
   -webkit-transform: translateX(-100%);
           transform: translateX(-100%);
-  width: 340px;
+  width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
