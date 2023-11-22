@@ -1034,7 +1034,7 @@ const actions = {
         .then(response=>{
             if(response.data.status_code == 200){
                 commit("LOADING_API",{name: 'GetProductsByCurrentCategory', status: false})
-                commit("CURRENT_PRODUCTS_CATEGORY_PRODUCTS_DATA",response.data)
+                commit("CURRENT_PRODUCTS_CATEGORY_PRODUCTS_DATA",response.data.data)
             }
         })
         .catch(error=>{
