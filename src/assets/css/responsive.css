@@ -1615,7 +1615,7 @@
   }
   .single-pro-content .ec-single-qty .qty-plus-minus {
     height: 44px;
-    width: 80px;
+    width: 100px;
   }
   .single-pro-content .ec-single-qty .qty-plus-minus input.qty-input {
     font-size: 14px;
@@ -2803,10 +2803,10 @@
     bottom: 75px;
     z-index: 14;
   }
-
+/* 
   .ec-right-bottom {
     bottom: 75px;
-  }
+  } */
 
   #scrollUp {
     right: 15px;
