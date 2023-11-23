@@ -27,6 +27,7 @@
     "vue-router": "^4.2.5",
     "vue-slick": "^1.2.0",
     "vue-star-rating": "^1.7.0",
+    "vue-tel-input": "^8.1.4",
     "vue-toaster": "^2.0.0",
     "vue3-star-ratings": "^3.0.4",
     "vuex": "^4.0.2",

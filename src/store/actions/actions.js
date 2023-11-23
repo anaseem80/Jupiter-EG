@@ -14,9 +14,10 @@ function fadeLoader(){
 
 const actions = {
 
-    UserLogin({commit, state, dispatch}, {User , toast}){
+    UserLogin({commit, state, dispatch, getters}, {User , toast}){
         commit("LOADING_API",{name: 'UserLogin', status: true})
-        axios.post(state.api_route + "login", User)
+        const locale = getters.CurrentLang;
+        axios.post(state.api_route + "login?lang="+locale, User)
         .then((response) => {
         commit("USER_LOGIN",User)
         if(response.data.token){
@@ -30,7 +31,7 @@ const actions = {
             VueCookies.set('UserToken', response.data.token, '1d');
             VueCookies.set('UserRouteRV', 'register', '1d');
             VueCookies.set('UserData', response.data.user, '1d');
-            VueCookies.remove("emailOTP")
+            VueCookies.remove("PHONE_OTP")
             dispatch("UserInformation")
             dispatch("GetCartData")
             dispatch("GetWheelPoints")
@@ -41,8 +42,8 @@ const actions = {
         }
         })
         .catch((error) => {
-            if(error.response.data.message === "Email not verified."){
-                VueCookies.set('emailOTP', User.email, '1d');
+            if(error.response.data.message === "Email not verified." || error.response.data.message === "البريد الإلكتروني لم يتم التحقق منه."){
+                VueCookies.set('PHONE_OTP', User.phone, '1d');
                 notification['info']({
                     message: "Error",
                     description: 'لم يتم تفعيل الإيميل سيتم توجهيك خلال 3 ثوان',
@@ -70,7 +71,7 @@ const actions = {
                 message: "Success",
                 description: 'تم التسجيل بنجاح',
             });
-            VueCookies.set('emailOTP', User.email, '1d');
+            VueCookies.set('PHONE_OTP', User.phone, '1d');
             commit("LOADING_API",{name: 'UserRegister', status: true})
             setTimeout(() => {
                 commit("LOADING_API",{name: 'UserRegister', status: false})
@@ -91,7 +92,7 @@ const actions = {
         commit("LOADING_API",{name: 'SubmitOTP', status: true})
         axios.post(state.api_route + "verify-email", {
             otp:OTP,
-            email:VueCookies.get("emailOTP"),
+            email:VueCookies.get("PHONE_OTP"),
             route: VueCookies.get("UserRouteRV")
         })
         .then((response) => {
@@ -101,7 +102,7 @@ const actions = {
             setTimeout(() => {
                 commit("LOADING_API",{name: 'SubmitOTP', status: false})
                 if(response.data.token){
-                    VueCookies.remove("emailOTP")
+                    VueCookies.remove("PHONE_OTP")
                     notification['success']({
                         message: "Success",
                         description: 'الكود صحيح سيتم توجهيك لصفحة تغير كلمة المرور',
@@ -195,9 +196,9 @@ const actions = {
     },
 
 
-    ResendOTP({commit, state}, {email, toast}){
+    ResendOTP({commit, state}){
         axios.post(state.api_route + "verification-notification", {
-            email:VueCookies.get("emailOTP"),
+            phone:VueCookies.get("PHONE_OTP"),
         })
         .then((response) => {
         commit("USER_LOGIN",email)
@@ -232,7 +233,7 @@ const actions = {
                 description: 'تم إرسال الرمز بنجاح',
             });
             commit("LOADING_API",{name: 'ForgetPassword', status: true})
-            VueCookies.set('emailOTP', User.email, '1d');
+            VueCookies.set('PHONE_OTP', User.phone, '1d');
             VueCookies.set('UserRouteRV', 'reset_password', '1d');
             setTimeout(() => {
                 router.push("/verification");
@@ -310,7 +311,7 @@ const actions = {
             commit("SET_AUTHENTICATED", {bool: false, token: null, user: null});
             commit("USER_DATA", null)
             commit("WHEEL_POINTS",null)
-            VueCookies.remove("emailOTP")
+            VueCookies.remove("PHONE_OTP")
             setTimeout(() => {
                 commit("LOADING_API",{name: 'Logout', status: false})
                 router.push("/login");
@@ -330,7 +331,7 @@ const actions = {
                 commit("SET_AUTHENTICATED", {bool: false, token: null, user: null});
                 commit("USER_DATA", null)
                 commit("WHEEL_POINTS",null)
-                VueCookies.remove("emailOTP")
+                VueCookies.remove("PHONE_OTP")
                 setTimeout(() => {
                     commit("LOADING_API",{name: 'Logout', status: false})
                     router.push("/login");

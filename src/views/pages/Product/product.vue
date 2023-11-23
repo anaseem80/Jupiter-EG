@@ -214,27 +214,28 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="ec-single-qty">
+                                        <div class="ec-single-qty position-relative">
                                             <div class="qty-plus-minus">
                                                 <div class="dec ec_qtybtn"></div>
                                                 <!-- <input class="qty-input" type="text" name="ec_qtybtn" v-model="quantity" disabled/> -->
                                                 <swiper
-                                                    :slides-per-view="1"
-                                                    :direction="'vertical'"
-                                                    class="swiper-qunatity"
-                                                    :space-between="0"
-                                                    :navigation="true"
-                                                    :modules="modules"
-                                                    @swiper="onSwiper"
-                                                    :autoplay="true"
-                                                    @slideChange="onSlideChange"
-                                                >
+                                                :direction="'vertical'"
+                                                :slides-per-view="1"
+                                                :spaceBetween="0"
+                                                :pagination="{
+                                                clickable: true,
+                                                }"
+                                                :navigation="true"
+                                                @slideChange="onSlideChange"
+                                                :modules="modules"
+                                                class="mySwiper swiper-qunatity"
+                                            >
                                                 <swiper-slide
                                                 v-for="(stock, index) in visibleStocks"
                                                 :key="index"
                                                 >{{stock}}
-                                                </swiper-slide>
-                                                </swiper>
+                                                </swiper-slide>                        
+                                             </swiper>
                                                 <div class="inc ec_qtybtn"></div>
                                             </div>
                                             <div class="ec-single-cart" v-if="userData && userData.client_type !== 'wholesale'">
@@ -374,7 +375,7 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Navigation, Zoom } from 'swiper/modules';
 import { mapActions, mapState } from "vuex";
 import { notification } from "ant-design-vue";
-
+import audioSRC from '@/assets/audio/gears.mp4'
 export default {
     components: {
       Swiper,
@@ -421,6 +422,8 @@ export default {
     methods:{
         ...mapActions(['GetProductData']),
         onSlideChange(num){
+            var audio = new Audio(audioSRC)
+            audio.play(audio);
             this.quantity = num.activeIndex +1
         },
         async fetchProduct() {

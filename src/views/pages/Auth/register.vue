@@ -41,6 +41,21 @@
                                     <div class="invalid-feedback text-danger mb-2">{{ errors.email }}</div>
                                 </span>
                                 <span class="ec-register-wrap mt-3">
+                                    <label>{{$t("Phone Number*")}}</label>
+                                    <vue-tel-input
+                                     v-model="phone" 
+                                     mode="international"
+                                     @validate="handlePhoneValidation"
+                                     :inputOptions="{ 
+                                        'name': 'phone',
+                                        showDialCode: true
+                                    }"
+                                     class="mb-0 phone-input"
+                                    >
+                                    </vue-tel-input>
+                                    <div class="text-danger mb-2">{{ phoneMessage }}</div>
+                                </span>
+                                <span class="ec-register-wrap mt-3">
                                     <label>{{$t("Type*")}}</label>
                                     <Field
                                         as="select"
@@ -49,7 +64,7 @@
                                         :class="{ 'is-invalid': errors.client_type }"
                                     >
                                         <option value="" selected disabled>{{$t("Select Type")}}</option>
-                                        <option value="user">{{$t("user")}}</option>
+                                        <!-- <option value="user">{{$t("user")}}</option> -->
                                         <option value="wholesale">{{$t("wholesale")}}</option>
                                         <option value="retail">{{$t("retail")}}</option>
                                     </Field>
@@ -94,7 +109,11 @@ export default {
     data(){
         return{
             UserIDToken: VueCookies.get("UserIDToken"),
-            lang: this.$store.getters.CurrentLang
+            lang: this.$store.getters.CurrentLang,
+            phone:'',
+            phoneValidate:'',
+            phoneMessage:null,
+            countryCODE:null,
         }
     },
     created(){
@@ -104,10 +123,24 @@ export default {
     },
     methods:{
         onSubmit(User){
-            this.$store.dispatch("UserRegister", { User: User, toast: this.$toast })
+            if(this.phone.split("").length != 16 && this.countryCODE == "20"){
+                this.phoneMessage = this.$i18n.locale == 'ar' ? "رقم الهاتف يجب أن يكون صحيحا" : "Phone number must be a valid phone"
+            }else if(this.phoneValidate == undefined || this.phoneValidate == false){
+                this.phoneMessage = this.$i18n.locale == 'ar' ? "رقم الهاتف يجب أن يكون صحيحا" : "Phone number must be a valid phone"
+            }else{
+                this.phoneMessage = ''   
+                User.phone = this.phone
+                console.log(User)
+                this.$store.dispatch("UserRegister", { User: User, toast: this.$toast })
+            }
         },
         isLoading(actionName) {
             return this.$store.state.Loading[actionName] || false;
+        },
+        handlePhoneValidation(phoneObject) {
+            this.phoneValidate = phoneObject.valid
+            this.countryCODE = phoneObject.countryCallingCode
+
         },
     },
     setup(){

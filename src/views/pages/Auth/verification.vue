@@ -13,7 +13,7 @@
                     <div class="ec-register-container">
                         <div class="ec-register-form">
                             <div class="text-center">
-                                <p class="text-dark">{{$t("We have sent the OTP to")}} <span class="fw-bold email-wrap">{{ otpEmail }}</span> {{$t("please check your DM.")}}</p>
+                                <p class="text-dark">{{$t("We have sent the OTP to")}} <span class="fw-bold email-wrap">{{ phoneOTP }}</span> {{$t("please check your DM.")}}</p>
                                 <img src="@/assets/images/common/otp.gif" class="rounded-circle" width="350" alt="">
                             </div>
                                 <Form
@@ -76,7 +76,7 @@ export default {
     data(){
         return {
             otpDigits: new Array(6).fill(''),
-            otpEmail: VueCookies.get("emailOTP"),
+            phoneOTP: VueCookies.get("PHONE_OTP"),
         };
     },
     components: {
@@ -84,7 +84,7 @@ export default {
         Field,
     },
     created(){
-        if(this.otpEmail === null){
+        if(this.phoneOTP === null){
            router.push("/");
         }
     },
@@ -97,7 +97,7 @@ export default {
             }
         },
         ResendOTP(){
-            this.$store.dispatch("ResendOTP", { email: 'anaseemamin@gmail.com' , toast: this.$toast })
+            this.$store.dispatch("ResendOTP")
         },
         handlePaste(event) {
             const pasteData = event.clipboardData.getData('text');

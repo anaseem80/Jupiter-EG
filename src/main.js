@@ -33,6 +33,9 @@ import VueLazyload from 'vue-lazyload'
 import Antd from 'ant-design-vue';
 import i18n from "@/localization/i18n.js"
 import 'ant-design-vue/dist/reset.css';
+import VueTelInput from 'vue-tel-input';
+import 'vue-tel-input/vue-tel-input.css';
+
 const app = createApp(App)
 
 /* Dialogs Compontents */
@@ -122,6 +125,7 @@ const loadimage = require('@/assets/images/bg/blur.jpg')
 app.use(router)
 app.use(Antd)
 app.use(i18n)
+app.use(VueTelInput);
 app.use(store)
 app.use(VueLazyload, {
     preLoad: 1.3,
