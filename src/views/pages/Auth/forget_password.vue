@@ -19,15 +19,15 @@
                                     v-slot="{ errors }"
                                 >
                                 <span class="ec-login-wrap">
-                                    <label>{{$t("Phone Number*")}}</label>
+                                    <label>{{$t("Email Address*")}}</label>
                                     <Field
-                                        name="phone"
+                                        name="email"
                                         type="text"
                                         class="form-control mt-2 mb-0"
-                                        :placeholder="'+XXXXXXXXXXX'"
-                                        :class="{ 'is-invalid': errors.phone }"
+                                        :placeholder="'example@example.com'"
+                                        :class="{ 'is-invalid': errors.email }"
                                     />
-                                    <div class="invalid-feedback text-danger mb-2">{{ errors.phone }}</div>
+                                    <div class="invalid-feedback text-danger mb-2">{{ errors.email }}</div>
                                 </span>
                                 <span class="ec-login-wrap ec-login-btn">
                                     <s-button :name="$t('Reset Password')" action='ForgetPassword'/>
@@ -71,7 +71,7 @@ export default {
     },
     setup(){
         const schema = Yup.object().shape({
-            phone: Yup.string().required("phone is required")
+            email: Yup.string().required("email is required")
         });
         return {
             schema,

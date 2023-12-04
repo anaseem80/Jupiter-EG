@@ -20915,15 +20915,22 @@ i.ecicon.eci-star.fill {
       height: 100%;
       width: 350px;
       inset: 0;
-      right: -100%;
+      left: -100%;
       padding: 0;
       background-color: #fff;
+    }
+    .rtl .filter{
+      left: -100%;
+      right: unset;
     }
     .filter-menu-button{
       display: block !important;
     }
     .filter.ec-open{
-      right: 0;
+      left: 0;
+    }
+    .rtl .filter.ec-open{
+      left: 0;
     }
     .filter .ec-sidebar-heading{
       display: flex;

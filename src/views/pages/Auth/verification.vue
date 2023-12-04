@@ -13,7 +13,7 @@
                     <div class="ec-register-container">
                         <div class="ec-register-form">
                             <div class="text-center">
-                                <p class="text-dark">{{$t("We have sent the OTP to")}} <span class="fw-bold email-wrap">{{ phoneOTP }}</span> {{$t("please check your DM.")}}</p>
+                                <p class="text-dark">{{$t("We have sent the OTP to")}} <span class="fw-bold email-wrap">{{ userOTP }}</span> {{$t("please check your DM.")}}</p>
                                 <img src="@/assets/images/common/otp.gif" class="rounded-circle" width="350" alt="">
                             </div>
                                 <Form
@@ -55,7 +55,7 @@
                                     </p>
                                 </span>
                                 <span class="ec-register-wrap ec-register-btn">
-                                    <s-button :name="$t('Verify email')" action='SubmitOTP'/>
+                                    <s-button :name="settings.confirmation_message == 'email' ? $t('Verify email') : $t('Verify phone')" action='SubmitOTP'/>
                                 </span>
                             </Form>
                         </div>
@@ -68,15 +68,15 @@
 <script>
 import { Form, Field } from "vee-validate";
 import * as Yup from "yup";
-import { mapActions, mapState } from "vuex";
 import { router } from "@/router";
 import VueCookies from 'vue-cookies'
+import { mapActions, mapState } from "vuex";
 import VueCountdown from '@chenfengyuan/vue-countdown';
 export default {
     data(){
         return {
             otpDigits: new Array(6).fill(''),
-            phoneOTP: VueCookies.get("PHONE_OTP"),
+            userOTP: VueCookies.get("USER_OTP"),
         };
     },
     components: {
@@ -84,7 +84,7 @@ export default {
         Field,
     },
     created(){
-        if(this.phoneOTP === null){
+        if(this.userOTP === null){
            router.push("/");
         }
     },
@@ -123,6 +123,9 @@ export default {
         isLoading(actionName) {
             return this.$store.state.Loading[actionName] || false;
         },
+    },
+    computed: {
+        ...mapState(['settings']),
     },
     setup(){
         const schema = Yup.object().shape({

@@ -32,8 +32,8 @@ export default {
         }
     },
     created(){
-    $("body").addClass("CairoFont rtl")
     if(this.$store.state.lang=="ar"){
+        $("body").addClass("CairoFont rtl")
         this.$i18n.locale = 'ar';
         this.flag = arabic
     }

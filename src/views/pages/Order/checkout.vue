@@ -79,22 +79,22 @@
                                 <div class="ec-checkout-summary">
                                     <div>
                                         <span class="text-left">{{$t("Sub Total")}}</span>
-                                        <span class="text-right">EGP{{subtotal}}</span>
+                                        <span class="text-right">{{subtotal}} {{currency}}</span>
                                     </div>
                                     <div>
                                         <span class="text-left">{{$t("Total Discount")}}</span>
-                                        <span class="text-right">EGP{{totalDiscount}}</span>
+                                        <span class="text-right">{{totalDiscount}} {{currency}}</span>
                                     </div>
                                     <div>
                                         <span class="text-left">{{$t("Country Tax")}}</span>
-                                        <span class="text-right">EGP{{countryTax}}</span>
+                                        <span class="text-right">{{countryTax}} {{currency}}</span>
                                     </div>
                                     <div>
                                         <span class="text-left">{{$t("Shipping fee")}}</span>
-                                        <span class="text-right">EGP{{shippingFee}}</span>
+                                        <span class="text-right">{{shippingFee}} {{currency}}</span>
                                     </div>
                                     <div>
-                                        <span class="text-left">{{$t("Coupan Discount")}}</span>
+                                        <span class="text-left">{{$t("Coupon Discount")}}</span>
                                     </div>
                                     <transition name="fade" mode="out-in">
                                         <div class="ec-checkout-coupan-content d-block" v-if="coupon_flag">
@@ -110,13 +110,13 @@
                                     <div v-if="couponDetails">
                                         <div>
                                             {{couponDetails['code']}} 
-                                            <b class="text-success">EGP{{couponDetails['discount_amount']}}</b>
+                                            <b class="text-success">{{couponDetails['discount_amount']}} {{currency}}</b>
                                         </div>
                                         <a href="javascript:void(0)" @click="deleteCoupon()"><DeleteOutlined class="text-danger fs-6"/></a>
                                     </div>
                                     <div class="ec-checkout-summary-total">
                                         <span class="text-left">{{$t("Total")}}</span>
-                                        <span class="text-right">EGP{{totalAmount}}</span>
+                                        <span class="text-right">{{totalAmount}} {{currency}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -182,7 +182,7 @@ export default {
         LoadingOutlined
     },
     computed: {
-        ...mapState(['addresses','couponDetails','coupon_flag','coupon_flag_2','cart']),
+        ...mapState(['addresses','couponDetails','coupon_flag','coupon_flag_2','cart','currency']),
         ...mapGetters(['subtotal','totalDiscount','couponDiscount','totalAmount','countryTax','shippingFee']),
         isAuthenticated() {
             window.scrollTo(0,0)

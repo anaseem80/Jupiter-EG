@@ -98,15 +98,19 @@
                                     <div class="ec-cart-summary">
                                         <div>
                                             <span class="text-left">{{$t("Sub Total")}}</span>
-                                            <span class="text-right">{{subtotal}}</span>
+                                            <span class="text-right">{{subtotal}} {{currency}}</span>
                                         </div>
                                         <div>
                                             <span class="text-left">{{$t("Total Discount")}}</span>
-                                            <span class="text-right">{{totalDiscount}}</span>
+                                            <span class="text-right">{{totalDiscount}} {{currency}}</span>
+                                        </div>
+                                        <div>
+                                            <span class="text-left">{{$t("Shipping fee")}}</span>
+                                            <span class="text-right">{{shippingFee}} {{currency}}</span>
                                         </div>
                                         <div class="ec-cart-summary-total">
                                             <span class="text-left">{{$t("Total")}}</span>
-                                            <span class="text-right">{{totalAmount}}</span>
+                                            <span class="text-right">{{totalAmount}} {{currency}}</span>
                                         </div>
                                     </div>
 
@@ -126,8 +130,8 @@ import {LoadingOutlined} from '@ant-design/icons-vue';
 import { router } from "@/router";
 export default {
     computed: {
-        ...mapState(['cart','route']),
-        ...mapGetters(['subtotal','totalDiscount','couponDiscount','totalAmount']),
+        ...mapState(['cart','route','currency']),
+        ...mapGetters(['subtotal','totalDiscount','couponDiscount','totalAmount','shippingFee']),
         isAuthenticated() {
             window.scrollTo(0,0)
             return this.$store.state.isAuthenticated;
