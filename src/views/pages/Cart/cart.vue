@@ -36,12 +36,12 @@
                                                         <h6 @click="fetchProductData(item.product_id)">
                                                             <router-link
                                                         :to="'/product/'+item['id']"><img class="ec-cart-pro-img mr-4"
-                                                                :src="item.attribute ? route + item.attribute.image: route + item['image']"
+                                                                :src="item.attribute != undefined && item.attribute.length != 0 ? route + item.attribute.image: route + item['image']"
                                                                 alt="" />{{item['name']}}</router-link>
                                                         </h6>
                                                        </td>
                                                     <td :data-label="$t('Price')" class="ec-cart-pro-price">
-                                                        <span class="amount">{{item['price']}}</span>
+                                                        <span class="amount">{{currency}} {{item['price']}}</span>
                                                         <div v-if="item.attribute">
                                                             <p class="mb-0">{{item.attribute.color != null ? ($i18n.locale == 'en' ? item.attribute.color.name_en : item.attribute.color.name_ar) : ""}}</p>
                                                             <p class="mb-0">{{item.attribute.size != null ? ($i18n.locale == 'en' ? item.attribute.size.name_en : item.attribute.size.name_ar) : ""}}</p>

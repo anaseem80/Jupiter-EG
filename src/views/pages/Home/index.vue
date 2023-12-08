@@ -324,7 +324,9 @@
             </div>
         </div>
     </section> -->
+    
     <section 
+        v-if="home_products.advertisements.length > 0"
         class="section ec-offer-section section-space-p section-space-m"
         :style="{ backgroundImage: 'url('+ route + home_products.advertisements[0]['image'] + ')' }"
     >

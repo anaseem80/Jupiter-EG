@@ -180,5 +180,22 @@
     "No products here!":"لا توجد منتجات هنا!",
     "My Menu":"قائمتي",
     "Your wishlist is empty!":"المفضلة فارغة",
-    "Price Preview":"عرض سعر"
+    "Price Preview":"عرض سعر",
+    "add": "إضافة",
+    "edit": "تعديل",
+    "Select Country": "اختر البلد",
+    "City": "المدينة",
+    "State": "الولاية",
+    "Address 1": "العنوان 1",
+    "Address 2": "العنوان 2",
+    "close": "إغلاق",
+    "Thank You":"شكراً لك",
+    "For Shopping with us.":"للتسوق معنا.",
+    "Still Hungry For Shopping?":"هل ما زلت جائعًا للتسوق؟",
+    "Check out our special offers here.":"تحقق من عروضنا الخاصة هنا.",
+    "Top Offers":"أعلى العروض",
+    "Sections":"الأقسام",
+    "No Products here":"لا توجد منتجات هنا",
+    "You need to":"انت تحتاج إلي",
+    "to can add reviews": "حتي تقدر علي تقييم المنتج"
 }

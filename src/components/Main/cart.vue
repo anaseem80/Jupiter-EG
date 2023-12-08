@@ -18,11 +18,15 @@
                             <loading-outlined class="fs-3"/>
                         </div>
                         </transition>
-                        <router-link @click="fetchProductData(item.product_id)" :to="'/product/'+item['product_id']" class="sidekka_pro_img"><img
-                                :src="item.attribute ? route + item.attribute.image: route + item['image']" alt="product"></router-link>
+                        <span @click="fetchProductData(item.product_id)">
+                            <router-link @click="fetchProductData(item.product_id)" :to="'/product/'+item['id']" class="sidekka_pro_img">
+                                <img :src="item.attribute != undefined && item.attribute.length != 0 ? route + item.attribute.image: route + item['image']" alt="product">
+                            </router-link>
+                        </span>
+
                         <div class="ec-pro-content">
-                            <router-link @click="fetchProductData(item.product_id)" :to="'/product/'+item['product_id']" class="cart_pro_title">{{item['name']}}</router-link>
-                            <span class="cart-price"><span>{{item['price']}}</span> x {{item['quantity']}}</span>
+                            <span @click="fetchProductData(item.product_id)"><router-link :to="'/product/'+item['id']" class="cart_pro_title">{{item['name']}}</router-link></span>
+                            <span class="cart-price"><span>{{currency}} {{item['price']}}</span> x {{item['quantity']}}</span>
                             <div v-if="item.attribute">
                                 <p class="mb-0">{{item.attribute.color != null ? ($i18n.locale == 'en' ? item.attribute.color.name_en : item.attribute.color.name_ar) : ""}}</p>
                                 <p class="mb-0">{{item.attribute.size != null ? ($i18n.locale == 'en' ? item.attribute.size.name_en : item.attribute.size.name_ar) : ""}}</p>
@@ -50,15 +54,15 @@
                         <tbody>
                             <tr>
                                 <td class="text-left">{{$t("Sub Total")}} :</td>
-                                <td class="text-right">{{subtotal}}</td>
+                                <td class="text-right">{{currency}} {{subtotal}}</td>
                             </tr>
                             <tr>
                                 <td class="text-left">{{$t("Total Discount")}} :</td>
-                                <td class="text-right">{{totalDiscount}}</td>
+                                <td class="text-right">{{currency}} {{totalDiscount}}</td>
                             </tr>
                             <tr>
                                 <td class="text-left">{{$t("Total")}} :</td>
-                                <td class="text-right primary-color">{{totalAmount}}</td>
+                                <td class="text-right primary-color">{{currency}} {{totalAmount}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -77,7 +81,7 @@ import { mapActions, mapState,mapGetters } from "vuex";
 import {LoadingOutlined} from '@ant-design/icons-vue';
 export default {
     computed: {
-        ...mapState(['cart','route']),
+        ...mapState(['cart','route', 'currency']),
         ...mapGetters(['subtotal','totalDiscount','couponDiscount','totalAmount']),
     },
     components: {

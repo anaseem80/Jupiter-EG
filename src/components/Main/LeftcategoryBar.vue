@@ -18,7 +18,7 @@
                                     >
                                         <div class="ec-sidebar-block-item" @click="openSubCat($event.target)"><img :src="route + category.image" class="svg_img" alt="drink" />{{category.name}}</div>
                                         <ul>
-                                            <li v-if="category.subcategories == 0" class="text-center">No Products here</li>
+                                            <li v-if="category.subcategories == 0" class="text-center">{{$t("No Products here")}}</li>
                                             <li v-for="subCategory in category.subcategories">
                                                     <div class="ec-sidebar-sub-item"><router-link :to="`/subCategory/${subCategory.id}`" @click="hideMenu()">{{subCategory.name}}</router-link></div>
                                             </li>

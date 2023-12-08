@@ -2,7 +2,7 @@
     <transition name="fade" mode="out-in">
         <loader v-if="isLoading('GetProductData'+$route.params.id)" key="loader"></loader>
     </transition>
-    <section class="ec-page-content section-space-p" v-if="product">
+    <section class="sticky-header-next-sec ec-page-content section-space-p" v-if="product">
         <div class="container">
             <div class="row">
                 <div class="ec-pro-rightside ec-common-rightside col-lg-12 col-md-12">                    
@@ -47,14 +47,9 @@
                                 <div class="col-lg-7 single-pro-desc single-pro-desc-no-sidebar">
                                     <div class="single-pro-content">
                                         <h5 class="ec-single-title">{{product.product['name']}}</h5>
-                                        {{product.product['rating']}}
                                         <div class="ec-single-rating-wrap">
                                             <div class="ec-single-rating">
-                                                <i class="ecicon eci-star fill"></i>
-                                                <i class="ecicon eci-star fill"></i>
-                                                <i class="ecicon eci-star fill"></i>
-                                                <i class="ecicon eci-star fill"></i>
-                                                <i class="ecicon eci-star-o"></i>
+                                                <a-rate v-model:value="product.product.average_rating" disabled />
                                             </div>
                                             <span class="ec-read-review" @click="openReviews()" v-if="product.product.reviews.length == 0">
                                                 <a href="#ec-spt-nav-review">{{$t("Be the first review to this product")}}
@@ -268,7 +263,7 @@
                                                     </a>
                                             </div>
                                         </div>
-                                        <div class="ec-single-social">
+                                        <!-- <div class="ec-single-social">
                                             <ul class="mb-0">
                                                 <li class="list-inline-item facebook"><a href="#"><i
                                                             class="ecicon eci-facebook"></i></a></li>
@@ -285,7 +280,7 @@
                                                 <li class="list-inline-item plus"><a href="#"><i
                                                             class="ecicon eci-plus"></i></a></li>
                                             </ul>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
@@ -321,8 +316,8 @@
                                         <div class="ec-t-review-wrapper">
                                             <h6 class="mb-4" v-if="product.product.reviews.length == 0" data-bs-toggle="tab" data-bs-target="#ec-spt-nav-review">{{$t("No reviews yet, be the first one")}}</h6>
                                             <div class="ec-t-review-item" v-for="review in product.product.reviews" :key="review">
-                                                <div class="ec-t-review-avtar">
-                                                    <img src="@/assets/images/review-image/1.jpg" alt="" />
+                                                <div class="ec-t-review-avtar text-center">
+                                                    <img src="@/assets/images/icons/user.svg" class="svg_img header_svg" alt="" />
                                                 </div>
                                                 <div class="ec-t-review-content">
                                                     <div class="ec-t-review-top">
@@ -346,7 +341,7 @@
                                             <h3>{{$t("Add a Review")}}</h3>
                                             <div class="ec-ratting-form">
                                                 <add-review v-model="userRating" :max-stars="5" v-if="isAuthenticated.token != null ? isAuthenticated.token : UserIDToken"/>
-                                                <h6 v-if="isAuthenticated.token != null ? !isAuthenticated.token : !UserIDToken">You need to <router-link to="/login">Login</router-link> to can add reviews</h6>
+                                                <h6 v-if="isAuthenticated.token != null ? !isAuthenticated.token : !UserIDToken">{{$t("You need to")}} <span class="text-primary"><router-link to="/login" class="text-primary">{{$t("Login")}}</router-link></span> {{$t("to can add reviews")}}</h6>
                                             </div>
                                         </div>
                                     </div>
@@ -424,7 +419,7 @@ export default {
         onSlideChange(num){
             var audio = new Audio(audioSRC)
             audio.play(audio);
-            this.quantity = num.activeIndex +1
+            this.quantity = this.visibleStocks[num.activeIndex]
         },
         async fetchProduct() {
             await this.GetProductData({id: this.$route.params.id});
@@ -472,7 +467,7 @@ export default {
                 this.color = color.colorName
             }
             this.selectedAttributeId['Product'+id] = color.attribute_id;
-            $('.image-product').attr('src',this.route+'imagesfp/product/'+color.image)
+            // $('.image-product').attr('src',this.route+'imagesfp/product/'+color.image)
             var $this = $(thisObj);
             var $new_price = $('.new-price');
             var $new_sku = $('.sku');

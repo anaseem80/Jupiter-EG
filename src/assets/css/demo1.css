@@ -18683,6 +18683,7 @@ h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
 }
 .ec-main-menu ul li .mega-menu ul.ec-main-banner {
   margin-top: 20px;
+  justify-content: flex-start;
 }
 .ec-main-menu ul li .mega-menu ul.ec-main-banner li {
   width: 25%;
@@ -20247,6 +20248,9 @@ button.btn-close.qty_close {
   top: 0;
   left: 0;
   opacity: 0;
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
 }
 .ec-product-inner .ec-pro-image .flags {
   position: absolute;

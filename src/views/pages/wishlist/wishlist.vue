@@ -36,7 +36,7 @@
                                                             <router-link
                                                         :to="'/product/'+item['id']"><img class="ec-cart-pro-img mr-4"
                                                                 :src="route + item['image']"
-                                                                alt="" />{{item['name']}}</router-link>
+                                                                alt="" />{{CheckItemName(item)}}</router-link>
                                                         </h6>
                                                        </td>
                                                     <!-- <td :data-label="$t('Price')" class="ec-cart-pro-price">
@@ -74,6 +74,26 @@ export default {
     methods:{
         onRemoveProduct(product){
             this.$store.dispatch("Remove_Product_From_Wishlist",product)
+        },
+        startsWithArabicLetter(str) {
+        const arabicRange = /[\u0600-\u06FF]/;
+        return arabicRange.test(str[0]);
+        },
+        CheckItemName(item){
+            if (this.$i18n.locale == "ar") {
+                if(this.startsWithArabicLetter(item['name'])){
+                    return item['name'];
+                }else{
+                    return item['favorite_name'];
+                }
+            } else {
+                if(this.startsWithArabicLetter(item['name'])){
+                    return item['favorite_name'];
+                }else{
+                    return item['name'];
+                }
+            }
+            
         },
         isLoading(actionName) {
             return this.$store.state.Loading[actionName] || false;

@@ -2,7 +2,7 @@
     <transition name="fade" mode="out-in">
         <loader v-if="isLoading('GetSidePageData')" key="loader"></loader>
     </transition>
-    <section class="ec-page-content section-space-p">
+    <section class="sticky-header-next-sec ec-page-content section-space-p">
         <div class="container">
             <div class="row">
                 

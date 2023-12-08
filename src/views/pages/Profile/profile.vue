@@ -1,6 +1,6 @@
 <template lang="">
     <!-- User profile section -->
-    <section class="ec-page-content ec-vendor-uploads ec-user-account section-space-p" v-if="this.isAuthenticated.user">
+    <section class="sticky-header-next-sec ec-page-content ec-vendor-uploads ec-user-account section-space-p" v-if="this.isAuthenticated.user">
         <div class="container">
             <div class="row">
                 <!-- Sidebar Area Start -->

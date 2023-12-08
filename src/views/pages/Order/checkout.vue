@@ -1,6 +1,6 @@
 <template lang="">
     <!-- Ec checkout page -->
-    <section class="ec-page-content section-space-p">
+    <section class="sticky-header-next-sec ec-page-content section-space-p">
         <div class="col-12 text-center" v-if="cart && cart.cart_items.length < 1">
             <h4>No Items here</h4>
             <router-link to="/">Back to home</router-link>

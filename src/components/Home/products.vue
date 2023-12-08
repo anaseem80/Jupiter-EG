@@ -240,7 +240,7 @@ export default {
         },
         onColorChange(element,color,id,title, object){
             this.selectedAttribute[title + id] = color.attribute_id;
-            $('#img-'+title+id).attr('src',this.route+'imagesfp/product/'+color.image)
+            // $('#img-'+title+id).attr('src',this.route+'imagesfp/product/'+color.image)
             var $this = $(element);
             var $new_price = $this.closest('.ec-pro-content').find('.new-price');
             $new_price.text(color.price); 

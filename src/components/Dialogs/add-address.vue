@@ -8,13 +8,12 @@
             :validation-schema="AddressSchema"
             v-slot="{ errors }"
         >
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">{{mode}} Address</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-header justify-content-center">
+            <h5 class="modal-title mb-0" id="exampleModalLabel">{{$t(mode)}} {{$t("Address")}}</h5>
         </div>
         <div class="modal-body row">
             <div class="col-lg-6 form-group">
-                <label for="name" class="mb-0">Name</label>
+                <label for="name" class="mb-0">{{$t("Name")}}</label>
                 <Field 
                     type="text" 
                     class="form-control"
@@ -25,7 +24,7 @@
                 />
             </div>
             <div class="col-lg-6 form-group">
-                <label for="email" class="mb-0">Email</label>
+                <label for="email" class="mb-0">{{$t("Email Address")}}</label>
                 <Field 
                     type="email" 
                     class="form-control"
@@ -36,7 +35,7 @@
                 />
             </div>
             <div class="col-lg-12 form-group mt-2">
-                <label for="phone" class="mb-0">Phone</label>
+                <label for="phone" class="mb-0">{{$t("Phone")}}</label>
                 <Field 
                     type="phone" 
                     class="form-control"
@@ -47,7 +46,7 @@
                 />
             </div>
             <div class="col-lg-4 form-group mt-2">
-                <label for="country" class="mb-0">Country</label>
+                <label for="country" class="mb-0">{{$t("Country")}}</label>
                 <Field 
                     as="select"
                     class="form-control border"
@@ -56,12 +55,12 @@
                     id="country"
                     :class="{ 'is-invalid': errors.country }"
                 >
-                <option value="" selected disabled>Select Country</option>
-                <option :value="country.name_en" v-for="country in countries" :key="country">{{country.name_en}}</option>
+                <option value="" selected disabled>{{$t("Select Country")}}</option>
+                <option :value="country.name" v-for="country in countries" :key="country">{{$i18n.locale == 'en' ? country.name_en : country.name}}</option>
                 </Field>
             </div>
             <div class="col-lg-4 form-group mt-2">
-                <label for="city" class="mb-0">City</label>
+                <label for="city" class="mb-0">{{$t("City")}}</label>
                 <Field 
                     type="text" 
                     class="form-control"
@@ -72,7 +71,7 @@
                 />
             </div>
             <div class="col-lg-4 form-group mt-2">
-                <label for="state" class="mb-0">state</label>
+                <label for="state" class="mb-0">{{$t("State")}}</label>
                 <Field 
                     type="text" 
                     class="form-control"
@@ -83,7 +82,7 @@
                 />
             </div>
             <div class="col-lg-12 form-group mt-2">
-                <label for="address_1" class="mb-0">Address 1</label>
+                <label for="address_1" class="mb-0">{{$t("Address 1")}}</label>
                 <Field 
                     as="textarea"
                     type="text" 
@@ -95,7 +94,7 @@
                 />
             </div>
             <div class="col-lg-12 form-group mt-2">
-                <label for="address_2" class="mb-0">Address 2</label>
+                <label for="address_2" class="mb-0">{{$t("Address 2")}}</label>
                 <Field 
                     as="textarea"
                     type="text" 
@@ -109,9 +108,9 @@
 
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary dismiss-add-address" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary dismiss-add-address" data-bs-dismiss="modal">{{$t("close")}}</button>
             <button class="btn btn-primary" type="submit" id="basic-addon2" :disabled="isLoading('AddAddress')">
-                    Save Changes
+                    {{$t("Save")}}
                 <loading-outlined class="ms-3" v-if="isLoading('AddAddress')"/>
             </button>
         </div>

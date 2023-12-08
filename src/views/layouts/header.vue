@@ -221,7 +221,7 @@
                                                 v-if="home_products.categoriesWithSubcategories"
                                                 v-for="(category, index) in home_products.categoriesWithSubcategories.slice(0,4)"
                                                 >
-                                                    <a class="p-0 h-100" href="shop-left-sidebar-col-3.html">
+                                                    <a  class="p-0 h-100" href="javascript:void(0);">
                                                         <img 
                                                             class="img-responsive h-100" 
                                                             :src="route + category.image"
@@ -243,7 +243,7 @@
                                 <li class="dropdown scroll-to"><a href="javascript:void(0)"><img
                                     src="@/assets/images/icons/scroll.svg" class="svg_img header_svg scroll" alt="" /></a>
                                     <ul class="sub-menu">
-                                        <li class="menu_title">Sections</li>
+                                        <li class="menu_title">{{$t("Sections")}}</li>
                                         <li><router-link to="/toprate" @click="$store.dispatch('GetProductsByCurrentCategory',{page: 1, route:'products/toprate'})">{{$t('Top Rate')}}</router-link></li>
                                         <li><router-link to="/last" @click="$store.dispatch('GetProductsByCurrentCategory',{page: 1, route:'products/last'})">{{$t('Last Products')}}</router-link></li>
                                         <li><router-link to="/with-offers" @click="$store.dispatch('GetProductsByCurrentCategory',{page: 1, route:'products/with-offers'})">{{$t('Hot Offers')}}</router-link></li>
@@ -405,17 +405,31 @@ export default {
             // echeader.classList.add('hide');
             ecprevDirection = ecdirection;
             $("#ec-main-menu-desk").addClass("menu_fixed_up");
-            // $("#ec-main-menu-desk").removeClass("menu_fixed");
+            $("#ec-main-menu-desk").removeClass("menu_fixed");
+            console.log("asdasd")
         }
         else if (ecdirection === 1) 
         {
             // echeader.classList.remove('hide');
+            console.log("23222")
             ecprevDirection = ecdirection;              
             $("#ec-main-menu-desk").addClass("menu_fixed");  
             $("#ec-main-menu-desk").removeClass("menu_fixed_up");            
         }
     };
-
+    window.onscroll = () =>{
+        var distance = $('.sticky-header-next-sec').offset().top,
+        $window = $(window);
+        
+        if ( $window.scrollTop() <= distance+50 ) {
+            // alert("1");
+            $("#ec-main-menu-desk").removeClass("menu_fixed");
+        }
+        else{
+            // alert("2");
+            checkScroll();
+        }
+    }
     this.fetchHomeProducts();
     this.fetchUserInformation();
     this.fetchGetSiteSettings();

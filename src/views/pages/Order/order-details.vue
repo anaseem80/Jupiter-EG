@@ -3,7 +3,7 @@
             <loader v-if="isLoading('GetUserOrder')" key="loader"></loader>
         </transition>
         <div v-if="order">
-            <section class="ec-page-content section-space-p">
+            <section class="sticky-header-next-sec ec-page-content section-space-p">
             <div class="container">
                 <!-- Track Order Content Start -->
                 <div class="ec-trackorder-content col-md-12">
@@ -53,7 +53,7 @@
                                     ><span class="ec-track-icon"> <img
                                                 src="@/assets/images/icons/track_1.png" alt="track_order"></span><span
                                             class="ec-progressbar-track"></span><span class="ec-track-title">
-                                            <br>{{$t("Order")}}{{$t("pending")}}</span></li>
+                                            <br>{{$t("Order")}} {{$t("pending")}}</span></li>
 
                                     <li 
                                     :class="{'active' : order['status'] == 'cancelled' || order['status'] == 'refunded'}"

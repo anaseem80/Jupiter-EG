@@ -18563,9 +18563,9 @@ h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   padding-left: 0;
   list-style: none;
   width: 100%;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -webkit-box-pack: flex-start;
+      -ms-flex-pack: flex-start;
+          justify-content: flex-start;
   position: relative;
 }
 .ec-main-menu ul li {
